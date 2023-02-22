@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagenSoft.ModuloWeb.Persistencia", "ImagenSoft.ModuloWeb.Persistencia\ImagenSoft.ModuloWeb.Persistencia.csproj", "{830FF892-CD17-4057-9BCB-A63B3EDECF83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagenSoft.ModuloWeb.Entidades", "ImagenSoft.ModuloWeb.Entidades\ImagenSoft.ModuloWeb.Entidades.csproj", "{2DEB052C-C3A9-4480-AA01-EA75B9BC42B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagenSoft.ModuloWeb.Fachada", "ImagenSoft.ModuloWeb.Fachada\ImagenSoft.ModuloWeb.Fachada.csproj", "{1ADB3FA8-DD60-4B6C-9EF9-F888E039EEB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagenSoft.ModuloWeb.Interfaces", "ImagenSoft.ModuloWeb.Interfaces\ImagenSoft.ModuloWeb.Interfaces.csproj", "{D5651AB0-576B-42D5-9704-4D0F196AA858}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagenSoft.ModuloWeb.Servicios.WCF", "ImagenSoft.ModuloWeb.Servicios.WCF\ImagenSoft.ModuloWeb.Servicios.WCF.csproj", "{6BA6F292-59B1-421C-90B9-067D1670F958}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostPublicador", "HostPublicador\HostPublicador.csproj", "{896DEC11-49BA-4E46-9120-BFF12FE819F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagenSoft.ModuloWeb.Proveedor", "ImagenSoft.ModuloWeb.Proveedor\ImagenSoft.ModuloWeb.Proveedor.csproj", "{32856318-9ADF-4792-8812-B47D469F15B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net3.5", "net3.5", "{D5AE4D29-73F2-4A94-9592-70F37C900DFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{830FF892-CD17-4057-9BCB-A63B3EDECF83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{830FF892-CD17-4057-9BCB-A63B3EDECF83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{830FF892-CD17-4057-9BCB-A63B3EDECF83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DEB052C-C3A9-4480-AA01-EA75B9BC42B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DEB052C-C3A9-4480-AA01-EA75B9BC42B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DEB052C-C3A9-4480-AA01-EA75B9BC42B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ADB3FA8-DD60-4B6C-9EF9-F888E039EEB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ADB3FA8-DD60-4B6C-9EF9-F888E039EEB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ADB3FA8-DD60-4B6C-9EF9-F888E039EEB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5651AB0-576B-42D5-9704-4D0F196AA858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5651AB0-576B-42D5-9704-4D0F196AA858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5651AB0-576B-42D5-9704-4D0F196AA858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BA6F292-59B1-421C-90B9-067D1670F958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA6F292-59B1-421C-90B9-067D1670F958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA6F292-59B1-421C-90B9-067D1670F958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{896DEC11-49BA-4E46-9120-BFF12FE819F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{896DEC11-49BA-4E46-9120-BFF12FE819F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{896DEC11-49BA-4E46-9120-BFF12FE819F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32856318-9ADF-4792-8812-B47D469F15B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32856318-9ADF-4792-8812-B47D469F15B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32856318-9ADF-4792-8812-B47D469F15B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D5651AB0-576B-42D5-9704-4D0F196AA858} = {D5AE4D29-73F2-4A94-9592-70F37C900DFD}
+		{32856318-9ADF-4792-8812-B47D469F15B9} = {D5AE4D29-73F2-4A94-9592-70F37C900DFD}
+		{2DEB052C-C3A9-4480-AA01-EA75B9BC42B1} = {D5AE4D29-73F2-4A94-9592-70F37C900DFD}
+	EndGlobalSection
+EndGlobal

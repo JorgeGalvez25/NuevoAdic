@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdicionalWeb", "AdicionalWeb.csproj", "{5A4E9385-EE00-4550-90B7-90AD2753E1B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdicionalWeb.Persistencia", "..\AdicionalWeb.Persistencia\AdicionalWeb.Persistencia.csproj", "{325B0340-87FD-4448-8420-5D598A912F26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdicionalWeb.Entidades", "..\AdicionalWeb.Entidades\AdicionalWeb.Entidades.csproj", "{E9733E2B-11C5-4A53-9EE3-A6EE96119BC9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A4E9385-EE00-4550-90B7-90AD2753E1B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4E9385-EE00-4550-90B7-90AD2753E1B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4E9385-EE00-4550-90B7-90AD2753E1B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4E9385-EE00-4550-90B7-90AD2753E1B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{325B0340-87FD-4448-8420-5D598A912F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{325B0340-87FD-4448-8420-5D598A912F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{325B0340-87FD-4448-8420-5D598A912F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{325B0340-87FD-4448-8420-5D598A912F26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9733E2B-11C5-4A53-9EE3-A6EE96119BC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9733E2B-11C5-4A53-9EE3-A6EE96119BC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9733E2B-11C5-4A53-9EE3-A6EE96119BC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9733E2B-11C5-4A53-9EE3-A6EE96119BC9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

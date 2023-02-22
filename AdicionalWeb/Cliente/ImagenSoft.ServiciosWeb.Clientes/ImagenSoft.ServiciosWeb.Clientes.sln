@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagenSoft.SeriviciosWeb.Monitor", "ImagenSoft.SeriviciosWeb.Monitor\ImagenSoft.SeriviciosWeb.Monitor.csproj", "{D4805C85-342A-44F5-816A-EC57EE5B882B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTest", "ClientTest\ClientTest.csproj", "{74BFBD2F-A898-42C3-8F7C-BD641A644A81}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4805C85-342A-44F5-816A-EC57EE5B882B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4805C85-342A-44F5-816A-EC57EE5B882B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4805C85-342A-44F5-816A-EC57EE5B882B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4805C85-342A-44F5-816A-EC57EE5B882B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74BFBD2F-A898-42C3-8F7C-BD641A644A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74BFBD2F-A898-42C3-8F7C-BD641A644A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74BFBD2F-A898-42C3-8F7C-BD641A644A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74BFBD2F-A898-42C3-8F7C-BD641A644A81}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
