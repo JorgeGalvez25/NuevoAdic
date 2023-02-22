@@ -1,0 +1,6 @@
+SET TERM ^ ;
+
+alter TABLE ESTACIONES ADD TIPODISPENSARIO smallint ^
+
+SET TERM ; ^
+

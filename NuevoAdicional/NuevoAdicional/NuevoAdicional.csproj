@@ -1,0 +1,663 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6E5BAEF4-B52C-4255-8989-A4E2F43DE193}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NuevoAdicional</RootNamespace>
+    <AssemblyName>NuevoAdicional</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>yinyang.ico</ApplicationIcon>
+    <ManifestCertificateThumbprint>AD5001339509584258D6F03A5F59A770C99BD7B8</ManifestCertificateThumbprint>
+    <ManifestKeyFile>NuevoAdicional_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <TargetZone>LocalIntranet</TargetZone>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <SignManifests>true</SignManifests>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Charts.v8.2.Core, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Data.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v8.2.Core, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.2.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Liberados\Framework\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Liberados\Framework\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Design" />
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuraciones.cs" />
+    <Compile Include="DataSetReportes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetReportes.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="EntradaTanques\frmTanquesModificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EntradaTanques\frmTanquesModificar.Designer.cs">
+      <DependentUpon>frmTanquesModificar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntradaTanques\frmTanquesRegistrar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EntradaTanques\frmTanquesRegistrar.Designer.cs">
+      <DependentUpon>frmTanquesRegistrar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddLitros.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddLitros.Designer.cs">
+      <DependentUpon>frmAddLitros.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAvance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAvance.Designer.cs">
+      <DependentUpon>frmAvance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBitacora.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBitacora.Designer.cs">
+      <DependentUpon>frmBitacora.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmConfiguraciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConfiguraciones.Designer.cs">
+      <DependentUpon>frmConfiguraciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmConfRemoto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConfRemoto.Designer.cs">
+      <DependentUpon>frmConfRemoto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDerechos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDerechos.Designer.cs">
+      <DependentUpon>frmDerechos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEstaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEstaciones.Designer.cs">
+      <DependentUpon>frmEstaciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEstacionesPorUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEstacionesPorUsuario.Designer.cs">
+      <DependentUpon>frmEstacionesPorUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEstacionMto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEstacionMto.Designer.cs">
+      <DependentUpon>frmEstacionMto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLectTanques.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLectTanques.Designer.cs">
+      <DependentUpon>frmLectTanques.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLicencias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLicencias.Designer.cs">
+      <DependentUpon>frmLicencias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMoviles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMoviles.Designer.cs">
+      <DependentUpon>frmMoviles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMovilesMto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMovilesMto.Designer.cs">
+      <DependentUpon>frmMovilesMto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmObtenerCalibracion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmObtenerCalibracion.Designer.cs">
+      <DependentUpon>frmObtenerCalibracion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmObtenerPorcentaje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmObtenerPorcentaje.Designer.cs">
+      <DependentUpon>frmObtenerPorcentaje.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPosicionesEstacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPosicionesEstacion.Designer.cs">
+      <DependentUpon>frmPosicionesEstacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProtecciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProtecciones.Designer.cs">
+      <DependentUpon>frmProtecciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRegenerarArchivos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRegenerarArchivos.Designer.cs">
+      <DependentUpon>frmRegenerarArchivos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReporteAjuste.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReporteAjuste.Designer.cs">
+      <DependentUpon>frmReporteAjuste.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportViewer.Designer.cs">
+      <DependentUpon>frmReportViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntradaTanques\frmTanquesListado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EntradaTanques\frmTanquesListado.Designer.cs">
+      <DependentUpon>frmTanquesListado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmUsuarioMto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUsuarioMto.Designer.cs">
+      <DependentUpon>frmUsuarioMto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUsuarios.Designer.cs">
+      <DependentUpon>frmUsuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmVariables.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVariables.Designer.cs">
+      <DependentUpon>frmVariables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PersistenciaLocal\DerechoPersistencia.cs" />
+    <Compile Include="PersistenciaLocal\EstacionPersistencia.cs" />
+    <Compile Include="PersistenciaLocal\FBLocal.cs" />
+    <Compile Include="PersistenciaLocal\UsuarioPersistencia.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="EntradaTanques\frmTanquesModificar.resx">
+      <DependentUpon>frmTanquesModificar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EntradaTanques\frmTanquesRegistrar.resx">
+      <DependentUpon>frmTanquesRegistrar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddLitros.resx">
+      <DependentUpon>frmAddLitros.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAvance.resx">
+      <DependentUpon>frmAvance.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBitacora.resx">
+      <DependentUpon>frmBitacora.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConfiguraciones.resx">
+      <DependentUpon>frmConfiguraciones.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConfRemoto.resx">
+      <DependentUpon>frmConfRemoto.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDerechos.resx">
+      <DependentUpon>frmDerechos.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEstaciones.resx">
+      <DependentUpon>frmEstaciones.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEstacionesPorUsuario.resx">
+      <DependentUpon>frmEstacionesPorUsuario.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEstacionMto.resx">
+      <DependentUpon>frmEstacionMto.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLectTanques.resx">
+      <DependentUpon>frmLectTanques.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLicencias.resx">
+      <DependentUpon>frmLicencias.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMoviles.resx">
+      <DependentUpon>frmMoviles.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMovilesMto.resx">
+      <DependentUpon>frmMovilesMto.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmObtenerCalibracion.resx">
+      <DependentUpon>frmObtenerCalibracion.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmObtenerPorcentaje.resx">
+      <DependentUpon>frmObtenerPorcentaje.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPosicionesEstacion.resx">
+      <DependentUpon>frmPosicionesEstacion.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProtecciones.resx">
+      <DependentUpon>frmProtecciones.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRegenerarArchivos.resx">
+      <DependentUpon>frmRegenerarArchivos.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReporteAjuste.resx">
+      <DependentUpon>frmReporteAjuste.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReportViewer.resx">
+      <DependentUpon>frmReportViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EntradaTanques\frmTanquesListado.resx">
+      <DependentUpon>frmTanquesListado.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUsuarioMto.resx">
+      <DependentUpon>frmUsuarioMto.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUsuarios.resx">
+      <DependentUpon>frmUsuarios.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVariables.resx">
+      <DependentUpon>frmVariables.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptRep01.resx">
+      <DependentUpon>rptRep01.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptRep01Detallado.resx">
+      <DependentUpon>rptRep01Detallado.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptRep01Resumen.resx">
+      <DependentUpon>rptRep01Resumen.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\rptRep02.resx">
+      <DependentUpon>rptRep02.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tickets\frmTicketsModificar.resx">
+      <DependentUpon>frmTicketsModificar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tickets\frmTicketsRegistrar.resx">
+      <DependentUpon>frmTicketsRegistrar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ReporteAjusteProceso.cs" />
+    <Compile Include="Reportes\rptRep01.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\rptRep01.Designer.cs">
+      <DependentUpon>rptRep01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\rptRep01Detallado.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\rptRep01Detallado.Designer.cs">
+      <DependentUpon>rptRep01Detallado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\rptRep01Resumen.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\rptRep01Resumen.Designer.cs">
+      <DependentUpon>rptRep01Resumen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\rptRep02.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reportes\rptRep02.Designer.cs">
+      <DependentUpon>rptRep02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tickets\frmTicketsModificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tickets\frmTicketsModificar.Designer.cs">
+      <DependentUpon>frmTicketsModificar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tickets\frmTicketsRegistrar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tickets\frmTicketsRegistrar.Designer.cs">
+      <DependentUpon>frmTicketsRegistrar.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cubes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_down_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_up_green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drink_green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\address_book2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\console.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document_new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document_lock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\document_refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user1_information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\percent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DataSetReportes.xsc">
+      <DependentUpon>DataSetReportes.xsd</DependentUpon>
+    </None>
+    <None Include="DataSetReportes.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetReportes.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSetReportes.xss">
+      <DependentUpon>DataSetReportes.xsd</DependentUpon>
+    </None>
+    <None Include="NuevoAdicional_TemporaryKey.pfx" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Resources\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\star_green.png" />
+    <None Include="Resources\history2.png" />
+    <None Include="Resources\disk_green.png" />
+    <None Include="Resources\add2.png" />
+    <None Include="Resources\delete2.png" />
+    <None Include="Resources\arrow_down_red.png" />
+    <None Include="Resources\find.png" />
+    <None Include="Resources\keys.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\plug.png" />
+    <None Include="Resources\plug_delete.png" />
+    <None Include="Resources\Salir.png" />
+    <None Include="Resources\up_down.png" />
+    <None Include="Resources\clock_refresh.png" />
+    <None Include="Resources\document.png" />
+    <None Include="Resources\text_tree.png" />
+    <None Include="Resources\bug_red.png" />
+    <None Include="Resources\bullet_ball_glass_gray.png" />
+    <None Include="Resources\bullet_ball_glass_green.png" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\mobilephone2.png" />
+    <None Include="Resources\scroll.png" />
+    <None Include="Resources\column.png" />
+    <None Include="Resources\iconfinder_exclamation-circle_red_69107.png" />
+    <Content Include="Resources\lock-open.png" />
+    <None Include="Resources\lock.png" />
+    <None Include="Resources\Tank_Reading.png" />
+    <Content Include="yinyang.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Adicional.Entidades\Adicional.Entidades.csproj">
+      <Project>{3A431CFE-DC2F-4626-AFEA-B8C71D0DB83F}</Project>
+      <Name>Adicional.Entidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistencia\Adicional.Persistencia.csproj">
+      <Project>{7A8C1681-C321-4EF4-A971-92B0EDB1CCEB}</Project>
+      <Name>Adicional.Persistencia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Servicios.Adicional\Servicios.Adicional.csproj">
+      <Project>{C846CDE4-FDB4-4DC3-85D9-E1BBB952434D}</Project>
+      <Name>Servicios.Adicional</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiciosCliente\Servicios.Cliente.csproj">
+      <Project>{204D4D74-E33F-47A3-BF2A-F3955E79128D}</Project>
+      <Name>Servicios.Cliente</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Reportes\Tickets\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetPath)" "C:\Imagensoft NET\Liberados\IGas\Adicional\NuevoAdicional\" /V /J /Y /I
+xcopy "*.dll" "C:\Imagensoft NET\Liberados\IGas\Adicional\NuevoAdicional\" /V /J /Y /I</PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Advertencia_Filtro_Consulta" xml:space="preserve">
+    <value>Los filtros han cambiado desde la última consulta.</value>
+  </data>
+  <data name="Confirmacion_Cancelar" xml:space="preserve">
+    <value>¿Desea cancelar los cambios?</value>
+  </data>
+  <data name="Confirmacion_Columna_Vacia" xml:space="preserve">
+    <value>La columna {0} no permite tener valores vacíos. ¿Desea corregir el valor?</value>
+    <comment>Nombre Columna</comment>
+  </data>
+  <data name="Confirmacion_Eliminar" xml:space="preserve">
+    <value>¿Desea eliminar el Registro "{0} - {1}"?</value>
+    <comment>Clave registro - Nombre o Descripción del Registro</comment>
+  </data>
+  <data name="Confirmacion_Guardar" xml:space="preserve">
+    <value>¿Desea salir sin Guardar?</value>
+  </data>
+  <data name="Confirmacion_Proceso_Largo" xml:space="preserve">
+    <value>Este proceso puede tardar en realizarse, ¿Desea Continuar?</value>
+  </data>
+  <data name="Error_Accion_Accedida" xml:space="preserve">
+    <value>Ya existe un registro en modo {0}, ciérrelo antes de continuar.</value>
+    <comment>Eliminar | Modificar | Registar</comment>
+  </data>
+  <data name="Error_Accion_No_Realizada" xml:space="preserve">
+    <value>No es posible “{0}”. Para más información consulte Bitácora de excepciones.</value>
+    <comment>Eliminar | Modificar | Registar | Mensajes desde el Presenter</comment>
+  </data>
+  <data name="Error_Derechos_Usuarios" xml:space="preserve">
+    <value>El usuario {0} no cuenta con derechos suficientes.</value>
+    <comment>Nombre de Usuario</comment>
+  </data>
+  <data name="Error_De_Dependencia_Documento_Catalogo" xml:space="preserve">
+    <value>No se puede acceder al {0} de {1}, ya que no existen registros en {2}.</value>
+    <comment>Catálogo|Documento - Nombre de Entidad Dependiente - Nombre Entidad Padre</comment>
+  </data>
+  <data name="Error_Fecha_Mayor" xml:space="preserve">
+    <value>Fecha Inicial no debe ser mayor a la Fecha Final.</value>
+  </data>
+  <data name="Error_Fecha_Trabajo_No_Cerrada" xml:space="preserve">
+    <value>La fecha de trabajo no está cerrada al día {0} en la Sucursal {1}.</value>
+    <comment>Día - Sucursal</comment>
+  </data>
+  <data name="Error_Hora_Mayor" xml:space="preserve">
+    <value>Hora de Inicio no debe ser mayor a la Hora de Fin.</value>
+  </data>
+  <data name="Error_Modulo_No_Encontrado" xml:space="preserve">
+    <value>El módulo {0} no se encontró.</value>
+    <comment>Nombre del Módulo</comment>
+  </data>
+  <data name="Error_No_Encontro_RutaBD" xml:space="preserve">
+    <value>No se encontró ruta de base de datos en la Sucursal {0} - {1}</value>
+    <comment>Clave - DescripcionSucursal</comment>
+  </data>
+  <data name="Error_No_Hay_Configuracion_Polizas" xml:space="preserve">
+    <value>No hay configuraciones de pólizas en la Sucursal {0} - {1}.</value>
+    <comment>Clave - DescripcionSucursal</comment>
+  </data>
+  <data name="Error_No_Se_Puede_Conectar_BD" xml:space="preserve">
+    <value>No se puede conectar a la base de datos en la ruta {0}.</value>
+    <comment>Ruta base de datos</comment>
+  </data>
+  <data name="Error_No_se_puede_Eliminar" xml:space="preserve">
+    <value>El Registro "{0} - {1}" no puede ser eliminado por que está siendo utilizado.</value>
+    <comment>Clave registro - Nombre o Descripción del Registro</comment>
+  </data>
+  <data name="Error_Registro_Accedida_Usuario" xml:space="preserve">
+    <value>{0} se encuentra accedida por otro usuario.</value>
+    <comment>Nombre de la Entidad</comment>
+  </data>
+  <data name="Error_Registro_Accedido_Usuario" xml:space="preserve">
+    <value>{0} se encuentra accedido por otro usuario.</value>
+    <comment>Nombre de la Entidad</comment>
+  </data>
+  <data name="Error_Registro_Activo" xml:space="preserve">
+    <value>No se puede Eliminar, el registro está activo.</value>
+  </data>
+  <data name="Error_Registro_En_Edicion" xml:space="preserve">
+    <value>El registro no puede ser Modificado y Eliminado al mismo tiempo.</value>
+  </data>
+  <data name="Error_Sesion_No_Existe" xml:space="preserve">
+    <value>No existe sesion del sistema</value>
+  </data>
+  <data name="Error_Turno_Cerrado" xml:space="preserve">
+    <value>El Turno está cerrado.</value>
+  </data>
+  <data name="Error_Vacio" xml:space="preserve">
+    <value>Valor de {0} no puede quedar vacío.</value>
+    <comment>Nombre del Campo</comment>
+  </data>
+  <data name="Error_Valor_Existe" xml:space="preserve">
+    <value>{0} {1} ya existe.</value>
+    <comment>Nombre Campo Clave - Valor Campo Clave</comment>
+  </data>
+  <data name="Error_Valor_Invalido" xml:space="preserve">
+    <value>Valor Inválido para {0}.</value>
+    <comment>Nombre del Campo</comment>
+  </data>
+  <data name="Error_Valor_Longitud" xml:space="preserve">
+    <value>{0} acepta valores de {1} a {2}.</value>
+    <comment>Nombre del Campo - Valor inical - Valor final</comment>
+  </data>
+  <data name="Informacion_Documento_Folio_Recalculado" xml:space="preserve">
+    <value>{0} se Guardó con el folio “{1}”.</value>
+    <comment>Nombre del Documento - Folio</comment>
+  </data>
+  <data name="Informacion_No_Encontro_Registros" xml:space="preserve">
+    <value>No se encontraron registros con los parámetros seleccionados.</value>
+  </data>
+  <data name="Informacion_No_Hay_Movimientos" xml:space="preserve">
+    <value>No hay movimientos generados para la póliza.</value>
+  </data>
+  <data name="Error_Valor_No_Existe" xml:space="preserve">
+    <value>{0} no existe</value>
+    <comment>Registro o Valor</comment>
+  </data>
+  <data name="Error_No_se_puede_Depurar" xml:space="preserve">
+    <value>No se puede Depurar, el registro está activo.</value>
+  </data>
+  <data name="Error_Registro_Eliminado" xml:space="preserve">
+    <value>El Registro ya ha sido eliminado.</value>
+  </data>
+  <data name="Confirmacion_Depurar" xml:space="preserve">
+    <value>¿Desea depurar el Registro "{0} - {1}"?</value>
+    <comment>Clave registro - Nombre o Descripción del Registro</comment>
+  </data>
+  <data name="Error_Extencion_Invalida" xml:space="preserve">
+    <value>Extención inválida para {0}.</value>
+    <comment>Nombre del Campo</comment>
+  </data>
+  <data name="Error_Tamaño_Invalido" xml:space="preserve">
+    <value>Tamaño inválido para {0}.</value>
+    <comment>Nombre del Campo</comment>
+  </data>
+  <data name="Error_Accion_No_Realizada_SB" xml:space="preserve">
+    <value>No es posible {0}.</value>
+    <comment>Accion Ejecutada</comment>
+  </data>
+  <data name="Error_Cerrar_Archivo_Descargado" xml:space="preserve">
+    <value>Debe cerrar el archivo descargado para continuar.</value>
+  </data>
+  <data name="Error_No_se_puede_Eliminar_SP" xml:space="preserve">
+    <value>El Registro no puede ser eliminado por que está siendo utilizado.</value>
+  </data>
+  <data name="Confirmacion_Eliminar_02" xml:space="preserve">
+    <value>¿Desea eliminar {0}?</value>
+    <comment>Nombre de la Entidad</comment>
+  </data>
+  <data name="Error_Dia_Asignado" xml:space="preserve">
+    <value>El día {0} ya está asignado.</value>
+    <comment>Número de Día del Mes</comment>
+  </data>
+  <data name="Error_Valor_Existen" xml:space="preserve">
+    <value>{0} {1} ya existen.</value>
+  </data>
+  <data name="Error_No_Acepta_Espacios_En_Blanco" xml:space="preserve">
+    <value>{0} no acepta espacios en blanco.</value>
+    <comment>Nombre del Campo</comment>
+  </data>
+  <data name="Informacion_Valor_Existe_No_Administrado" xml:space="preserve">
+    <value>{0} {1} ya existe, el registro se guardó con {0} {2}.</value>
+    <comment>Nombre del Campo - Valor Existente - Valor Recalculado</comment>
+  </data>
+  <data name="Error_Fecha_Actual" xml:space="preserve">
+    <value>Fecha proporcionada no debe ser mayor a la fecha actual.</value>
+  </data>
+  <data name="Error_De_Dependencia_Activas_Documento_Catalogo" xml:space="preserve">
+    <value>No se puede registrar, ya que no existen registros activos en {2}.</value>
+    <comment>Catálogo|Documento - Nombre de Entidad Dependiente - Nombre Entidad Padre</comment>
+  </data>
+  <data name="Error_Valor_Inactiva" xml:space="preserve">
+    <value>{0} está inactiva.</value>
+    <comment>Registro o Valor</comment>
+  </data>
+  <data name="Error_Valor_Inactivo" xml:space="preserve">
+    <value>{0} está inactivo.</value>
+    <comment>Registro o Valor</comment>
+  </data>
+  <data name="Advertencia_RFC_Existe" xml:space="preserve">
+    <value>Advertencia: R.F.C. ya existe con el cliente {0}  {1}. Favor de revisar antes de continuar.</value>
+    <comment>Clave de Cliente|Nombre de Cliente</comment>
+  </data>
+  <data name="Error_No_Existe_Paridad_Al_Dia" xml:space="preserve">
+    <value>No es posible registrar, ya que no existe paridad al día.</value>
+    <comment>Catálogo|Documento - Nombre de Entidad Dependiente</comment>
+  </data>
+  <data name="Error_No_Existe_Paridad_Fecha_Indicada" xml:space="preserve">
+    <value>No existe paridad a la fecha indicada.</value>
+  </data>
+  <data name="Error_No_Se_Registraron_Detalles" xml:space="preserve">
+    <value>No se han registrado {0}.</value>
+    <comment>Entidad a Registrar en el Detalle</comment>
+  </data>
+  <data name="Error_Cliente_No_Tiene_Cargos" xml:space="preserve">
+    <value>Cliente no tiene cargos pendientes.</value>
+  </data>
+  <data name="Error_Cargo_Saldado" xml:space="preserve">
+    <value>El cargo {0} se encuentra saldado.</value>
+    <comment>Llave del Cargo</comment>
+  </data>
+  <data name="Error_Cargos_Ya_Existen_En_La_Lista" xml:space="preserve">
+    <value>Los cargos {0} ya existen en la lista.</value>
+    <comment>Llave del Cargo</comment>
+  </data>
+  <data name="Error_Cargo_Cancelado" xml:space="preserve">
+    <value>El cargo {0} se encuentra cancelado.</value>
+    <comment>Llave del Cargo</comment>
+  </data>
+  <data name="Error_Cargo_Ya_Existe_En_La_Lista" xml:space="preserve">
+    <value>El cargo {0} ya existe en la lista.</value>
+    <comment>Llave del Cargo</comment>
+  </data>
+  <data name="Error_Fecha_Diferente" xml:space="preserve">
+    <value>La fecha del cargo {0} es mayor a la fecha de {1}.</value>
+    <comment>Llave del Cargo - Nombre del Documento</comment>
+  </data>
+  <data name="Error_Moneda_Diferente" xml:space="preserve">
+    <value>El cargo {0} no tiene la misma moneda que {1}.</value>
+    <comment>Llave del Cargo - Nombre del Documento</comment>
+  </data>
+  <data name="Error_No_Existe_Paridad_Fecha_Moneda_Indicada" xml:space="preserve">
+    <value>No existe paridad a la fecha y moneda indicada.</value>
+  </data>
+  <data name="Confirmacion_Cancelar_Documento" xml:space="preserve">
+    <value>¿Desea cancelar el Documento {0}?</value>
+    <comment>Documento</comment>
+  </data>
+  <data name="Confirmacion_Depurar_Documento" xml:space="preserve">
+    <value>¿Desea depurar el Documento {0}?</value>
+    <comment>Documento</comment>
+  </data>
+  <data name="Error_Documento_Cancelado" xml:space="preserve">
+    <value>El Documento ya ha sido cancelado.</value>
+  </data>
+  <data name="Error_Fecha_Trabajo_Documento_Cerrada" xml:space="preserve">
+    <value>La fecha de trabajo del Documento ya ha sido cerrada</value>
+  </data>
+  <data name="Error_No_se_puede_Depurar_Documento_Activo" xml:space="preserve">
+    <value>No se puede depurar, el Documento está activo.</value>
+  </data>
+  <data name="Error_No_se_puede_Depurar_Documento_Utilizado" xml:space="preserve">
+    <value>El Documento {0} no puede ser depurado porque está siendo utilizado.</value>
+    <comment>Documento</comment>
+  </data>
+  <data name="Error_Documento_Accedido_Usuario" xml:space="preserve">
+    <value>El Documento se encuentra accedido por otro usuario.</value>
+  </data>
+  <data name="Confirmacion_Imprimir" xml:space="preserve">
+    <value>¿Desea imprimir el Documento?</value>
+  </data>
+  <data name="Error_Fecha_Trabajo_Cerrada" xml:space="preserve">
+    <value>La fecha de trabajo está cerrada a la fecha indicada.</value>
+  </data>
+  <data name="Error_Cliente_Diferente" xml:space="preserve">
+    <value>El cargo {0} no pertenece al cliente {1}.</value>
+    <comment>Llave del cargo - Folio del cliente</comment>
+  </data>
+  <data name="Error_Sucursal_Diferente" xml:space="preserve">
+    <value>El cargo {0} no tiene la misma sucursal que {1}.</value>
+    <comment>Llave del Cargo - Entidad</comment>
+  </data>
+  <data name="Error_Detalle_Invalido" xml:space="preserve">
+    <value>La lista de {0} es inválida.</value>
+    <comment>Cargos | Abonos</comment>
+  </data>
+  <data name="Error_Fecha_Trabajo_Cerrada_Sucursal" xml:space="preserve">
+    <value>La fecha de trabajo está cerrada al día {0} en {1}.</value>
+    <comment>Fecha-Sucursal</comment>
+  </data>
+  <data name="Error_Fecha_Trabajo_Documento_No_Existe" xml:space="preserve">
+    <value>La fecha de trabajo del documento no existe.</value>
+  </data>
+  <data name="Error_Fecha_Trabajo_No_Existe" xml:space="preserve">
+    <value>La fecha de trabajo no existe a la fecha indicada.</value>
+  </data>
+  <data name="Error_Seleccione_Opcion" xml:space="preserve">
+    <value>Seleccione una opción de {0}.</value>
+    <comment>Nombre del Campo</comment>
+  </data>
+  <data name="Error_Clave_Default_No_Existe" xml:space="preserve">
+    <value>La clave default de {0} no existe y el usuario no tiene derechos de seleccionar.</value>
+    <comment>Campo</comment>
+  </data>
+  <data name="Error_Plantilla_Abierta" xml:space="preserve">
+    <value>La plantilla que se utiliza para la impresión de este documento esta abierta. ¡Debe cerrarla!</value>
+  </data>
+  <data name="Error_Plantilla_No_Existe" xml:space="preserve">
+    <value>La plantilla que se utiliza para la impresión no Existe, ruta: {0}</value>
+    <comment>Ruta de las plantillas</comment>
+  </data>
+  <data name="Error_No_Se_Pudo_Crear_Impresion" xml:space="preserve">
+    <value>No se puede crear la impresión.</value>
+  </data>
+  <data name="Error_Documento_Depurado" xml:space="preserve">
+    <value>El Documento ya ha sido depurado.</value>
+  </data>
+  <data name="Error_Anticipo_Aplicado" xml:space="preserve">
+    <value>El Anticipo ya ha sido aplicado.</value>
+  </data>
+  <data name="Error_Anticipo_Cancelado" xml:space="preserve">
+    <value>El anticipo {0} se encuentra cancelado.</value>
+    <comment>Llave del Anticipo</comment>
+  </data>
+  <data name="Error_Cliente_Diferente_Anticipo" xml:space="preserve">
+    <value>El anticipo {0} no pertenece al cliente {1}.</value>
+    <comment>Llave del Anticipo - Clave Cliente</comment>
+  </data>
+  <data name="Error_Fecha_Diferente_Anticipo" xml:space="preserve">
+    <value>La fecha del anticipo {0} es mayor a la fecha de {1}.</value>
+    <comment>Llave del Anticipo - Entidad</comment>
+  </data>
+  <data name="Error_Sucursal_Diferente_Anticipo" xml:space="preserve">
+    <value>El anticipo {0} no tiene la misma sucursal que {1}.</value>
+    <comment>Llave del Anticipo - Entidad</comment>
+  </data>
+  <data name="Confirmacion_Generar_Anticipo" xml:space="preserve">
+    <value>¿Desea generar un Anticipo por el importe sobrante?</value>
+  </data>
+  <data name="Error_Importe_Cargos_Es_Mayor" xml:space="preserve">
+    <value>La suma del importe de los Cargos es mayor al importe de {0}.</value>
+    <comment>Entidad</comment>
+  </data>
+  <data name="Error_Importe_Documento_Es_Mayor" xml:space="preserve">
+    <value>El importe de {0} es mayor que la suma del importe de los Cargos.</value>
+    <comment>Entidad</comment>
+  </data>
+  <data name="Error_No_Se_Puede_Cancelar_Aplicacion_Anticipo" xml:space="preserve">
+    <value>No se puede cancelar, el Anticipo automático ya fue aplicado.</value>
+  </data>
+  <data name="Error_No_Se_Puede_Depurar_Aplicacion_Anticipo" xml:space="preserve">
+    <value>No se puede depurar, el Anticipo automático está activo.</value>
+  </data>
+  <data name="Informacion_Valor_Existe_No_Administrado_Guardara" xml:space="preserve">
+    <value>{0} {1} ya existe, el registro se guardará con {0} {2}.</value>
+    <comment>Nombre del Campo - Valor Existente - Valor Recalculado</comment>
+  </data>
+  <data name="Error_No_Se_Puede_Cancelar_Anticipo_Generado" xml:space="preserve">
+    <value>No se puede cancelar, ya que fue generado por una Aplicación de Anticipos.</value>
+  </data>
+  <data name="Error_No_Se_Puede_Depurar_Anticipo_Generado" xml:space="preserve">
+    <value>No se puede depurar, ya que fue generado por una Aplicación de Anticipos.</value>
+  </data>
+  <data name="Error_Giro_Venta_Diferente" xml:space="preserve">
+    <value>El cargo {0} no tiene el mismo giro de venta que {1}.</value>
+    <comment>Llave del Cargo - Documento</comment>
+  </data>
+  <data name="Error_Documento_Es_Cancelacion" xml:space="preserve">
+    <value>El Documento es una cancelación.</value>
+  </data>
+  <data name="Error_Documento_Con_Referencia" xml:space="preserve">
+    <value>El Documento {0} tiene una referencia a {1}.</value>
+    <comment>Clave(Serie-Sucursal-Folio)</comment>
+  </data>
+  <data name="Informacion_Registro_Depurado" xml:space="preserve">
+    <value>El registro fue depurado correctamente.</value>
+  </data>
+  <data name="Confirmacion_Fecha_Trabajo_Cerrar" xml:space="preserve">
+    <value>¿Desea cerrar la fecha de trabajo {0} en {1}?</value>
+    <comment>Fecha - Descripcion Sucursal</comment>
+  </data>
+  <data name="Confirmacion_Fecha_Trabajo_Eliminar" xml:space="preserve">
+    <value>¿Desea eliminar la fecha de trabajo {0} en {1}?</value>
+    <comment>Fecha - Descripcion Sucursal</comment>
+  </data>
+  <data name="Confirmacion_Fecha_Trabajo_Reabrir" xml:space="preserve">
+    <value>¿Desea reabrir la fecha de trabajo {0} en {1}?</value>
+    <comment>Fecha - Descripcion Sucursal</comment>
+  </data>
+  <data name="Error_Fecha_Trabajo_Abierta" xml:space="preserve">
+    <value>La fecha de trabajo está abierta.</value>
+  </data>
+  <data name="Error_Fecha_Trabajo_Eliminada" xml:space="preserve">
+    <value>La fecha de trabajo ya ha sido eliminada.</value>
+  </data>
+  <data name="Error_Fecha_Trabajo_Eliminar" xml:space="preserve">
+    <value>La fecha de trabajo no se puede eliminar ya que existen movimientos registrados.</value>
+  </data>
+  <data name="Error_Fecha_Trabajo_No_Se_Puede_Eliminar" xml:space="preserve">
+    <value>La fecha de trabajo no se puede eliminar ya que existen pólizas generadas.</value>
+  </data>
+  <data name="Error_Fecha_Trabajo_No_Se_Puede_Reabrir" xml:space="preserve">
+    <value>La fecha de trabajo no se puede reabrir ya que existen pólizas generadas.</value>
+  </data>
+  <data name="Error_Fecha_Trabajo_Ya_Ha_Sido_Cerrada" xml:space="preserve">
+    <value>La fecha de trabajo ya ha sido cerrada.</value>
+  </data>
+  <data name="Error_Rangos_Invalidos" xml:space="preserve">
+    <value>El valor de los rangos es inválido.</value>
+  </data>
+  <data name="Error_No_Se_Puede_Cancelar_Documento" xml:space="preserve">
+    <value>El Registro "{0} - {1}" no puede ser cancelar por que está siendo utilizado.</value>
+    <comment>Clave y SucursalDescripcion</comment>
+  </data>
+  <data name="Error_No_Se_Puede_Cancelar_Documento_SP" xml:space="preserve">
+    <value>El Registro no puede ser eliminado por que está siendo utilizado.</value>
+  </data>
+  <data name="Error_No_Existe" xml:space="preserve">
+    <value>No existe {0}.</value>
+    <comment>Descripción del campo o tabla</comment>
+  </data>
+  <data name="Error_No_Existe_Configuracion" xml:space="preserve">
+    <value>No existe configuración para la sucursal con clave {0}.</value>
+    <comment>Clave Sucursal</comment>
+  </data>
+  <data name="Error_Moneda_Cargos_Sin_Paridad_Fecha_Anticipo" xml:space="preserve">
+    <value>Las monedas de los cargos {0} no tienen paridad a la fecha en que se registro el anticipo.</value>
+    <comment>Cargos</comment>
+  </data>
+  <data name="Error_Moneda_Cargo_Sin_Paridad_Fecha_Anticipo" xml:space="preserve">
+    <value>La moneda del cargo {0} no tienen paridad a la fecha en que se registró el anticipo.</value>
+    <comment>Cargo</comment>
+  </data>
+  <data name="Error_No_Es_Posible_Generar_Anticipo_Automatico" xml:space="preserve">
+    <value>El importe en {0} de la Aplicación de Anticipo es mayor que el importe total en {0} de los cargos y no es posible generar un anticipo automático con el importe sobrante ya que no existe paridad a la fecha en la moneda del anticipo.</value>
+    <comment>DescripcionMoneda</comment>
+  </data>
+  <data name="Error_Importe_Moneda_Cargo_Es_Mayor" xml:space="preserve">
+    <value>El importe total en {0} de los Cargos es mayor al importe en {0} de {1}.</value>
+    <comment>DescripciónMoneda - Documento</comment>
+  </data>
+  <data name="Error_Importe_Moneda_Documento_Es_Mayor" xml:space="preserve">
+    <value>El importe en {0} de {1} es mayor que el importe total en {0} de los Cargos.</value>
+    <comment>DescripciónMoneda - Documento</comment>
+  </data>
+  <data name="Error_Fecha_Trabajo_No_Existe_Sucursal" xml:space="preserve">
+    <value>La fecha de trabajo no existe al día {0} en {1}.</value>
+    <comment>Fecha - Sucursal</comment>
+  </data>
+  <data name="Error_Debe_Ser" xml:space="preserve">
+    <value>{0} debe ser {1} a {2}.</value>
+    <comment>Nombre del campo - valor logico mayor, menor, igual, etc. - Campo comparativo</comment>
+  </data>
+  <data name="Informacion_Cargo_Documentado" xml:space="preserve">
+    <value>El cargo {0} esta documentado con el folio {1}.</value>
+    <comment>Sucursal-serie-folio del cargo y sucursal-serie-folio del documento</comment>
+  </data>
+  <data name="Informacion_Cargo_Fecha_Mayor_Documento" xml:space="preserve">
+    <value>La fecha del cargo {0} es mayor a la del documento.</value>
+    <comment>Sucursal-serie-folio del cargo</comment>
+  </data>
+  <data name="Informacion_Cargo_Ya_Existe_Asignado" xml:space="preserve">
+    <value>El cargo {0} ya existe en el contrarecibo {1}</value>
+    <comment>Sucursal-serie-folio Cargo  -  Sucursal-serie-folio  Contrarecibo</comment>
+  </data>
+  <data name="Informacion_Sin_Detalle" xml:space="preserve">
+    <value>{0} no tiene un {1} relacionado</value>
+    <comment>La Consulta o El cargo, etc. - Tipo de documento o detalle</comment>
+  </data>
+  <data name="Confirmacion_CambioCotizacion_DeseaDepurarSeleccionado" xml:space="preserve">
+    <value>¿Desea depurar el cambio de cotización seleccionado?</value>
+  </data>
+  <data name="Error_CambioCotizacion_FechaTrabajoCerrada" xml:space="preserve">
+    <value>La fecha de trabajo está cerrada.</value>
+  </data>
+  <data name="Error_CambioCotizacion_FechaTrabajoNoExiste" xml:space="preserve">
+    <value>La fecha de trabajo no existe.</value>
+  </data>
+  <data name="Error_CambioCotizacion_NoEsPosibleDepurar" xml:space="preserve">
+    <value>No es posible depurar cambio de cotización porque está siendo utilizado.</value>
+  </data>
+  <data name="Error_CambioCotizacion_NoSePuedeDepurar" xml:space="preserve">
+    <value>No se puede depurar, el cambio de cotización está activo.</value>
+  </data>
+  <data name="Error_CambioCotizacion_SeEncuentraAccedido" xml:space="preserve">
+    <value>No es posible acceder, otro usuario está utilizando el cambio de cotización.</value>
+  </data>
+  <data name="Error_CambioCotizacion_YaHaSidoCancelado" xml:space="preserve">
+    <value>El cambio de cotización ya ha sido cacelado.</value>
+  </data>
+  <data name="Error_CambioCotizacion_YaHaSidoDepurado" xml:space="preserve">
+    <value>El cambio de cotización ya ha sido depurado.</value>
+  </data>
+  <data name="Confirmacion_CambioCotizacion_DeseaCancelarSeleccionado" xml:space="preserve">
+    <value>¿Desea cancelar el cambio de cotización seleccionado?</value>
+  </data>
+  <data name="Confirmacion_CambioCotizacion_DeseaImprimir" xml:space="preserve">
+    <value>¿Desea imprimir el cambio de cotización?</value>
+  </data>
+  <data name="Error_CambioCotizacion_ExisteCambioPosterior" xml:space="preserve">
+    <value>Existe un cambio de cotización posterior a la fecha seleccionada.</value>
+  </data>
+  <data name="Error_CambioCotizacion_NoSeHaObtenidoDetalle" xml:space="preserve">
+    <value>No se han obtenido {0}.</value>
+    <comment>Cargos | Abonos</comment>
+  </data>
+  <data name="Error_CambioCotizacion_YaExisteCambioCotizacion" xml:space="preserve">
+    <value>Ya existe un cambio de cotización a abonos en la sucursal, fecha y moneda seleccionados.</value>
+  </data>
+  <data name="Error_CambioCotizacion_NoEsPosibleCancelar" xml:space="preserve">
+    <value>No es posible cancelar, existe un cambio de cotización con fecha posterior al seleccionado.</value>
+  </data>
+</root>

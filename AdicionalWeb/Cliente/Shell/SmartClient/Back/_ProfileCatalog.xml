@@ -1,0 +1,55 @@
+﻿<SolutionProfile xmlns="http://schemas.microsoft.com/pag/cab-profile/2.0">
+  <Section Name="Layout">
+    <Modules>
+      <ModuleInfo AssemblyFile="Infrastructure.Layout.dll" />
+    </Modules>
+  </Section>
+  <Section Name="Services">
+    <Dependencies>
+      <Dependency Name="Layout" />
+    </Dependencies>
+    <Modules>
+      <ModuleInfo AssemblyFile="Infrastructure.Module.dll" />
+    </Modules>
+  </Section>
+  <Section Name="Apps">
+    <Dependencies>
+      <Dependency Name="Layout" />
+      <Dependency Name="Services" />
+    </Dependencies>
+    <Modules>
+      <!--DOCUMENTOS-->
+      <ModuleInfo AssemblyFile="VentasMdl.dll" />
+      <ModuleInfo AssemblyFile="ComprasMdl.dll" />
+      <!--CONSULTAS-->
+      <ModuleInfo AssemblyFile="MonitorConsumoFACELEIMdl.dll" />
+      <!--REPORTES-->
+      <ModuleInfo AssemblyFile="ReporteSaldosPAC.dll" />
+      <ModuleInfo AssemblyFile="ReporteServiciosClientes.dll" />
+      <ModuleInfo AssemblyFile="ReporteContribuyentes.dll" />
+      <ModuleInfo AssemblyFile="ReporteDetMovPACFACELEIMdl.dll" />
+      <ModuleInfo AssemblyFile="ReporteDetMovClienteFACELEIMdl.dll" />
+      <ModuleInfo AssemblyFile="ServiciosCompradosPACS.dll" />
+      <ModuleInfo AssemblyFile="ComprasSaldoPACs.dll" />
+      <ModuleInfo AssemblyFile="AnalisisFacturaSaldoCliente.dll" />
+      <ModuleInfo AssemblyFile="RelacionServiciosVendidosCliente.dll" />
+      <!--CATÁLOGOS-->
+      <ModuleInfo AssemblyFile="DNSFACELEIMdl.dll" />
+      <ModuleInfo AssemblyFile="ContribuyenteFACELEIMdl.dll" />
+      <ModuleInfo AssemblyFile="AdministrarPACsMdl.dll" />
+      <ModuleInfo AssemblyFile="RazonSocialFACELEIMdl.dll" />
+      <ModuleInfo AssemblyFile="AdministrarUsuariosMdl.dll" />
+      <!--PROCESOS-->
+      <ModuleInfo AssemblyFile="CambioPacDefaultFACELEIMdl.dll" />
+      <ModuleInfo AssemblyFile="CambioPacOperativoFACELEIMdl.dll" />
+      <ModuleInfo AssemblyFile="NotificarContribuyentesMdl.dll" />
+      <ModuleInfo AssemblyFile="RestablecerPACFACELEIMdl.dll" />
+      <!--CONFIGURACIONES-->
+      <ModuleInfo AssemblyFile="ConfiguracionesFACELEIMdl.dll" />
+      <!--UTILIDADES-->
+      <ModuleInfo AssemblyFile="UtileriasFACELEI.dll" />
+      <!--SERVICIOS-->
+      <ModuleInfo AssemblyFile="SesionFACELEIMdl.dll" />
+    </Modules>
+  </Section>
+</SolutionProfile>

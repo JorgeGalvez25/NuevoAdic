@@ -1,0 +1,29 @@
+﻿<SolutionProfile xmlns="http://schemas.microsoft.com/pag/cab-profile/2.0">
+  <Section Name="Layout">
+    <Modules>
+      <ModuleInfo AssemblyFile="Infrastructure.Layout.dll" />
+    </Modules>
+  </Section>
+  <Section Name="Services">
+    <Dependencies>
+      <Dependency Name="Layout" />
+    </Dependencies>
+    <Modules>
+      <ModuleInfo AssemblyFile="Infrastructure.Module.dll" />
+    </Modules>
+  </Section>
+  <Section Name="Apps">
+    <Dependencies>
+      <Dependency Name="Layout" />
+      <Dependency Name="Services" />
+    </Dependencies>
+    <Modules>
+      <!-- Monitor Transmisor -->
+      <ModuleInfo AssemblyFile="AdministrarUsuariosMdl.dll" />
+      <ModuleInfo AssemblyFile="AdministrarDistribuidoresMdl.dll" />
+      <ModuleInfo AssemblyFile="AdministrarClientesMdl.dll" />
+      <ModuleInfo AssemblyFile="CargadorVistas.dll" />
+      <ModuleInfo AssemblyFile="SesionMdl.dll" />
+    </Modules>
+  </Section>
+</SolutionProfile>

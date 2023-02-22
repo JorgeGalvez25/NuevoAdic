@@ -1,0 +1,55 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Login.master.cs" Inherits="AdicionalWeb.Base.Login" %>
+
+<!DOCTYPE html>
+<html lang="es">
+<head runat="server">
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google" value="notranslate">
+    <!--[if gt IE 9]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <%--<link rel="stylesheet" href="../css/normalize.css" />--%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" />
+    <!--[if lt IE 9]><script type="text/javascript" src="../js/html5.js"></script> <![endif]-->
+    <!-- Latest compiled and minified CSS -->
+    <%--<link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/bootstrap-dialog.css" />
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css" />--%>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.4/css/bootstrap-dialog.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+    <link rel="Stylesheet" href="../css/adicional.css" />
+    <%--<script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-dialog.js"></script>--%>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.4/js/bootstrap-dialog.min.js"></script>
+    <script type="text/javascript" src="../js/login.js" defer="defer"></script>
+
+    <asp:ContentPlaceHolder ID="header" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <div class="container-fluid">
+        <form id="form1" runat="server" class="form-horizontal" role="form">
+        <div class="row">
+            <div class="col-xs-12 col-md-6 col-sm-4 col-lg-4 centered">
+                <div id="frmLogin" class="loginBack box-shadow">
+                    <asp:ContentPlaceHolder ID="Content" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</body>
+<script type="text/javascript">$(window).on('load', function() { $('body').show(); });</script>
+</html>

@@ -1,0 +1,214 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C6764634-689E-4F52-9C90-D733A83C9FBA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EstandarCliente.SesionMdl</RootNamespace>
+    <AssemblyName>SesionMdl</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Developer Express .NET v8.2\Sources\DevExpress.DLL\DevExpress.Data.v8.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Developer Express .NET v8.2\Sources\DevExpress.DLL\DevExpress.Utils.v8.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Developer Express .NET v8.2\Sources\DevExpress.DLL\DevExpress.XtraBars.v8.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Developer Express .NET v8.2\Sources\DevExpress.DLL\DevExpress.XtraEditors.v8.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v8.2, Version=8.2.4.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="ImagenSoft.Atributos, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Liberados\Framework\ImagenSoft.Atributos.dll</HintPath>
+    </Reference>
+    <Reference Include="ImagenSoft.Entidades, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Liberados\Framework\ImagenSoft.Entidades.dll</HintPath>
+    </Reference>
+    <Reference Include="ImagenSoft.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Liberados\Framework\ImagenSoft.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ImagenSoft.Librerias, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Liberados\Framework\ImagenSoft.Librerias.dll</HintPath>
+    </Reference>
+    <Reference Include="ImagenSoft.ModuloWeb.Entidades, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Proyectos\ServiciosWeb\Compilados\Host\HostAdicionalCloud\ImagenSoft.ModuloWeb.Entidades.dll</HintPath>
+    </Reference>
+    <Reference Include="ImagenSoft.ModuloWeb.Interfaces, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Proyectos\ServiciosWeb\Compilados\Host\HostAdicionalCloud\ImagenSoft.ModuloWeb.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ImagenSoft.ModuloWeb.Proveedor, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Proyectos\ServiciosWeb\Compilados\Host\HostAdicionalCloud\ImagenSoft.ModuloWeb.Proveedor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.CompositeUI, Version=1.0.51205.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)\Lib\Microsoft.Practices.CompositeUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.CompositeUI.WinForms, Version=1.0.51205.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)\Lib\Microsoft.Practices.CompositeUI.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51206.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)\Lib\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.5\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework\v2.0.50727\System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework\v2.0.50727\System.EnterpriseServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework\v2.0.50727\System.Web.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework\v2.0.50727\System.XML.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Module.cs" />
+    <Compile Include="ModuleController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Constants\CommandNames.cs" />
+    <Compile Include="Constants\EventTopicNames.cs" />
+    <Compile Include="Constants\UIExtensionSiteNames.cs" />
+    <Compile Include="Constants\WorkspaceNames.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ServiciosModulo.cs" />
+    <Compile Include="Views\VContrasena\IVContrasena.cs" />
+    <Compile Include="Views\VContrasena\VContrasena.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\VContrasena\VContrasena.Designer.cs">
+      <DependentUpon>VContrasena.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VContrasena\VContrasena.GeneratedCode.cs">
+      <DependentUpon>VContrasena.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\VContrasena\VContrasenaPresenter.cs" />
+    <Compile Include="Views\VContrasena\VContrasenaPresenter.GeneratedCode.cs">
+      <DependentUpon>VContrasenaPresenter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VSesion\IVSesion.cs" />
+    <Compile Include="Views\VSesion\VSesion.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\VSesion\VSesion.Designer.cs">
+      <DependentUpon>VSesion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VSesion\VSesion.GeneratedCode.cs">
+      <DependentUpon>VSesion.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\VSesion\VSesionPresenter.cs" />
+    <Compile Include="Views\VSesion\VSesionPresenter.GeneratedCode.cs">
+      <DependentUpon>VSesionPresenter.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CargadorVista\CargadorVistas.csproj">
+      <Project>{83903BD1-0AA2-467A-8345-86E745349265}</Project>
+      <Name>CargadorVistas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartClient\Infrastructure.Interface\Infrastructure.Interface.csproj">
+      <Project>{899E9B3B-3B9D-4191-8948-D4F9CCA65CF7}</Project>
+      <Name>Infrastructure.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartClient\Infrastructure.Library\Infrastructure.Library.csproj">
+      <Project>{31D5409F-4C11-4543-8FEB-EC6E51CAC493}</Project>
+      <Name>Infrastructure.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartClient\Shell\Shell.csproj">
+      <Project>{88CABC7D-8DAB-4CA9-8A74-1589BEBF9E7F}</Project>
+      <Name>Shell</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\VContrasena\VContrasena.resx">
+      <DependentUpon>VContrasena.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\VSesion\VSesion.resx">
+      <DependentUpon>VSesion.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VSesion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\aceptar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancelar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogoSistema.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\aceptarsmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancelarsmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Background.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

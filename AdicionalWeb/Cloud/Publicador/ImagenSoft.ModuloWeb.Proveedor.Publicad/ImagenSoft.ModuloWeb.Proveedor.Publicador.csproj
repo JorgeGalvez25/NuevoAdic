@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{41843D20-E91E-4FD6-861D-00803C588845}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ImagenSoft.ServiciosWeb.Proveedor.Publicador</RootNamespace>
+    <AssemblyName>ImagenSoft.ServiciosWeb.Proveedor.Publicador</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ImagenSoft.Entidades, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Liberados\Framework\ImagenSoft.Entidades.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiciosGeneralesServiciosWeb.cs" />
+    <Compile Include="ServiciosProveedorServiciosWeb.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImagenSoft.ServiciosWeb.Entidades\ImagenSoft.ServiciosWeb.Entidades.csproj">
+      <Project>{2DEB052C-C3A9-4480-AA01-EA75B9BC42B1}</Project>
+      <Name>ImagenSoft.ServiciosWeb.Entidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImagenSoft.ServiciosWeb.Interfaces\ImagenSoft.ServiciosWeb.Interfaces.Publicador.csproj">
+      <Project>{D5651AB0-576B-42D5-9704-4D0F196AA858}</Project>
+      <Name>ImagenSoft.ServiciosWeb.Interfaces.Publicador</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImagenSoft.ServiciosWeb.Proveedor\ImagenSoft.ServiciosWeb.Proveedor.Conexion.csproj">
+      <Project>{32856318-9ADF-4792-8812-B47D469F15B9}</Project>
+      <Name>ImagenSoft.ServiciosWeb.Proveedor.Conexion</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetPath)" "C:\Proyectos\ServiciosWeb\Compilados\Host\Publicador" /Y /V /J
+xcopy "$(TargetPath)" "C:\Proyectos\ServiciosWeb\Compilados\Cliente\Shell" /Y /V /J
+xcopy "$(TargetPath)" "C:\Proyectos\ServiciosWeb\Compilados\Transmisor\libs" /Y /V /J
+xcopy "$(TargetPath)" "C:\ImagenSoft Net\Liberados\IGas\ServiciosWeb\Publicador" /Y /V /J</PostBuildEvent>
+  </PropertyGroup>
+</Project>

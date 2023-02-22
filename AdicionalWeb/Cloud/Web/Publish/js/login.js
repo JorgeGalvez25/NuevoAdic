@@ -1,0 +1,22 @@
+﻿$('form').ready(function(){
+    /** Formato de numeros **/
+    if (!window.format) { (function(a) { a.format = function(v, u) { if (!u || isNaN(+v)) { return v } var v = u.charAt(0) == "-" ? -v : +v, m = v < 0 ? v = -v : 0, r = u.match(/[^\d\-\+#]/g), o = r && r[r.length - 1] || ".", r = r && r[1] && r[0] || ",", u = u.split(o), v = v.toFixed(u[1] && u[1].length), v = +v + "", s = u[1] && u[1].lastIndexOf("0"), t = v.split("."); if (!t[1] || t[1] && t[1].length <= s) { v = (+v).toFixed(s + 1) } s = u[0].split(r); u[0] = s.join(""); var q = u[0] && u[0].indexOf("0"); if (q > -1) { for (; t[0].length < u[0].length - q; ) { t[0] = "0" + t[0] } } else { +t[0] == 0 && (t[0] = "") } v = v.split("."); v[0] = t[0]; if (t = s[1] && s[s.length - 1].length) { for (var s = v[0], q = "", l = s.length % t, p = 0, n = s.length; p < n; p++) { q += s.charAt(p), !((p - l + 1) % t) && p < n - t && (q += r) } v[0] = q } v[1] = u[1] && v[1] ? o + v[1] : ""; return (m ? "-" : "") + v[0] + v[1] } })(window) }
+    (function(c) { var b = /["\\\x00-\x1f\x7f-\x9f]/g, d = { "\b": "\\b", "\t": "\\t", "\n": "\\n", "\f": "\\f", "\r": "\\r", '"': '\\"', "\\": "\\\\" }, a = Object.prototype.hasOwnProperty; c.stringify = typeof JSON === "object" && JSON.stringify ? JSON.stringify : function(g) { if (g === null) { return "null" } var f, j, e, h, p = c.type(g); if (p === "undefined") { return undefined } if (p === "number" || p === "boolean") { return String(g) } if (p === "string") { return c.quoteString(g) } if (typeof g.stringify === "function") { return c.stringify(g.stringify()) } if (p === "date") { var m = g.getUTCMonth() + 1, q = g.getUTCDate(), n = g.getUTCFullYear(), r = g.getUTCHours(), i = g.getUTCMinutes(), s = g.getUTCSeconds(), l = g.getUTCMilliseconds(); if (m < 10) { m = "0" + m } if (q < 10) { q = "0" + q } if (r < 10) { r = "0" + r } if (i < 10) { i = "0" + i } if (s < 10) { s = "0" + s } if (l < 100) { l = "0" + l } if (l < 10) { l = "0" + l } return '"' + n + "-" + m + "-" + q + "T" + r + ":" + i + ":" + s + "." + l + 'Z"' } f = []; if (c.isArray(g)) { for (j = 0; j < g.length; j++) { f.push(c.toJSON(g[j]) || "null") } return "[" + f.join(",") + "]" } if (typeof g === "object") { for (j in g) { if (a.call(g, j)) { p = typeof j; if (p === "number") { e = '"' + j + '"' } else { if (p === "string") { e = c.quoteString(j) } else { continue } } p = typeof g[j]; if (p !== "function" && p !== "undefined") { h = c.stringify(g[j]); f.push(e + ":" + h) } } } return "{" + f.join(",") + "}" } }; c.quoteString = function(e) { if (e.match(b)) { return '"' + e.replace(b, function(f) { var g = d[f]; if (typeof g === "string") { return g } g = f.charCodeAt(); return "\\u00" + Math.floor(g / 16).toString(16) + (g % 16).toString(16) }) + '"' } return '"' + e + '"' } } (jQuery));
+
+    $('form').attr({ 'accept-charset': 'UTF-8' });
+    $('form, input[type="text"], input[type="password"]').attr({'autocomplete' : 'off' });
+    $("input[id$='txtNoEstacion']").focus()
+                                   .attr({"maxlength":"6"})
+                                   .keydown(function(a) { -1 !== $.inArray(a.keyCode, [46, 8, 9, 27, 13, 110, 190]) || 
+                                                                                      65 == a.keyCode && !0 === a.ctrlKey || 
+                                                                                      67 == a.keyCode && !0 === a.ctrlKey || 
+                                                                                      88 == a.keyCode && !0 === a.ctrlKey || 
+                                                                                      35 <= a.keyCode && 39 >= a.keyCode || 
+                                                                                      (a.shiftKey || 48 > a.keyCode || 57 < a.keyCode) && (96 > a.keyCode || 105 < a.keyCode) && a.preventDefault() })
+                                   .focusout(function() { 
+                                        var str = $(this).val().replace("E", "");
+                                        if(str != "" && format(str, "00000") != "00000"){ 
+                                            $(this).val("E" + format(str, "00000"));
+                                        } else {$(this).val("");}
+                                    });
+});

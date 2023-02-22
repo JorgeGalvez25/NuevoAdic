@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">G.M.</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Configuraciones</string>
+    <string name="flustd">Estandar</string>
+    <string name="flumin">Mínimo</string>
+    <string name="nombreSharedPreferences">DatosAdicMovil</string>
+    <string name="title_activity_registro">Registro</string>
+    <string name="prefijoServicio">http://</string>
+    <string name="posfijoServicio">ServiciosAdicionalMovilWS.asmx</string>
+    <string name="nameSpace">http://adicional.gasolineras.org</string>
+    <string name="title_activity_login">Acceso</string>
+
+</resources>

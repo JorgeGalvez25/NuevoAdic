@@ -1,0 +1,33 @@
+<publishData>
+  <publishTarget publishUrl="C:\ImagenSoft Net\Estandares\Adicional\Precompiled\">
+    <file relUrl="bin/Servicios.Adicional.dll" publishTime="09/17/2014 15:20:56" />
+    <file relUrl="bin/Adicional.Entidades.pdb" publishTime="09/17/2014 15:20:53" />
+    <file relUrl="bin/ServiciosAdicionalMovil.dll" publishTime="09/17/2014 15:20:57" />
+    <file relUrl="bin/Persistencia.pdb" publishTime="09/17/2014 15:20:55" />
+    <file relUrl="Web.config" publishTime="09/17/2014 12:38:59" />
+    <file relUrl="bin/ServiciosCliente.pdb" publishTime="09/17/2014 15:20:54" />
+    <file relUrl="bin/FirebirdSql.Data.FirebirdClient.dll" publishTime="09/10/2014 11:50:13" />
+    <file relUrl="bin/Servicios.Adicional.pdb" publishTime="09/17/2014 15:20:56" />
+    <file relUrl="ServiciosAdicionalMovilWS.asmx" publishTime="07/01/2014 17:41:49" />
+    <file relUrl="bin/Persistencia.dll" publishTime="09/17/2014 15:20:55" />
+    <file relUrl="bin/ServiciosCliente.dll" publishTime="09/17/2014 15:20:54" />
+    <file relUrl="bin/Adicional.Entidades.dll" publishTime="09/17/2014 15:20:53" />
+    <file relUrl="bin/ServiciosAdicionalMovil.pdb" publishTime="09/17/2014 15:20:57" />
+  </publishTarget>
+  <publishTarget publishUrl="C:\inetpub\wwwroot\ServiciosAdicional\">
+    <file relUrl="bin/Servicios.Adicional.dll" publishTime="07/11/2014 09:35:03" />
+    <file relUrl="bin/Adicional.Entidades.pdb" publishTime="07/11/2014 09:35:01" />
+    <file relUrl="bin/ServiciosAdicionalMovil.dll" publishTime="07/28/2014 13:49:44" />
+    <file relUrl="FirebirdSql.Data.FirebirdClient.dll" publishTime="07/01/2014 17:41:51" />
+    <file relUrl="bin/Persistencia.pdb" publishTime="07/11/2014 09:35:02" />
+    <file relUrl="Web.config" publishTime="07/28/2014 13:49:05" />
+    <file relUrl="bin/ServiciosCliente.pdb" publishTime="07/11/2014 09:35:02" />
+    <file relUrl="bin/FirebirdSql.Data.FirebirdClient.dll" publishTime="07/01/2014 17:42:12" />
+    <file relUrl="bin/Servicios.Adicional.pdb" publishTime="07/11/2014 09:35:03" />
+    <file relUrl="ServiciosAdicionalMovilWS.asmx" publishTime="07/01/2014 17:41:49" />
+    <file relUrl="bin/Persistencia.dll" publishTime="07/11/2014 09:35:02" />
+    <file relUrl="bin/ServiciosCliente.dll" publishTime="07/11/2014 09:35:02" />
+    <file relUrl="bin/Adicional.Entidades.dll" publishTime="07/11/2014 09:35:01" />
+    <file relUrl="bin/ServiciosAdicionalMovil.pdb" publishTime="07/28/2014 13:49:44" />
+  </publishTarget>
+</publishData>

@@ -1,0 +1,148 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Page.master.cs" Inherits="AdicionalWeb.Base.Page" %>
+
+<!DOCTYPE html>
+<html lang="es">
+<head runat="server">
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google" value="notranslate">
+    <!--[if gt IE 9]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <link rel="stylesheet" href="../css/normalize.css" />
+    <!--[if lt IE 9]><script type="text/javascript" src="../js/html5.js"></script> <![endif]-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/bootstrap-dialog.css" />
+    <link rel="stylesheet" href="../css/bootstrap-spinedit.css" />
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../css/animate.css" />
+    <link rel="Stylesheet" href="../css/adicional.css" />
+
+    <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+
+    <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="../js/bootstrap-dialog.js"></script>
+
+    <script type="text/javascript" src="../js/bootstrap-spinedit.js"></script>
+
+    <script type="text/javascript" src="../js/jquery.metisMenu.js"></script>
+
+    <script type="text/javascript" src="../js/jquery.gritter.min.js"></script>
+
+    <script type="text/javascript" src="../js/JSON3-min.js"></script>
+
+    <script type="text/javascript" src="../js/adicional.js"></script>
+
+    <script type="text/javascript" src="../js/Controles.js"></script>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="pace-done">
+    <div class="row border-bottom">
+        <nav class="navbar navbar-default navbar-static-top">
+        <div class="row" style="margin-left: 0;">
+            <div class="navbar-header">
+                <div class="navbar-brand">&nbsp;<i class="fa fa-bars"></i>&nbsp;<span class="m-r-sm text-muted welcome-message">Modulo Web</span></div>
+            </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <a id="btnSalir" href="#" runat="server" onserverclick="btnLogOut_Click">
+                        <i class="fa fa-sign-out"></i>&nbsp;Salir...
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="container-fluid">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <% for (int i = 0; i < lstEstaciones.Count; i++)
+                   {
+                       Response.Write((i == (NoEstacion - 1)) ? "<li class=\"dropdown\">" : "<li>"); %>
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="line-height:5px">
+                        <% Response.Write(lstEstaciones[i].Nombre.Trim()); %>&nbsp;<span class="caret"></span>
+                       </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Main.aspx?est=<% Response.Write(lstEstaciones[i].Clave); %>&flj=1">Flujos</a></li>
+                            <li><a href="/Main.aspx?est=<% Response.Write(lstEstaciones[i].Clave); %>&mng=1">Mangueras</a></li>
+                        </ul>   
+                    <% Response.Write("</li>");
+                   } %>
+              </ul>
+              
+              
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+        <%--<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="navbar-header">
+                        <div class="navbar-brand">&nbsp;<i class="fa fa-bars"></i>&nbsp;<span class="m-r-sm text-muted welcome-message">Modulo Web</span></div>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <a id="btnSalir" href="#" runat="server" onserverclick="btnLogOut_Click">
+                                <i class="fa fa-sign-out"></i>&nbsp;Salir...
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row" style="background-color: #2f4050;">                
+                    <ul class="nav navbar-top-links navbar-left" style="margin: 0 0 0 20px;line-height: 38px;height: 39px;">
+                    <% for (int i = 0; i < lstEstaciones.Count; i++)
+                       {
+                           Response.Write((i == (NoEstacion - 1)) ? "<li class=\"dropdown\">" : "<li>"); %>
+                            <a href="#" class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="true" style="display: inline;height: 20px;line-height: 0;padding: 10px 5px;vertical-align: middle;">
+                                <span class="nav-label"><% Response.Write(lstEstaciones[i].Nombre.Trim()); %>&nbsp;<i class="fa arrow"style="vertical-align: middle; line-height: 38px;"></i></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-messages" style="width:180px">
+                                <li><a href="/Main.aspx?est=<% Response.Write(lstEstaciones[i].Clave); %>&flj=1">Flujos</a></li>
+                                <li><a href="/Main.aspx?est=<% Response.Write(lstEstaciones[i].Clave); %>&mng=1">Mangueras</a></li>
+                            </ul>   
+                        <% Response.Write("</li>");
+                       } %>
+                    </ul>
+                </div>
+            </div>
+        </nav>--%>
+    </div>
+    <div class="wrapper container-fluid">
+        <%--<nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                <% for (int i = 0; i < lstEstaciones.Count; i++)
+                   {
+                       Response.Write((i == (NoEstacion - 1)) ? "<li class=\"active\">" : "<li>"); %>
+                        <a href="#"><i class="fa fa-th-large"></i>&nbsp;<span class="nav-label"><% Response.Write(lstEstaciones[i].Nombre.Trim()); %></span>&nbsp;<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in">
+                            <li><a href="/Main.aspx?est=<% Response.Write(lstEstaciones[i].Clave); %>&flj=1">Flujos</a></li>
+                            <li><a href="/Main.aspx?est=<% Response.Write(lstEstaciones[i].Clave); %>&mng=1">Mangueras</a></li>
+                        </ul>
+                    <% Response.Write("</li>");
+                   } %>                    
+                </ul>
+            </div>
+        </nav>--%>
+        <div id="page-wrapper" class="white-bg dashbard-1">
+            <form id="form1" runat="server">
+            <div id="contentPlace">
+                <asp:ContentPlaceHolder ID="Content" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+            </form>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
+            </asp:ContentPlaceHolder>
+
+            <script type="text/javascript">                Adicional.OnLoad(typeof (fnOperation) == 'undefined' ? null : fnOperation);</script>
+
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </div>
+</body>
+</html>

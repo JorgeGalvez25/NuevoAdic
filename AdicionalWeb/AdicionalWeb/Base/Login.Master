@@ -1,0 +1,52 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Login.master.cs" Inherits="AdicionalWeb.Base.Login" %>
+
+<!DOCTYPE html>
+<html lang="es">
+<head runat="server">
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google" value="notranslate">
+    <!--[if gt IE 9]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <link rel="stylesheet" href="../css/normalize.css" />
+    <!--[if lt IE 9]><script type="text/javascript" src="../js/html5.js"></script> <![endif]-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/bootstrap-dialog.css" />
+    <link rel="stylesheet" href="../css/bootstrap-spinedit.css" />
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../css/animate.css" />
+    <link rel="Stylesheet" href="../css/adicional.css" />
+
+    <script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-dialog.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-spinedit.js"></script>
+    <script type="text/javascript" src="../js/JSON3-min.js"></script>
+    <script type="text/javascript" src="../js/adicional.js"></script>
+    <script type="text/javascript" src="../js/Controles.js"></script>
+
+    <asp:ContentPlaceHolder ID="header" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body style="background-color:#2f4050">
+    <div class="container-fluid">
+        <form id="form1" runat="server" class="form-horizontal" role="form">
+        <div class="row">
+            <div class="col-xs-12 col-md-6 col-sm-4 col-lg-4 centered" >
+                <div class="loginBack">
+                    <asp:ContentPlaceHolder ID="Content" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        Adicional.OnLoad(function() { });
+    </script>
+
+</body>
+</html>

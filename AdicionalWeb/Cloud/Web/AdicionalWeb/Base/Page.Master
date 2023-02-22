@@ -1,0 +1,157 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Page.master.cs" Inherits="AdicionalWeb.Base.Page" %>
+
+<%@ Import Namespace="AdicionalWeb.Extesiones" %>
+<!DOCTYPE html>
+<html lang="es">
+<head runat="server">
+    <title></title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google" value="notranslate">
+    <%--<link rel="import" href="/css/normalize.css" />
+    <link rel="import" href="/css/bootstrap.min.css" />
+    <link rel="import" href="/css/bootstrap-dialog.css" />
+    <link rel="import" href="/css/bootstrap-spinedit.css" />
+    <link rel="import" href="/css/font-awesome/css/font-awesome.min.css" />
+    <link rel="import" href="/css/animate.css" />
+    <link rel="import" href="/css/adicional.css" />
+    
+    <link rel="import" href="/js/jquery-1.11.0.min.js" />
+    <link rel="import" href="/js/jquery-ui.min.js" />
+    <link rel="import" href="/js/bootstrap.min.js" />
+    <link rel="import" href="/js/bootstrap-dialog.js" />
+    <link rel="import" href="/js/bootstrap-spinedit.js" />
+    <link rel="import" href="/js/jquery.metisMenu.js" />
+    <link rel="import" href="/js/jquery.gritter.min.js" />
+    <link rel="import" href="/js/JSON3-min.js" />
+    <link rel="import" href="/js/adicional.js" />
+    <link rel="import" href="/js/Controles.js" />
+    
+    <!--[if gt IE 9]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <link rel="stylesheet" href="/css/normalize.css" media="bogus" lazyload="1" />
+    <!--[if lt IE 9]><script type="text/javascript" src="../js/html5.js"></script> <![endif]-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" media="bogus" lazyload="1" />
+    <link rel="stylesheet" href="/css/bootstrap-dialog.css" media="bogus" lazyload="1" />
+    <link rel="stylesheet" href="/css/bootstrap-spinedit.css" media="bogus" lazyload="1" />
+    <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css" media="bogus" lazyload="1" />
+    <link rel="stylesheet" href="/css/animate.css" media="bogus" lazyload="1" />
+    <link rel="Stylesheet" href="/css/adicional.css" media="bogus" lazyload="1" />
+
+    <script type="text/javascript" src="/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-dialog.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-spinedit.js"></script>
+    <script type="text/javascript" src="/js/jquery.metisMenu.js"></script>
+    <script type="text/javascript" src="/js/jquery.gritter.min.js"></script>
+    <script type="text/javascript" src="/js/JSON3-min.js"></script>
+    <script type="text/javascript" src="/js/adicional.js"></script>
+    <script type="text/javascript" src="/js/Controles.js"></script>--%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" />
+    <!--[if lt IE 9]><script type="text/javascript" src="../js/html5.js"></script> <![endif]-->
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.4/css/bootstrap-dialog.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap-spinedit.css" />
+    <link rel="stylesheet" href="/css/animate.css" />
+    <link rel="stylesheet" href="/css/adicional.css" />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"
+        defer="defer"></script>
+
+    <script type="text/javascript" src="/js/jquery-ui.min.js" defer="defer"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous" defer="defer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.4/js/bootstrap-dialog.min.js"
+        defer="defer"></script>
+    <script type="text/javascript" src="/js/bootstrap-spinedit.js" defer="defer"></script>
+    <script type="text/javascript" src="/js/jquery.metisMenu.js" defer="defer"></script>
+    <script type="text/javascript" src="/js/jquery.gritter.min.js" defer="defer"></script>
+    <script type="text/javascript" src="/js/JSON3-min.js" defer="defer"></script>
+    <script type="text/javascript" src="/js/adicional.js" defer="defer"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="pace-done">
+    <div class="row border-bottom">
+        <nav class="navbar navbar-default navbar-static-top">
+        <div class="row" style="margin-left: 0;">
+            <div class="navbar-header">
+                <div class="navbar-brand">&nbsp;<i class="fa fa-bars"></i>&nbsp;<span class="m-r-sm text-muted welcome-message">A Web</span></div>
+            </div>
+            <ul class="nav navbar-top-links navbar-right pull-right">
+                <li>
+                    <a id="btnSalir" href="#" runat="server" onserverclick="btnLogOut_Click">
+                        <i class="fa fa-sign-out"></i>&nbsp;Salir...
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="container-fluid">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav nav-pills" role="tablist">
+                  <li role="presentation" class="pull-right active" style="background-color: transparent !important;border: none;margin-right: 10px;">
+                    <a href="./pages/admin/AdminUsers.aspx" class="btn btn-primary" style="-webkit-border-radius: 30px; -moz-border-radius: 30px; -ms-border-radius: 30px; border-radius: 30px;padding: 3px 8px;"><i class="fa fa-gear" style="margin:0px"></i></a>
+                  </li>
+                <% for (int i = 0; i < lstEstaciones.Count; i++)
+                   {%>
+                       <li id="<% Response.Write(lstEstaciones[i].NoEstacion.Trim()); %>" class="<% Response.Write((lstEstaciones[i].NoEstacion == (Session[AdminSession.MODULO_WEB] as ImagenSoft.ModuloWeb.Entidades.SesionModuloWeb).EstacionActual.NoEstacion) ? "dropdown": ""); %>" role="presentation">
+                       
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <abbr title="<% Response.Write(lstEstaciones[i].Nombre.Trim().ToLower().ToTitle()); %>">
+                                <% Response.Write(lstEstaciones[i].NoEstacion.Trim()); %></abbr>&nbsp;<span class="caret"></span>
+                       </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Main.aspx?noEst=<% Response.Write(lstEstaciones[i].NoEstacion); %>&flj=1" name="itemMenu">Flujos</a></li>
+                            <% if (!UsuarioActual.Rol.Equals(ImagenSoft.ModuloWeb.Entidades.ConstantesModuloWeb.Roles.OPERADOR))
+                               { %>
+                            <li><a href="/Main.aspx?noEst=<% Response.Write(lstEstaciones[i].NoEstacion); %>&mng=1" name="itemMenu">Mangueras</a></li>
+                            <% } %>
+                            
+                            <li role="separator" class="divider"></li>
+                            <li><a href="./Main.aspx?noEst=<% Response.Write(lstEstaciones[i].NoEstacion); %>&rpt=1" name="itemMenu"><span>Reporte Ventas por Combustible</span></a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="./pages/admin/AdminUsers.aspx" name="itemMenu">Administrar usuarios&nbsp;<span class="badge"><i class="fa fa-gear" style="margin:0px"></i></span></a></li>
+                        </ul>   
+                    <% Response.Write("</li>");
+                   } %>
+              </ul>              
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+    </div>
+    <div class="wrapper container-fluid">
+        <div id="page-wrapper" class="white-bg dashbard-1">
+            <form id="form1" runat="server">
+            <div id="contentPlace">
+                <asp:ContentPlaceHolder ID="Content" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+            </form>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
+            </asp:ContentPlaceHolder>
+            <%--<script type="text/javascript" defer="defer">
+                Adicional.OnLoad(typeof (fnOperation) == 'undefined' ? null : fnOperation);
+            </script>--%>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function() {
+            Adicional.OnLoad(typeof (fnOperation) == 'undefined' ? null : fnOperation);
+        });
+    </script>
+
+</body>
+</html>

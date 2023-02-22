@@ -1,0 +1,189 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="org.gasolineras.adicionalmovil.MainActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <LinearLayout
+        android:id="@+id/linearParent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/lblEtiquetaNoCel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:text="Celular:"
+                    android:textColor="@color/colorLetraCabecera"
+                    android:textColorHint="@color/colorLetraCabecera"
+                    android:textColorLink="@color/colorLetraCabecera"
+                    android:textSize="@dimen/LabelSize" />
+
+                <TextView
+                    android:id="@+id/lblNumeroCelular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:text="000000000000"
+                    android:textColor="@color/colorLetraCabecera"
+                    android:textColorHint="@color/colorLetraCabecera"
+                    android:textSize="@dimen/LabelSize" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/lblEtiquetaNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="Usuario:"
+                    android:textColor="@color/colorLetraCabecera"
+                    android:textSize="@dimen/LabelSize" />
+
+                <TextView
+                    android:id="@+id/lblNombreUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre Usuario"
+                    android:textColor="@color/colorLetraCabecera"
+                    android:textSize="@dimen/LabelSize" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="vertical"
+            android:padding="5dp" >
+
+            <TextView
+                android:id="@+id/lblEtiquetaEstacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fadingEdge="none"
+                android:paddingTop="0dp"
+                android:text="Estación"
+                android:textColor="@color/colorFondoDatos"
+                android:textSize="@dimen/LabelSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lblNombreEstacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="No Conectado"
+                android:textColor="@color/colorLetraRegistro"
+                android:textSize="@dimen/LabelSize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutProduccion"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/linearLayout1"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+            <TextView
+                android:id="@+id/lblEtiquetaProduccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                android:text="Producción"
+                android:textSize="@dimen/LabelSize"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imgSemaforo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:onClick="btnRefreshOnClick"
+                android:paddingBottom="10dip"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dip"
+                android:src="@drawable/help2" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnFlujo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lblEtiquetaProduccion"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="23dp"
+            android:enabled="false"
+            android:onClick="btnFlujoOnClick"
+            android:text="aplicar/desaplicar" />
+
+        <Button
+            android:id="@+id/btnConfigurar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnFlujo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:onClick="btnConfiguracionOnClick"
+            android:text="Configuración" />
+
+        <TextView
+            android:id="@+id/lblFlustd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Flustd"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/btnClear"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnTestSaludo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="PruebaSaludoOnClick"
+            android:text="Saludo"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/pbarConectando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</FrameLayout>

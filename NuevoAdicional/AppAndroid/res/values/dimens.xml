@@ -1,0 +1,17 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="LabelSize">18dp</dimen>
+    
+    <!-- Colores -->
+    <color android:id="@+id/color1" android:layout_height="wrap_content" android:layout_width="wrap_content" name="colorFondoCabecera">#2F4F2F</color>
+    <color android:id="@+id/color1" android:layout_height="wrap_content" android:layout_width="wrap_content" name="colorLetraCabecera">#2F4F2F</color>
+    <color android:id="@+id/color1" android:layout_height="wrap_content" android:layout_width="wrap_content" name="colorFondoDatos">#FFFFFF</color>
+    <color android:id="@+id/color1" android:layout_height="wrap_content" android:layout_width="wrap_content" name="colorLetraDatos">#000000</color>
+    <color android:id="@+id/color1" android:layout_height="wrap_content" android:layout_width="wrap_content" name="colorFondoRegistro">#545454</color>
+    <color android:id="@+id/color1" android:layout_height="wrap_content" android:layout_width="wrap_content" name="colorLetraRegistro">#FFFFFF</color>
+    <color android:id="@+id/color1" android:layout_height="wrap_content" android:layout_width="wrap_content" name="colorFondoAPP">#E6E8FA</color>
+
+</resources>

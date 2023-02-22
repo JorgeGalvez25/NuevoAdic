@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2DEB052C-C3A9-4480-AA01-EA75B9BC42B1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ImagenSoft.ModuloWeb.Entidades</RootNamespace>
+    <AssemblyName>ImagenSoft.ModuloWeb.Entidades</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Adicional.Entidades">
+      <HintPath>..\..\..\..\..\Liberados\IGas\Adicional\Adicional.Entidades.dll</HintPath>
+    </Reference>
+    <Reference Include="Gurock.SmartInspect, Version=3.1.0.8000, Culture=neutral, PublicKeyToken=a78b0a9303ab7a7c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Liberados\Framework\Gurock.SmartInspect.dll</HintPath>
+    </Reference>
+    <Reference Include="ImagenSoft.Atributos, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Liberados\Framework\ImagenSoft.Atributos.dll</HintPath>
+    </Reference>
+    <Reference Include="ImagenSoft.Librerias, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Liberados\Framework\ImagenSoft.Librerias.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\Consultas\MonitorBase.cs" />
+    <Compile Include="Base\DatosEmpresa.cs" />
+    <Compile Include="Base\UsuarioModuloWeb.cs" />
+    <Compile Include="Catalogos\AdministrarDistribuidores.cs" />
+    <Compile Include="Utileria\ConstantesModuloWeb.cs" />
+    <Compile Include="Utileria\Extenders.cs" />
+    <Compile Include="Utileria\Lock.cs" />
+    <Compile Include="Web\Adicional\Combustibles.cs" />
+    <Compile Include="Web\Adicional\Dispensarios.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Adicional\Privilegios.cs" />
+    <Compile Include="Web\AdministrarUsuariosClientes.cs" />
+    <Compile Include="Enumeradores\Servicios\EstatusAplicacionAlertas.cs" />
+    <Compile Include="Enumeradores\Servicios\EstatusProgramado.cs" />
+    <Compile Include="Registros\Bitacora.cs" />
+    <Compile Include="Catalogos\AdministrarClientes.cs" />
+    <Compile Include="Catalogos\AdministrarUsuarios.cs" />
+    <Compile Include="Enumeradores\Catalogos\FiltrarCliente.cs" />
+    <Compile Include="Enumeradores\Catalogos\OrdenarCliente.cs" />
+    <Compile Include="Enumeradores\Servicios\Aplicado.cs" />
+    <Compile Include="Enumeradores\Servicios\NivelPrivilegio.cs" />
+    <Compile Include="Enumeradores\Servicios\OrdenamientoMonitor.cs" />
+    <Compile Include="Enumeradores\Servicios\TipoConexionUsuario.cs" />
+    <Compile Include="Servicios\ConfigCliente.cs" />
+    <Compile Include="Servicios\FileUpdater.cs" />
+    <Compile Include="Servicios\MonitorAplicaciones.cs" />
+    <Compile Include="Servicios\MonitorAplicacionesDetalle.cs" />
+    <Compile Include="Servicios\MonitorCambioPrecio.cs" />
+    <Compile Include="Enumeradores\Servicios\ZonasCambioPrecio.cs" />
+    <Compile Include="Enumeradores\Servicios\EstatusConexion.cs" />
+    <Compile Include="Enumeradores\Servicios\EstatusTransaccion.cs" />
+    <Compile Include="Servicios\MonitorConexiones.cs" />
+    <Compile Include="Servicios\MonitorTransaccion.cs" />
+    <Compile Include="Servicios\NotificacionesDistribuidores.cs" />
+    <Compile Include="Servicios\PreciosGasolinas.cs" />
+    <Compile Include="Sesion.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utileria\Metodos.cs" />
+    <Compile Include="Utileria\Permisos.cs" />
+    <Compile Include="Utileria\Respuesta.cs" />
+    <Compile Include="Utileria\Solicitud.cs" />
+    <Compile Include="Utileria\Utilerias.cs" />
+    <Compile Include="Web\Volumetricos\Estacion.cs" />
+    <Compile Include="Web\Volumetricos\UsuarioWeb.cs" />
+    <Compile Include="Web\Volumetricos\VolumetricoWebFiltroBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetPath)" "C:\Proyectos\ServiciosWeb\Compilados\Host\HostAdicionalCloud" /V /J /Y</PostBuildEvent>
+  </PropertyGroup>
+</Project>
