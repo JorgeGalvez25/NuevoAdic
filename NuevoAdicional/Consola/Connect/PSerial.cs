@@ -8,6 +8,8 @@ using System.Configuration;
 using System.IO.Ports;
 using System.IO;
 using System.Collections;
+using System.Net.Sockets;
+using System.Net;
 
 namespace Consola.Connect
 {
@@ -154,12 +156,12 @@ namespace Consola.Connect
             {
                 this.comandos = comandos;
                 resultado = "";
-                Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
-                this.Presenter.CreaListener((name) =>
+                if (ConfigurationManager.AppSettings["OpenGas"] == "Si")
                 {
                     try
                     {
-                        System.Threading.Thread.Sleep(1000);
+                        LiberarPSerialSocket(0);
+                        System.Threading.Thread.Sleep(200);
                         if (marca == 1 || marca == 2 || ConfigurationManager.AppSettings["ModoDelphi"] == "Si")
                         {
                             this.DoAction(comandos);
@@ -178,25 +180,55 @@ namespace Consola.Connect
                     }
                     finally
                     {
-                        fin = true;
-                        this.Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
-                        this.Presenter.CerrarListener();
+                        LiberarPSerialSocket(1);
                     }
-                });
-                Presenter.marca = marca;
-                Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 0 });
-                int espera;
-                if (comandos.Count >= 3)
-                    espera = 5 * comandos.Count;
-                else
-                    espera = 10 * comandos.Count;
-                while (true)
-                {
-                    System.Threading.Thread.Sleep(400);
-                    if (fin || --espera == 0)
-                        break;
                 }
-                return resultado;
+                else
+                {
+                    Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
+                    this.Presenter.CreaListener((name) =>
+                    {
+                        try
+                        {
+                            System.Threading.Thread.Sleep(1000);
+                            if (marca == 1 || marca == 2 || ConfigurationManager.AppSettings["ModoDelphi"] == "Si")
+                            {
+                                this.DoAction(comandos);
+                            }
+                            else
+                                for (int i = 0; i <= comandos.Count - 1; i++)
+                                {
+                                    System.Threading.Thread.Sleep(100);
+                                    this.DoAction(comandos[i], i == comandos.Count - 1);
+                                }
+                        }
+                        catch (Exception e)
+                        {
+                            Presenter.RegistraBitacora("Evento: ", e.Message + e.TargetSite + e.StackTrace);
+                            resultado = e.Message;
+                        }
+                        finally
+                        {
+                            fin = true;
+                            this.Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
+                            this.Presenter.CerrarListener();
+                        }
+                    });
+                    Presenter.marca = marca;
+                    Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 0 });
+                    int espera;
+                    if (comandos.Count >= 3)
+                        espera = 5 * comandos.Count;
+                    else
+                        espera = 10 * comandos.Count;
+                    while (true)
+                    {
+                        System.Threading.Thread.Sleep(400);
+                        if (fin || --espera == 0)
+                            break;
+                    }
+                    
+                }
             }
             catch (Exception e)
             {
@@ -204,6 +236,7 @@ namespace Consola.Connect
                 Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
                 return e.Message;
             }
+            return resultado;
         }
 
         public List<string> CalibrarBombas(List<string> comandos, int marca)
@@ -262,6 +295,40 @@ namespace Consola.Connect
             {
                 Presenter.RegistraBitacora("Pserial: ", e.Message + e.TargetSite + e.StackTrace);
                 return null;
+            }
+        }
+
+        public bool LiberarPSerialSocket(int tipo)
+        {
+            byte[] bytes = new byte[1024];
+
+            try
+            {
+                string[] hostSocket = ConfigurationManager.AppSettings["HostPDispensarios"].Split(':');
+                IPHostEntry host = Dns.GetHostEntry(hostSocket[0]);
+                IPAddress ipAddress = host.AddressList[1];
+                IPEndPoint remoteEP = new IPEndPoint(ipAddress, Convert.ToInt32(hostSocket[1]));
+
+                Socket sender = new Socket(ipAddress.AddressFamily,
+                                SocketType.Stream, ProtocolType.Tcp);
+
+                sender.Connect(remoteEP);
+
+                byte[] msg = Encoding.ASCII.GetBytes(Convert.ToString(tipo));
+
+                int bytesSent = sender.Send(msg);
+
+                int bytesRec = sender.Receive(bytes);               
+
+                sender.Shutdown(SocketShutdown.Both);
+                sender.Close();
+
+                return Encoding.ASCII.GetString(bytes, 0, bytesRec) == "1";
+            }
+            catch (Exception e)
+            {
+                Presenter.RegistraBitacora("LiberarPSerialSocket: ", e.Message + e.TargetSite + e.StackTrace);
+                return false;
             }
         }
     }
