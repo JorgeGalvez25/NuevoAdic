@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,10 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Persistencia;
 using Adicional.Entidades.Web;
+using System.IO.Ports;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
 
 namespace ServiciosCliente
 {
@@ -41,6 +45,20 @@ namespace ServiciosCliente
                     //new ProcesosComando().AplicaComando(std, paro, out pMensajeRespuesta);
                     pMensajeRespuesta = "Ok";
                 }
+            }
+            if (ConfigurationManager.AppSettings["ModoGateway"] == "Si")
+            {
+                string comando = string.Empty;
+                int xpos=AListaHistorial[0].Posicion;
+                for (int i = 0; i < AListaHistorial.Count; i++)
+                {
+                    if (xpos != AListaHistorial[i].Posicion)
+                        comando = comando.Remove(comando.Length - 1) + ";";
+                    xpos = AListaHistorial[i].Posicion;
+                    comando = AListaHistorial[i].Porcentaje.ToString() + ",";
+                }
+
+                pMensajeRespuesta = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
             }
             else
             {
@@ -581,6 +599,39 @@ namespace ServiciosCliente
                 variables.Remove("BennettProtec");
             variables.Add("BennettProtec", comandostr);
             new EstacionConsPersistencia().ActualizaVariablesDispensario(variables);
+        }
+
+        public string ComandoSocket(string cmd)
+        {
+            byte[] bytes = new byte[1024];
+
+            try
+            {
+                string[] hostSocket = ConfigurationManager.AppSettings["HostPDispensarios"].Split(':');
+                IPHostEntry host = Dns.GetHostEntry(hostSocket[0]);
+                IPAddress ipAddress = host.AddressList[1];
+                IPEndPoint remoteEP = new IPEndPoint(ipAddress, Convert.ToInt32(hostSocket[1]));
+
+                Socket sender = new Socket(ipAddress.AddressFamily,
+                                SocketType.Stream, ProtocolType.Tcp);
+
+                sender.Connect(remoteEP);
+
+                byte[] msg = Encoding.ASCII.GetBytes(cmd);
+
+                int bytesSent = sender.Send(msg);
+
+                int bytesRec = sender.Receive(bytes);
+
+                sender.Shutdown(SocketShutdown.Both);
+                sender.Close();
+
+                return "OK";
+            }
+            catch (Exception e)
+            {
+                return "ERROR|"+ e.Message + e.TargetSite + e.StackTrace;
+            }
         }
 
 
