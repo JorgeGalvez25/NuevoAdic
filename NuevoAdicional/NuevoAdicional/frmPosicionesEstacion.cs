@@ -203,6 +203,7 @@ namespace NuevoAdicional
 
         private void llenarListaGilbarco(List<int> listaPosiciones)
         {
+            Dictionary<int, bool> posCarga = new Dictionary<int, bool>();
             if (ConfigurationManager.AppSettings["GilbarcoOnOff"] == "Si" || tipoClb == "2")
             {
                 foreach (int posicion in listaPosiciones)
@@ -231,6 +232,26 @@ namespace NuevoAdicional
 
                     treeView1.Nodes.Add(nodo);
                 }
+            }
+            if (tipoClb == "7")
+            {
+                listaPosiciones.ForEach(p =>
+                {
+                    ListaHistorial mangueras = servicioAdicional.HistorialObtenerPorPosicion(this.idEstacion, p);
+                    mangueras.ForEach(m =>
+                    {
+                        if (!posCarga.ContainsKey(m.Posicion) && m.Posicion % 2 != 0)
+                        {
+                            posCarga.Add(m.Posicion, true);
+
+                            TreeNode nodo = new TreeNode(string.Format("{0} ({1}%)", "Dispensario: " + ((Convert.ToDouble(m.Posicion) / 2) + 0.5).ToString(), m.Porcentaje.ToString("##,#0")));
+                            nodo.ImageIndex = 0;
+                            nodo.SelectedImageIndex = 0;
+                            nodo.Tag = m;
+                            treeView1.Nodes.Add(nodo);
+                        }
+                    });
+                });
             }
             else
             {
@@ -363,7 +384,10 @@ namespace NuevoAdicional
                 {
                     Historial histo = n.Tag as Historial;
                     histo.Porcentaje = porcentaje;
-                    n.Text = string.Format("Dispensario: {0} ({1}%)", (dispensario++).ToString("00"), porcentaje.ToString("##,#0"));
+                    if (tipoClb == "7")
+                        n.Text = string.Format("{0} ({1}%)", "Dispensario: " + (dispensario++).ToString(), porcentaje.ToString("##,#0"));
+                    else
+                        n.Text = string.Format("Dispensario: {0} ({1}%)", (dispensario++).ToString("00"), porcentaje.ToString("##,#0"));
                 }
             }
             else
@@ -373,7 +397,10 @@ namespace NuevoAdicional
                 {
                     if (n.Equals(nodo))
                     {
-                        nodo.Text = string.Format("Dispensario: {0} ({1}%)", (dispensario++).ToString("00"), porcentaje.ToString("##,#0"));
+                        if (tipoClb == "7")
+                            n.Text = string.Format("{0} ({1}%)", "Dispensario: " + ((Convert.ToDouble(histo.Posicion) / 2) + 0.5).ToString(), porcentaje.ToString("##,#0"));
+                        else
+                            nodo.Text = string.Format("Dispensario: {0} ({1}%)", (dispensario++).ToString("00"), porcentaje.ToString("##,#0"));
                         break;
                     }
                     dispensario++;
@@ -478,6 +505,8 @@ namespace NuevoAdicional
                         case MarcaDispensario.Gilbarco:
                             if (ConfigurationManager.AppSettings["GilbarcoOnOff"] == "Si" || tipoClb == "2")
                                 cambiarPorcentajeBennet(nodo, formaPorcentajes.Porcentaje);
+                            else if (tipoClb == "7")
+                                cambiarPorcentajeTeam(nodo, formaPorcentajes.Porcentaje);
                             else
                                 cambiarPorcentajeGilbarco(nodo, formaPorcentajes.Porcentaje);
                             break;
@@ -519,6 +548,8 @@ namespace NuevoAdicional
                     case MarcaDispensario.Gilbarco:
                         if (ConfigurationManager.AppSettings["GilbarcoOnOff"] == "Si" || tipoClb == "2")
                             cambiarPorcentajeBennet(null, formaPorcentajes.Porcentaje);
+                        else if (tipoClb == "7")
+                            cambiarPorcentajeTeam(null, formaPorcentajes.Porcentaje);
                         else
                             cambiarPorcentajeGilbarco(null, formaPorcentajes.Porcentaje);
                         break;
