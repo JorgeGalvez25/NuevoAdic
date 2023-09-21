@@ -14,9 +14,10 @@ using System.Runtime.InteropServices;
 using Persistencia;
 using Adicional.Entidades.Web;
 using System.IO.Ports;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.ServiceProcess;
+using System.Xml;
 
 namespace ServiciosCliente
 {
@@ -46,19 +47,18 @@ namespace ServiciosCliente
                     pMensajeRespuesta = "Ok";
                 }
             }
-            if (ConfigurationManager.AppSettings["ModoGateway"] == "Si")
+            else if (ConfigurationManager.AppSettings["ModoGateway"] == "Si")
             {
-                string comando = string.Empty;
-                int xpos=AListaHistorial[0].Posicion;
-                for (int i = 0; i < AListaHistorial.Count; i++)
+                switch (marca)
                 {
-                    if (xpos != AListaHistorial[i].Posicion)
-                        comando = comando.Remove(comando.Length - 1) + ";";
-                    xpos = AListaHistorial[i].Posicion;
-                    comando = AListaHistorial[i].Porcentaje.ToString() + ",";
+                    case MarcaDispensario.Ninguno:
+                        break;
+                    case MarcaDispensario.Bennett:
+                        pMensajeRespuesta = AplicarFlujoBennettSocket(std, estatus, AListaHistorial);
+                        break;
+                    default:
+                        break;
                 }
-
-                pMensajeRespuesta = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
             }
             else
             {
@@ -279,6 +279,49 @@ namespace ServiciosCliente
             puerto = null;
 
             return pRespuesta;
+        }
+
+        public string AplicarFlujoBennettSocket(bool std, string estatus, List<Historial> AListaHistorial)
+        {
+            string comando = string.Empty;
+            try
+            {
+                string pMensajeRespuesta = string.Empty;
+                int xpos = AListaHistorial[0].Posicion;
+                comando = AListaHistorial[0].Posicion + ":";
+                for (int i = 0; i < AListaHistorial.Count; i++)
+                {
+                    if (xpos != AListaHistorial[i].Posicion)
+                        comando = comando.Remove(comando.Length - 1) + ";" + AListaHistorial[i].Posicion + ":";
+                    xpos = AListaHistorial[i].Posicion;
+                    comando += (AListaHistorial[i].Porcentaje + (AListaHistorial[i].Calibracion / 100)).ToString() + ",";
+                }
+                comando = comando.Remove(comando.Length - 1);
+
+                if (estatus == "Estandar")
+                {
+                    int folio;
+                    string rsp = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
+                    if (Int32.TryParse(rsp.Split('|')[2], out folio))
+                        SeguimientoRspCmnd(rsp);
+                    else
+                        return rsp;
+                }
+
+                CambiaServiciosDisp(estatus, std);
+                pMensajeRespuesta = "Ok";
+
+                if (estatus != "Estandar" && std)
+                {
+                    System.Threading.Thread.Sleep(2000);
+                    pMensajeRespuesta = SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|FLUSTD|" + comando));
+                }
+                return pMensajeRespuesta;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Error AplicarFlujoBennettSocket: " + ex.Message + " Comando: " + comando);
+            }
         }
 
         public string AplicarFlujoWayne(bool std, List<Historial> AListaHistorial)
@@ -579,7 +622,9 @@ namespace ServiciosCliente
             if (!variables.TryGetValue("ComandosPorServicio", out ComandosPorServicio))
                 ComandosPorServicio = "No";
 
-            if (ComandosPorServicio == "Si")
+            if (ConfigurationManager.AppSettings["ModoGateway"] == "Si")
+                SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|EJECCMND|PROT " + comandostr));
+            else if (ComandosPorServicio == "Si")
             {
                 string servConsola;
                 if (!variables.TryGetValue("PuertoServicio", out servConsola))
@@ -603,34 +648,154 @@ namespace ServiciosCliente
 
         public string ComandoSocket(string cmd)
         {
-            byte[] bytes = new byte[1024];
+            int BufferSize = 1024 * 1024;
+            string[] hostSocket = ConfigurationManager.AppSettings["HostPDispensarios"].Split(':');
 
             try
             {
-                string[] hostSocket = ConfigurationManager.AppSettings["HostPDispensarios"].Split(':');
-                IPHostEntry host = Dns.GetHostEntry(hostSocket[0]);
-                IPAddress ipAddress = host.AddressList[1];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, Convert.ToInt32(hostSocket[1]));
+                using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                {
+                    socket.ReceiveBufferSize = BufferSize;
+                    socket.Connect(new IPEndPoint(IPAddress.Parse(hostSocket[0]), Convert.ToInt32(hostSocket[1])));
 
-                Socket sender = new Socket(ipAddress.AddressFamily,
-                                SocketType.Stream, ProtocolType.Tcp);
+                    byte[] commandBytes = Encoding.ASCII.GetBytes(cmd);
+                    socket.Send(commandBytes);
 
-                sender.Connect(remoteEP);
+                    StringBuilder response = new StringBuilder();
+                    byte[] buffer = new byte[BufferSize];
+                    int bytesRead;
 
-                byte[] msg = Encoding.ASCII.GetBytes(cmd);
+                    do
+                    {
+                        bytesRead = socket.Receive(buffer);
+                        response.Append(Encoding.ASCII.GetString(buffer, 0, bytesRead));
+                    }
+                    while (bytesRead == BufferSize);
 
-                int bytesSent = sender.Send(msg);
-
-                int bytesRec = sender.Receive(bytes);
-
-                sender.Shutdown(SocketShutdown.Both);
-                sender.Close();
-
-                return "OK";
+                    return response.ToString();
+                }
             }
             catch (Exception e)
             {
-                return "ERROR|"+ e.Message + e.TargetSite + e.StackTrace;
+                throw new ArgumentException("SendCommand: " + e.Message + " Host: " + hostSocket[0] + ":" + hostSocket[1]);
+            }
+        }
+
+        public bool CambiaServiciosDisp(string estatus, bool std)
+        {
+            if ((estatus == "Estandar" && !std) || (estatus != "Estandar" && std))
+            {
+                //Detener servicio
+                ServiceController sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"]);
+
+                try
+                {
+                    if (sc != null && sc.Status == ServiceControllerStatus.Running)
+                    {
+                        sc.Stop();
+                    }
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped);
+                    sc.Close();
+                }
+                catch
+                {
+                    return false;
+                }
+
+                EditarXMLNotify(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
+
+                //Iniciar servicio
+                sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
+
+                try
+                {
+                    if (sc != null && sc.Status == ServiceControllerStatus.Stopped)
+                    {
+                        sc.Start();
+                    }
+                    sc.WaitForStatus(ServiceControllerStatus.Running);
+                    sc.Close();
+                }
+                catch
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            else
+                return true;
+        }
+
+        public string SeguimientoRspCmnd(string rsp)
+        {
+            try
+            {
+                string folio = rsp.Split('|')[2];
+                string resp, resp2;
+                for (int i = 1; i <= 20; i++)
+                {
+                    System.Threading.Thread.Sleep(250);
+                    resp = ComandoSocket("DISPENSERSX|RESPCMND|" + folio);
+                    resp2 = resp.Split('|')[3];
+                    resp = resp.Split('|')[2].ToUpper();                    
+                    if (resp == "TRUE")
+                        return "Ok";
+                    else if (resp2.Length > 1)
+                        return resp;
+                }
+                return "Sin respuesta";
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Error SeguimientoRspCmnd: " + ex.Message + " rsp: " + rsp);
+            }
+        }
+
+        public void EditarXMLNotify(string valor)
+        {
+            try
+            {
+                string filePathExe = Path.Combine(ConfigurationManager.AppSettings["RutaXMLNotify"], "OG.Notify.exe");
+                string filePathConf = Path.Combine(ConfigurationManager.AppSettings["RutaXMLNotify"], "OG.Notify.exe.config");
+
+                //Detiene proceso
+                Process[] processes = Process.GetProcessesByName("OG.Notify");
+                if (processes.Length > 0)
+                {
+                    processes[0].Kill();
+                    processes[0].WaitForExit();
+                }
+
+                //Edita archivo
+
+                XmlDocument document = new XmlDocument();
+
+                document.Load(filePathConf);
+
+                XmlNodeList appSettingsNodes = document.SelectNodes("//configuration/appSettings/add");
+
+                foreach (XmlNode appSettingsNode in appSettingsNodes)
+                {
+                    XmlAttribute NombreDispensarioAttribute = null;
+                    if (appSettingsNode.Attributes["key"].Value == "NombreDispensario")
+                        NombreDispensarioAttribute = appSettingsNode.Attributes["value"];
+                    if (NombreDispensarioAttribute != null)
+                    {
+                        NombreDispensarioAttribute.Value = valor;
+                        document.Save(filePathConf);
+                        break;
+                    }
+                }
+
+                //Inicia proceso
+                Process p = new Process();
+                p.StartInfo.FileName = filePathExe;
+                p.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Error al modificar archivo de configuración de OG.Notify: " + ex.Message);
             }
         }
 

@@ -227,7 +227,7 @@ namespace Consola.Connect
                         if (fin || --espera == 0)
                             break;
                     }
-                    
+
                 }
             }
             catch (Exception e)
@@ -246,11 +246,11 @@ namespace Consola.Connect
                 valoresCal = new List<string>();
                 this.comandos = comandos;
                 resultado = "";
-                Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
-                this.Presenter.CreaListener((name) =>
+                if (ConfigurationManager.AppSettings["OpenGas"] == "Si")
                 {
                     try
                     {
+                        LiberarPSerialSocket(0);
                         System.Threading.Thread.Sleep(500);
                         DoAction(comandos);
                     }
@@ -261,14 +261,37 @@ namespace Consola.Connect
                     }
                     finally
                     {
-                        fin = true;
-                        this.Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
-                        Presenter.CerrarListener();
+                        LiberarPSerialSocket(1);
                     }
-                });
-                Presenter.marca = marca;
-                Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 0 });
+                }
+                else
+                {
+                    Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
+                    this.Presenter.CreaListener((name) =>
+                    {
+                        try
+                        {
+                            System.Threading.Thread.Sleep(500);
+                            DoAction(comandos);
+                        }
+                        catch (Exception e)
+                        {
+                            Presenter.RegistraBitacora("Evento: ", e.Message + e.TargetSite + e.StackTrace);
+                            resultado = e.Message;
+                        }
+                        finally
+                        {
+                            fin = true;
+                            this.Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
+                            Presenter.CerrarListener();
+                        }
+                    });
+                    Presenter.marca = marca;
+                    Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 0 });
+                }
+
                 int espera = 5 * comandos.Count;
+
                 while (true)
                 {
                     System.Threading.Thread.Sleep(1000);
@@ -287,6 +310,7 @@ namespace Consola.Connect
                     if (sLine != null)
                         valoresCal.Add(sLine);
                 }
+
                 objReader.Close();
 
                 return valoresCal;
@@ -318,7 +342,7 @@ namespace Consola.Connect
 
                 int bytesSent = sender.Send(msg);
 
-                int bytesRec = sender.Receive(bytes);               
+                int bytesRec = sender.Receive(bytes);
 
                 sender.Shutdown(SocketShutdown.Both);
                 sender.Close();
