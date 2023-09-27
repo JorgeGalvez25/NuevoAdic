@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Persistencia;
 using Adicional.Entidades;
+using System.Configuration;
 
 namespace NuevoAdicional
 {
@@ -172,7 +173,8 @@ namespace NuevoAdicional
 
             nombre = canal.ObtenerNombreEstacion();
             partes = nombre.Split('|');
-            numMarca = partes.Length >= 2 ? partes[1] : "0";
+            string marcaDisp = ConfigurationManager.AppSettings["MarcaDispensario"];
+            numMarca = marcaDisp != string.Empty ? marcaDisp : partes.Length >= 2 ? partes[1] : "0";
             nombre = partes.Length >= 1 && !string.IsNullOrEmpty(partes[0]) ? partes[0] : "Sin Nombre";
 
             marcaDispensarios = (MarcaDispensario)Convert.ToInt32(numMarca);
