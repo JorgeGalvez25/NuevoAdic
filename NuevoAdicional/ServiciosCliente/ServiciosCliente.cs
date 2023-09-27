@@ -294,9 +294,68 @@ namespace ServiciosCliente
                     if (xpos != AListaHistorial[i].Posicion)
                         comando = comando.Remove(comando.Length - 1) + ";" + AListaHistorial[i].Posicion + ":";
                     xpos = AListaHistorial[i].Posicion;
-                    comando += (AListaHistorial[i].Porcentaje + (AListaHistorial[i].Calibracion / 100)).ToString() + ",";
+                    decimal calibracionDecimal = (decimal)AListaHistorial[i].Calibracion / 100;
+                    comando += (AListaHistorial[i].Porcentaje + calibracionDecimal).ToString() + ",";
                 }
                 comando = comando.Remove(comando.Length - 1);
+
+                if (estatus == "Estandar")
+                {
+                    int folio;
+                    string rsp = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
+                    if (Int32.TryParse(rsp.Split('|')[2], out folio))
+                        SeguimientoRspCmnd(rsp);
+                    else
+                        return rsp;
+                }
+
+                CambiaServiciosDisp(estatus, std);
+                pMensajeRespuesta = "Ok";
+
+                if (estatus != "Estandar" && std)
+                {
+                    System.Threading.Thread.Sleep(2000);
+                    pMensajeRespuesta = SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|FLUSTD|" + comando));
+                }
+                return pMensajeRespuesta;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Error AplicarFlujoBennettSocket: " + ex.Message + " Comando: " + comando);
+            }
+        }
+
+        public string AplicarFlujoGilbarcoSocket(bool std, string estatus, List<Historial> AListaHistorial)
+        {
+            string tipoClb;
+            string pMensajeRespuesta = string.Empty;
+            if (!Utilerias.ObtenerListaVar().TryGetValue("TipoClb", out tipoClb))
+                tipoClb = "0";
+            string comando = string.Empty;
+
+            try
+            {
+                if (new[] { "6", "7" }.Contains(tipoClb))
+                {
+                    int xpos = AListaHistorial[0].Posicion;
+                    comando = AListaHistorial[0].Posicion + ":";
+                    for (int i = 0; i < AListaHistorial.Count; i++)
+                    {
+                        if (xpos != AListaHistorial[i].Posicion)
+                            comando = comando.Remove(comando.Length - 1) + ";" + AListaHistorial[i].Posicion + ":";
+                        xpos = AListaHistorial[i].Posicion;
+                        comando += AListaHistorial[i].Porcentaje.ToString() + ",";
+                    }
+                    comando = comando.Remove(comando.Length - 1);
+                }
+                else
+                {
+                    pMensajeRespuesta = string.Empty;
+                    for (int i = 0; i < AListaHistorial.Count; i++)
+                    {
+                        comando += AListaHistorial[i].Porcentaje.ToString();
+                    }
+                }
 
                 if (estatus == "Estandar")
                 {
@@ -738,7 +797,7 @@ namespace ServiciosCliente
                     System.Threading.Thread.Sleep(250);
                     resp = ComandoSocket("DISPENSERSX|RESPCMND|" + folio);
                     resp2 = resp.Split('|')[3];
-                    resp = resp.Split('|')[2].ToUpper();                    
+                    resp = resp.Split('|')[2].ToUpper();
                     if (resp == "TRUE")
                         return "Ok";
                     else if (resp2.Length > 1)
@@ -797,6 +856,20 @@ namespace ServiciosCliente
             {
                 throw new ArgumentException("Error al modificar archivo de configuración de OG.Notify: " + ex.Message);
             }
+        }
+
+        internal static void GuardarMensaje(string archivo, string mensaje)
+        {
+            try
+            {
+                System.IO.FileStream fs = new System.IO.FileStream(archivo, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
+                System.IO.StreamWriter m_streamWriter = new System.IO.StreamWriter(fs);
+                m_streamWriter.BaseStream.Seek(0, System.IO.SeekOrigin.End);
+                m_streamWriter.WriteLine(mensaje);
+                m_streamWriter.Flush();
+                m_streamWriter.Close();
+            }
+            catch { }
         }
 
 
