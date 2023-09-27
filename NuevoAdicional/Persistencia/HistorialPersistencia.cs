@@ -103,7 +103,7 @@ namespace Persistencia
         {
             ListaHistorial pResult = new ListaHistorial();
 
-            string sentencia = "SELECT * FROM HISTORIAL WHERE FECHA = (SELECT MAX(FECHA) FROM HISTORIAL) AND HORA = (SELECT MAX(HORA) FROM HISTORIAL WHERE FECHA = (SELECT MAX(FECHA) FROM HISTORIAL)) AND ID_ESTACION = ID_ESTACION ORDER BY POSICION";
+            string sentencia = "SELECT * FROM HISTORIAL WHERE FECHA = (SELECT MAX(FECHA) FROM HISTORIAL) AND HORA = (SELECT MAX(HORA) FROM HISTORIAL WHERE FECHA = (SELECT MAX(FECHA) FROM HISTORIAL)) AND ID_ESTACION = ID_ESTACION ORDER BY POSICION, MANGUERA";
 
             FbConnection conexion = new Conexiones().ConexionObtener("Adicional");
             FbCommand comando = new FbCommand(sentencia, conexion);
