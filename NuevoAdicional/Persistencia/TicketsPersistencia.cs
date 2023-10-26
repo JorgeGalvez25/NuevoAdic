@@ -4,6 +4,7 @@ using System.Data;
 using Adicional.Entidades;
 using FirebirdSql.Data.FirebirdClient;
 using Persistencia;
+using System.Data.SqlClient;
 
 namespace Persistencia
 {
@@ -245,7 +246,8 @@ namespace Persistencia
                                          @REFERENCIABITACORA,
                                          @CUPONIMPRESO)";
             string senActualizar = @"UPDATE DPVGMOVI
-	                                    SET IMPRESO = @IMPRESO
+	                                    SET IMPRESO = @IMPRESO,
+                                            IDTRANSACCIONOG = @IDTRANSACCIONOG
                                       WHERE FOLIO = @FOLIO";
 
             using (FbConnection conexion = new FbConnection(GetStringConnection))
@@ -298,10 +300,69 @@ namespace Persistencia
 
                             if (flgOk)
                             {
+                                int nuevoIdTransaccion = 0;
+
+                                if (ConfigurationManager.AppSettings["ConexionOG"] != string.Empty)
+                                {
+                                    using (var connection = new SqlConnection(ConfigurationManager.AppSettings["ConexionOG"]))
+                                    {
+                                        try
+                                        {
+                                            connection.Open();
+                                            var command = new SqlCommand("SELECT IdManguera FROM Manguera Where IdDispensario=@IdDispensario and NoManguera=@NoManguera", connection);
+                                            command.Parameters.AddWithValue("@IdDispensario", entidad.Posicion);
+                                            command.Parameters.AddWithValue("@NoManguera", entidad.ConPosicion);
+                                            var reader = command.ExecuteReader();
+
+                                            short IdManguera = 0;
+                                            if (reader.Read())
+                                                IdManguera = reader.GetInt16(0);
+                                            else
+                                                IdManguera = (short)entidad.Manguera;
+                                            reader.Close();
+                                            connection.Close();
+
+                                            command = new SqlCommand("OG_TransaccionInsertar", connection);
+                                            command.CommandType = CommandType.StoredProcedure;
+
+                                            command.Parameters.AddWithValue("@IdTransaccion", 0);
+                                            if (entidad.Fecha > DateTime.MinValue)
+                                                command.Parameters.AddWithValue("@FechaHora", entidad.Fecha);
+                                            else
+                                                command.Parameters.AddWithValue("@FechaHora", DateTime.Now);
+                                            command.Parameters.AddWithValue("@IdManguera", IdManguera);
+                                            command.Parameters.AddWithValue("@Volumen", entidad.Volumen);
+                                            command.Parameters.AddWithValue("@PrecioUnitario", entidad.Precio);
+                                            command.Parameters.AddWithValue("@Importe", entidad.Importe);
+                                            command.Parameters.AddWithValue("@TotalizadorAnterior", 0);
+                                            command.Parameters.AddWithValue("@TotalizadorFinal", 0);
+                                            command.Parameters.AddWithValue("@Tipo", 4);
+                                            command.Parameters.AddWithValue("@Impreso", true);
+                                            command.Parameters.AddWithValue("@IdMedioEntrega", string.Empty);
+                                            command.Parameters.AddWithValue("@IdSistemaMedicion", string.Empty);
+                                            command.Parameters.AddWithValue("@IdHidrocarburoPetrolifero", entidad.ConProductoPrecio);
+                                            command.Parameters.Add("@NuevoIdTransaccion", SqlDbType.Int);
+                                            command.Parameters["@NuevoIdTransaccion"].Direction = ParameterDirection.Output;
+
+                                            connection.Open();
+                                            command.ExecuteNonQuery();
+                                            connection.Close();
+
+                                            nuevoIdTransaccion = (int)command.Parameters["@NuevoIdTransaccion"].Value;
+                                        }
+                                        finally
+                                        {
+                                            if (connection.State == ConnectionState.Open)
+                                                connection.Close();
+                                        }
+                                    }
+                                }
+
                                 using (FbCommand comando = new FbCommand(senActualizar, conexion, transaccion))
                                 {
                                     comando.Parameters.Add("@FOLIO", FbDbType.Integer).Value = folio;
                                     comando.Parameters.Add("@IMPRESO", FbDbType.VarChar).Value = "Si";
+                                    comando.Parameters.Add("@IDTRANSACCIONOG", FbDbType.Integer).Value = nuevoIdTransaccion;
 
                                     flgOk = comando.ExecuteNonQuery() > 0;
                                 }
@@ -362,6 +423,8 @@ namespace Persistencia
                                                           WHERE ESTATUS = 'A')
                                             AND ESTATUS = 'A') AS FECHATURNO,
                                         B.MANGUERA,
+                                        B.CON_POSICION,
+                                        C.CON_PRODUCTOPRECIO,
                                         (SELECT FIRST(1) TOTAL01
                                            FROM DPVGMOVI
                                           WHERE FECHA = (SELECT FIRST(1) MAX(FECHA)
@@ -373,7 +436,10 @@ namespace Persistencia
                                    FROM RDB$DATABASE M
                                    LEFT OUTER JOIN DPVGBOMB B
                                      ON B.POSCARGA = @POSCARGA
-                                    AND B.COMBUSTIBLE = @COMBUSTIBLE";
+                                    AND B.COMBUSTIBLE = @COMBUSTIBLE
+                                   LEFT OUTER JOIN DPVGTCMB C
+                                     ON B.COMBUSTIBLE=C.CLAVE";
+
             using (FbConnection conexion = new FbConnection(GetStringConnection))
             {
                 try
@@ -402,8 +468,10 @@ namespace Persistencia
                                             entidad.Turno = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
                                             entidad.FechaHoraTurno = reader.IsDBNull(1) ? DateTime.MinValue : reader.GetDateTime(1);
                                             entidad.Manguera = reader.IsDBNull(2) ? 0 : reader.GetInt32(2);
-                                            entidad.Total01 = reader.IsDBNull(3) ? 0D : reader.GetDouble(3);
-                                            entidad.Total02 = reader.IsDBNull(4) ? 0D : reader.GetDouble(4);
+                                            entidad.ConPosicion = reader.IsDBNull(3) ? 0 : reader.GetInt32(3);
+                                            entidad.ConProductoPrecio = reader.IsDBNull(4) ? 0 : reader.GetInt32(4);
+                                            entidad.Total01 = reader.IsDBNull(5) ? 0D : reader.GetDouble(5);
+                                            entidad.Total02 = reader.IsDBNull(6) ? 0D : reader.GetDouble(6);
                                         }
                                     }
                                     finally

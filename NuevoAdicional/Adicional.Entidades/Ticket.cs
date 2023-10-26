@@ -25,6 +25,8 @@ namespace Adicional.Entidades
             this.Posicion = 0;
             this.Combustible = 0;
             this.Manguera = 0;
+            this.ConPosicion = 0;
+            this.ConProductoPrecio = 0;
 
             this.NoAplicar = false;
         }
@@ -67,6 +69,12 @@ namespace Adicional.Entidades
 
         [DataMember]
         public int Manguera { get; set; }
+
+        [DataMember]
+        public int ConPosicion { get; set; }
+
+        [DataMember]
+        public int ConProductoPrecio { get; set; }
 
         [DataMember]
         public bool NoAplicar { get; set; }
