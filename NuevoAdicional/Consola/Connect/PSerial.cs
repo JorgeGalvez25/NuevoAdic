@@ -155,14 +155,16 @@ namespace Consola.Connect
             try
             {
                 this.comandos = comandos;
+                Presenter.marca = marca;
                 resultado = "";
                 if (ConfigurationManager.AppSettings["OpenGas"] == "Si")
                 {
                     try
                     {
-                        LiberarPSerialSocket(0);
+                        if (!LiberarPSerialSocket(0))
+                            return "Error en comunicación con PDISPENSARIOS";
                         System.Threading.Thread.Sleep(200);
-                        if (marca == 1 || marca == 2 || ConfigurationManager.AppSettings["ModoDelphi"] == "Si")
+                        if (ConfigurationManager.AppSettings["ModoDelphi"] == "Si")
                         {
                             this.DoAction(comandos);
                         }
@@ -213,8 +215,7 @@ namespace Consola.Connect
                             this.Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 1 });
                             this.Presenter.CerrarListener();
                         }
-                    });
-                    Presenter.marca = marca;
+                    });                    
                     Presenter.ActualizarPocision(new FiltroDPVGCONF() { PosCliente = 0 });
                     int espera;
                     if (comandos.Count >= 3)
@@ -324,35 +325,36 @@ namespace Consola.Connect
 
         public bool LiberarPSerialSocket(int tipo)
         {
-            byte[] bytes = new byte[1024];
+            int BufferSize = 1024 * 1024;
+            string[] hostSocket = ConfigurationManager.AppSettings["HostPDispensarios"].Split(':');
 
             try
             {
-                string[] hostSocket = ConfigurationManager.AppSettings["HostPDispensarios"].Split(':');
-                IPHostEntry host = Dns.GetHostEntry(hostSocket[0]);
-                IPAddress ipAddress = host.AddressList[1];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, Convert.ToInt32(hostSocket[1]));
+                using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                {
+                    socket.ReceiveBufferSize = BufferSize;
+                    socket.Connect(new IPEndPoint(IPAddress.Parse(hostSocket[0]), Convert.ToInt32(hostSocket[1])));
 
-                Socket sender = new Socket(ipAddress.AddressFamily,
-                                SocketType.Stream, ProtocolType.Tcp);
+                    byte[] commandBytes = Encoding.ASCII.GetBytes(Convert.ToString(tipo));
+                    socket.Send(commandBytes);
 
-                sender.Connect(remoteEP);
+                    StringBuilder response = new StringBuilder();
+                    byte[] buffer = new byte[BufferSize];
+                    int bytesRead;
 
-                byte[] msg = Encoding.ASCII.GetBytes(Convert.ToString(tipo));
+                    do
+                    {
+                        bytesRead = socket.Receive(buffer);
+                        response.Append(Encoding.ASCII.GetString(buffer, 0, bytesRead));
+                    }
+                    while (bytesRead == BufferSize);
 
-                int bytesSent = sender.Send(msg);
-
-                int bytesRec = sender.Receive(bytes);
-
-                sender.Shutdown(SocketShutdown.Both);
-                sender.Close();
-
-                return Encoding.ASCII.GetString(bytes, 0, bytesRec) == "1";
+                    return response.ToString() == "1";
+                }
             }
             catch (Exception e)
             {
-                Presenter.RegistraBitacora("LiberarPSerialSocket: ", e.Message + e.TargetSite + e.StackTrace);
-                return false;
+                throw new ArgumentException("SendCommand: " + e.Message + " Host: " + hostSocket[0] + ":" + hostSocket[1]);
             }
         }
     }
