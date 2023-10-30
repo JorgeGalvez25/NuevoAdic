@@ -11,7 +11,7 @@ namespace ServiciosCliente
     public interface IServiciosCliente
     {
         [OperationContract]
-        string AplicarFlujo(bool std, bool paro,MarcaDispensario marca, List<Adicional.Entidades.Historial> AListaHistorial);
+        string AplicarFlujo(bool std, bool paro, MarcaDispensario marca, List<Adicional.Entidades.Historial> AListaHistorial);
 
         [OperationContract]
         List<Historial> ObtenerBombasEstacion();
@@ -47,7 +47,7 @@ namespace ServiciosCliente
         string AplicarProteccionGilbarco(bool std, string tipo);
 
         [OperationContract]
-        string AplicarFlujoGilbarcoPorcentajes();
+        string AplicarFlujoGilbarcoPorcentajes(string cmd);
 
         #region Utilerias
 
@@ -65,6 +65,10 @@ namespace ServiciosCliente
         bool CalibrarPosicion(int posicion);
         [OperationContract]
         void AplicarProtecciones(string comandostr);
+        [OperationContract]
+        string ComandoSocket(string cmd);
+        [OperationContract]
+        string SeguimientoRspCmnd(string rsp, bool single);
         #endregion
 
         #region Tanques

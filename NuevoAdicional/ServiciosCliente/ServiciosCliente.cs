@@ -56,6 +56,9 @@ namespace ServiciosCliente
                     case MarcaDispensario.Bennett:
                         pMensajeRespuesta = AplicarFlujoBennettSocket(std, estatus, AListaHistorial);
                         break;
+                    case MarcaDispensario.Gilbarco:
+                        pMensajeRespuesta = AplicarFlujoGilbarcoSocket(std, estatus, AListaHistorial);
+                        break;
                     default:
                         break;
                 }
@@ -295,7 +298,7 @@ namespace ServiciosCliente
                         comando = comando.Remove(comando.Length - 1) + ";" + AListaHistorial[i].Posicion + ":";
                     xpos = AListaHistorial[i].Posicion;
                     decimal calibracionDecimal = (decimal)AListaHistorial[i].Calibracion / 100;
-                    comando += (AListaHistorial[i].Porcentaje + calibracionDecimal).ToString() + ",";
+                    comando += AListaHistorial[i].Porcentaje.ToString() + (calibracionDecimal >= 0 ? "+" : "-") + Math.Abs(calibracionDecimal).ToString() + ",";
                 }
                 comando = comando.Remove(comando.Length - 1);
 
@@ -303,8 +306,11 @@ namespace ServiciosCliente
                 {
                     int folio;
                     string rsp = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
-                    if (Int32.TryParse(rsp.Split('|')[2], out folio))
-                        SeguimientoRspCmnd(rsp);
+                    if (Int32.TryParse(rsp.Split('|')[3], out folio))
+                    {
+                        rsp = SeguimientoRspCmnd(rsp, false);
+                        if (rsp != "Ok") return "Servicio consola: " + rsp;
+                    }
                     else
                         return rsp;
                 }
@@ -315,7 +321,7 @@ namespace ServiciosCliente
                 if (estatus != "Estandar" && std)
                 {
                     System.Threading.Thread.Sleep(2000);
-                    pMensajeRespuesta = SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|FLUSTD|" + comando));
+                    pMensajeRespuesta = SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|FLUSTD|" + comando), false);
                 }
                 return pMensajeRespuesta;
             }
@@ -353,33 +359,41 @@ namespace ServiciosCliente
                     pMensajeRespuesta = string.Empty;
                     for (int i = 0; i < AListaHistorial.Count; i++)
                     {
-                        comando += AListaHistorial[i].Porcentaje.ToString();
+                        comando += AListaHistorial[i].Porcentaje.ToString() + ";";
                     }
+                    comando = comando.Remove(comando.Length - 1);
                 }
 
                 if (estatus == "Estandar")
                 {
                     int folio;
                     string rsp = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
-                    if (Int32.TryParse(rsp.Split('|')[2], out folio))
-                        SeguimientoRspCmnd(rsp);
+                    if (Int32.TryParse(rsp.Split('|')[3], out folio))
+                    {
+                        rsp = SeguimientoRspCmnd(rsp, false);
+                        if (rsp != "Ok") return "Servicio consola: " + rsp;
+                    }
                     else
-                        return rsp;
+                        return rsp.Split('|')[3];
                 }
 
-                CambiaServiciosDisp(estatus, std);
+                if (!new[] { "6", "7" }.Contains(tipoClb) || std)
+                    CambiaServiciosDisp(estatus, std);
+
                 pMensajeRespuesta = "Ok";
 
                 if (estatus != "Estandar" && std)
                 {
                     System.Threading.Thread.Sleep(2000);
-                    pMensajeRespuesta = SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|FLUSTD|" + comando));
+                    int folio;
+                    string rsp = ComandoSocket("DISPENSERSX|FLUSTD|" + comando);
+                    pMensajeRespuesta = Int32.TryParse(rsp.Split('|')[3], out folio) ? "Ok" : rsp.Split('|')[3];
                 }
                 return pMensajeRespuesta;
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Error AplicarFlujoBennettSocket: " + ex.Message + " Comando: " + comando);
+                return ex.Message;
             }
         }
 
@@ -682,7 +696,7 @@ namespace ServiciosCliente
                 ComandosPorServicio = "No";
 
             if (ConfigurationManager.AppSettings["ModoGateway"] == "Si")
-                SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|EJECCMND|PROT " + comandostr));
+                SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|EJECCMND|PROT " + comandostr), false);
             else if (ComandosPorServicio == "Si")
             {
                 string servConsola;
@@ -786,11 +800,11 @@ namespace ServiciosCliente
                 return true;
         }
 
-        public string SeguimientoRspCmnd(string rsp)
+        public string SeguimientoRspCmnd(string rsp, bool single)
         {
             try
             {
-                string folio = rsp.Split('|')[2];
+                string folio = rsp.Split('|')[3];
                 string resp, resp2;
                 for (int i = 1; i <= 20; i++)
                 {
@@ -924,11 +938,23 @@ namespace ServiciosCliente
             return new TanquesPersistencia().RegistrarLectura(entidad);
         }
 
-        public string AplicarFlujoGilbarcoPorcentajes()
+        public string AplicarFlujoGilbarcoPorcentajes(string cmd)
         {
             string pMensajeRespuesta = string.Empty;
-            new ProcesosComando().AplicaComando("FLUACT", out pMensajeRespuesta);
-            return pMensajeRespuesta;
+            if (ConfigurationManager.AppSettings["ModoGateway"] == "Si")
+            {
+                int folio;
+                string rsp = ComandoSocket("DISPENSERSX|FLUACT|" + cmd);
+                if (Int32.TryParse(rsp.Split('|')[3], out folio))
+                    return SeguimientoRspCmnd(rsp, false);
+                else
+                    return rsp.Split('|')[3];
+            }
+            else
+            {
+                new ProcesosComando().AplicaComando("FLUACT", out pMensajeRespuesta);
+                return pMensajeRespuesta;
+            }
         }
 
 

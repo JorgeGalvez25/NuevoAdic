@@ -13,6 +13,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using Persistencia;
+using System.ServiceProcess;
 
 namespace NuevoAdicional
 {
@@ -271,7 +272,20 @@ namespace NuevoAdicional
                         new ProcesosFlujo().AplicarFlujo((from h in pListaHistorial select h).ToList<Historial>());
 
                         ServiciosCliente.IServiciosCliente pServiciosCliente = Configuraciones.ListaCanales[pIdEstacion];
-                        pServiciosCliente.AplicarFlujoGilbarcoPorcentajes();
+
+                        string comando;
+                        int xpos = pListaHistorial[0].Posicion;
+                        comando = pListaHistorial[0].Posicion + ":";
+                        for (int i = 0; i < pListaHistorial.Count; i++)
+                        {
+                            if (xpos != pListaHistorial[i].Posicion)
+                                comando = comando.Remove(comando.Length - 1) + ";" + pListaHistorial[i].Posicion + ":";
+                            xpos = pListaHistorial[i].Posicion;
+                            comando += pListaHistorial[i].Porcentaje.ToString() + ",";
+                        }
+                        comando = comando.Remove(comando.Length - 1);
+
+                        pServiciosCliente.AplicarFlujoGilbarcoPorcentajes(comando);
                     }
                     else
                     {
@@ -2206,23 +2220,46 @@ namespace NuevoAdicional
                 {
                     try
                     {
-                        string servConsola;
-                        if (!Utilerias.ObtenerListaVar().TryGetValue("PuertoServicio", out servConsola))
-                            servConsola = "http://127.0.0.1:9199/bin/";
+                        string resp = string.Empty;
                         Estacion estacion = Configuraciones.Estaciones.Find(p => { return p.Id == pEstacion; });
-                        string resp;
 
-                        if (Process.GetProcessesByName("PDISMENUX").Length == 0 && estacion.EstadoPresetWayne == EstatusPresetWayne.EsperandoMinimo)
-                            resp = "OK";
+                        if (ConfigurationManager.AppSettings["ModoGateway"].ToUpper() == "SI")
+                        {
+                            ServiceController sc = new ServiceController(ConfigurationManager.AppSettings["ServicioX"]);
+                            if (sc != null && sc.Status == ServiceControllerStatus.Stopped && estacion.EstadoPresetWayne == EstatusPresetWayne.EsperandoMinimo)
+                            {
+                                sc.Close();
+                                resp = "OK";
+                            }
+                            else
+                            {
+                                ServiciosCliente.IServiciosCliente pServiciosCliente = Configuraciones.ListaCanales[pEstacion];
+                                if (!Configuraciones.CanalEstaActivo(pEstacion, false))
+                                {
+                                    pServiciosCliente = Configuraciones.AbrirCanalCliente(pEstacion);
+                                }
+
+                                resp = pServiciosCliente.SeguimientoRspCmnd(pServiciosCliente.ComandoSocket("DISPENSERSX|EJECCMND|ESTADI"), true).ToUpper();
+                            }
+                        }
                         else
                         {
-                            try
+                            string servConsola;
+                            if (!Utilerias.ObtenerListaVar().TryGetValue("PuertoServicio", out servConsola))
+                                servConsola = "http://127.0.0.1:9199/bin/";
+
+                            if (Process.GetProcessesByName("PDISMENUX").Length == 0 && estacion.EstadoPresetWayne == EstatusPresetWayne.EsperandoMinimo)
+                                resp = "OK";
+                            else
                             {
-                                resp = new ServicioDisp(servConsola).EjecutaComando("ESTADI");
-                            }
-                            catch
-                            {
-                                resp = string.Empty;
+                                try
+                                {
+                                    resp = new ServicioDisp(servConsola).EjecutaComando("ESTADI");
+                                }
+                                catch
+                                {
+                                    resp = string.Empty;
+                                }
                             }
                         }
 
@@ -2240,6 +2277,15 @@ namespace NuevoAdicional
                             }
                             else
                             {
+                                if (ConfigurationManager.AppSettings["ModoGateway"].ToUpper() == "SI")
+                                {
+                                    ServiceController sc = new ServiceController(ConfigurationManager.AppSettings["ServicioOpengas"]);
+                                    if (sc != null && sc.Status == ServiceControllerStatus.Stopped)
+                                        sc.Start();
+                                    sc.WaitForStatus(ServiceControllerStatus.Running);
+                                    sc.Close();
+                                }
+
                                 estacion.Estado = "Mínimo";
                                 item.SubItems[2].Text = estacion.Estado;
                                 item.SubItems[3].Text = estacion.UltimoMovimiento.ToString(formatoFecha);

@@ -233,7 +233,7 @@ namespace NuevoAdicional
                     treeView1.Nodes.Add(nodo);
                 }
             }
-            if (tipoClb == "7")
+            else if (tipoClb == "7")
             {
                 listaPosiciones.ForEach(p =>
                 {
@@ -579,7 +579,6 @@ namespace NuevoAdicional
                             Historial pHistoTmp = c.Tag as Historial;
                             pHistoTmp.Fecha = DateTime.Today;
                             pHistoTmp.Hora = pHora;
-                            pHistoTmp.Calibracion = 0;
                             servicioAdicional.HistorialInsertar(pHistoTmp);
                         }
                     }
@@ -588,7 +587,6 @@ namespace NuevoAdicional
                         Historial hist = n.Tag as Historial;
                         hist.Fecha = DateTime.Now;
                         hist.Hora = pHora;
-                        hist.Calibracion = 0;
                         servicioAdicional.HistorialInsertar(hist);
                     }
                 }
