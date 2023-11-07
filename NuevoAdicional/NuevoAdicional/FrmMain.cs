@@ -166,6 +166,27 @@ namespace NuevoAdicional
             this.Visible = ConfigurationManager.AppSettings["InicioAuto"] != "Si";
 
             tmrSinc.Enabled = ConfigurationManager.AppSettings["HoraSinc"] != null;
+
+            if (ConfigurationManager.AppSettings["ModoGateway"] == "Si" && ConfigurationManager.AppSettings["ServicioX"] != string.Empty)
+            {
+                string estatus = new ConfiguracionPersistencia().ConfiguracionObtener(1).Estado;
+
+                //Iniciar servicio
+                ServiceController sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"]);
+
+                try
+                {
+                    if (sc != null && sc.Status == ServiceControllerStatus.Stopped)
+                    {
+                        sc.Start();
+                    }
+                    sc.WaitForStatus(ServiceControllerStatus.Running);
+                    sc.Close();
+                }
+                catch
+                {
+                }
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
