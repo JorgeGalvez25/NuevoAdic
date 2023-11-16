@@ -2239,7 +2239,14 @@ namespace NuevoAdicional
                                     pServiciosCliente = Configuraciones.AbrirCanalCliente(pEstacion);
                                 }
 
-                                resp = pServiciosCliente.SeguimientoRspCmnd(pServiciosCliente.ComandoSocket("DISPENSERSX|EJECCMND|ESTADI"), true).ToUpper();
+                                try
+                                {
+                                    resp = pServiciosCliente.SeguimientoRspCmnd(pServiciosCliente.ComandoSocket("DISPENSERSX|EJECCMND|ESTADI"), true).ToUpper();
+                                }
+                                catch
+                                {
+                                    resp = "OK";
+                                }
                             }
                         }
                         else

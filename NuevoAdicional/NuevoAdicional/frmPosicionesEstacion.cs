@@ -721,6 +721,10 @@ namespace NuevoAdicional
 
                 llenarLista();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error itActualizarPosiciones_Click: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             finally
             {
                 Cursor.Current = Cursors.Default;
