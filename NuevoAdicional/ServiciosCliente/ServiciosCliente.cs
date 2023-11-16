@@ -32,7 +32,7 @@ namespace ServiciosCliente
             string pMensajeRespuesta = string.Empty;
             variables = Utilerias.ObtenerListaVar();
             if (!ValidaLicencia("CVL5"))
-                throw new System.ArgumentException("Licencia Inválida.");
+                throw new System.ArgumentException("Licencia CVL5 Inválida.");
             if (ConfigurationManager.AppSettings["CambiaConsola"] == "Si")
             {
                 if (estatus == "Estandar" || !std)
@@ -65,6 +65,8 @@ namespace ServiciosCliente
             }
             else
             {
+                if (ConfigurationManager.AppSettings["OpenGas"] == "Si" && (!ValidaLicencia("CVL7")))
+                    throw new System.ArgumentException("Licencia CVL7 Inválida.");
                 switch (marca)
                 {
                     case MarcaDispensario.Ninguno:
@@ -185,28 +187,37 @@ namespace ServiciosCliente
                         porGas = h.Porcentaje;
 
                 }
+
+            string cmd;
+
             if (tipoclb == "3")
             {
                 foreach (var h in AListaHistorial)
                 {
-                    comandos.Add("P" + BuscaPosLibre(h.Combustible == 2 ? 1 : h.Combustible).ToString("00") + "0100" + "7957" +
-                                (h.Combustible == 3 ? "4" + porDie.ToString("0") : "3" + porGas.ToString("0")) + "0");
+                    cmd = "P" + BuscaPosLibre(h.Combustible == 2 ? 1 : h.Combustible).ToString("00") + "0100" + "7957" +
+                                (h.Combustible == 3 ? "4" + porDie.ToString("0") : "3" + porGas.ToString("0")) + "0";
+                    if (cmd.Substring(0, 3) != "P00")
+                        comandos.Add(cmd);
                 }
             }
             else if (tipoclb == "4")
             {
                 foreach (var h in AListaHistorial)
                 {
-                    comandos.Add("P" + BuscaPosLibre(h.Combustible == 2 ? 1 : h.Combustible).ToString("00") + "01000" + "957" +
-                                (h.Combustible == 3 ? "4" + porDie.ToString("0") : "3" + porGas.ToString("0")) + "0");
+                    cmd = "P" + BuscaPosLibre(h.Combustible == 2 ? 1 : h.Combustible).ToString("00") + "01000" + "957" +
+                                (h.Combustible == 3 ? "4" + porDie.ToString("0") : "3" + porGas.ToString("0")) + "0";
+                    if (cmd.Substring(0, 3) != "P00")
+                        comandos.Add(cmd);
                 }
             }
             else if (tipoclb == "5")
             {
                 foreach (var h in AListaHistorial)
                 {
-                    comandos.Add("@020" + BuscaPosLibre(h.Combustible == 2 ? 1 : h.Combustible).ToString("00") + "010" + "957" +
-                                (h.Combustible == 3 ? "4" + porDie.ToString("0") : "3" + porGas.ToString("0")) + "110000");
+                    cmd = "@020" + BuscaPosLibre(h.Combustible == 2 ? 1 : h.Combustible).ToString("00") + "010" + "957" +
+                                (h.Combustible == 3 ? "4" + porDie.ToString("0") : "3" + porGas.ToString("0")) + "110000";
+                    if (cmd.Substring(0, 6) != "@02000")
+                        comandos.Add(cmd);
                 }
             }
             else
@@ -378,17 +389,18 @@ namespace ServiciosCliente
                 }
 
                 if (!new[] { "6", "7" }.Contains(tipoClb) || std)
-                    CambiaServiciosDisp(estatus, std);
+                    pMensajeRespuesta = CambiaServiciosDisp(estatus, std) ? "Ok" : "Error al realizar cambio de servicio";
+                else
+                    pMensajeRespuesta = "Ok";
 
-                pMensajeRespuesta = "Ok";
-
-                if (estatus != "Estandar" && std)
+                if (pMensajeRespuesta == "Ok" && estatus != "Estandar" && std)
                 {
                     System.Threading.Thread.Sleep(2000);
                     int folio;
                     string rsp = ComandoSocket("DISPENSERSX|FLUSTD|" + comando);
                     pMensajeRespuesta = Int32.TryParse(rsp.Split('|')[3], out folio) ? "Ok" : rsp.Split('|')[3];
                 }
+
                 return pMensajeRespuesta;
             }
             catch (Exception ex)
@@ -661,6 +673,14 @@ namespace ServiciosCliente
                     lic.Estemporal = variables.TryGetValue("LicenciaGilbarcoFechaVence", out valor) ? "true" : "false";
                     lic.Fecha_vence = variables.TryGetValue("LicenciaGilbarcoFechaVence", out valor) ? valor : string.Empty;
                 }
+                else if (lic.Sistema == "CVL7")
+                {
+                    lic.TipoLicencia = "Abierta";
+                    lic.ClaveAutor = variables.TryGetValue("LicCVL7", out valor) ? valor : string.Empty;
+                    lic.Usuarios = 1;
+                    lic.Estemporal = variables.TryGetValue("LicCVL7FechaVence", out valor) ? "true" : "false";
+                    lic.Fecha_vence = variables.TryGetValue("LicCVL7FechaVence", out valor) ? valor : string.Empty;
+                }
 
                 return LicenciaValidaDLL(lic.Razon_social,
                                          lic.Sistema,
@@ -770,12 +790,19 @@ namespace ServiciosCliente
                     sc.WaitForStatus(ServiceControllerStatus.Stopped);
                     sc.Close();
                 }
-                catch
+                catch(Exception ex)
                 {
+                    GuardarMensaje(string.Format("ERROR_CambiaDisp({0}).txt", DateTime.Now.ToString("yyMMddHHmmss")), ex.Message + ex.TargetSite + ex.StackTrace);
                     return false;
                 }
 
-                EditarXMLNotify(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
+                try
+                {
+                    EditarXMLNotify(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
+                }
+                catch
+                {
+                }
 
                 //Iniciar servicio
                 sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
@@ -789,8 +816,9 @@ namespace ServiciosCliente
                     sc.WaitForStatus(ServiceControllerStatus.Running);
                     sc.Close();
                 }
-                catch
+                catch (Exception ex)
                 {
+                    GuardarMensaje(string.Format("ERROR_CambiaDisp({0}).txt", DateTime.Now.ToString("yyMMddHHmmss")), ex.Message + ex.TargetSite + ex.StackTrace);
                     return false;
                 }
 
