@@ -352,7 +352,7 @@ namespace ServiciosCliente
 
             try
             {
-                if (new[] { "6", "7" }.Contains(tipoClb))
+                if (new[] { "2", "6", "7" }.Contains(tipoClb))
                 {
                     int xpos = AListaHistorial[0].Posicion;
                     comando = AListaHistorial[0].Posicion + ":";
@@ -388,7 +388,7 @@ namespace ServiciosCliente
                         return rsp.Split('|')[3];
                 }
 
-                if (!new[] { "6", "7" }.Contains(tipoClb) || std)
+                if (!new[] { "2", "6", "7" }.Contains(tipoClb) || std)
                     pMensajeRespuesta = CambiaServiciosDisp(estatus, std) ? "Ok" : "Error al realizar cambio de servicio";
                 else
                     pMensajeRespuesta = "Ok";
