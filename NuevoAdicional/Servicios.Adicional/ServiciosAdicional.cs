@@ -12,6 +12,7 @@ using ServiciosCliente;
 using System.Diagnostics;
 using System.IO;
 using Adicional.Entidades.Web;
+using System.Configuration;
 
 namespace Servicios.Adicional
 {
@@ -918,7 +919,8 @@ namespace Servicios.Adicional
             string aux = arrAux.Length >= 2 ? arrAux[1] : "0";
 
             int clave = 0;
-            int.TryParse(aux, out clave);
+            string marcaDisp = ConfigurationManager.AppSettings["MarcaDispensario"];
+            clave = marcaDisp != string.Empty ? Convert.ToInt32(marcaDisp) : Convert.ToInt32(aux);
 
             return (MarcaDispensario)clave;
         }
