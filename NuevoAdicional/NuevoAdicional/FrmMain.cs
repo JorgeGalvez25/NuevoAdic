@@ -172,7 +172,7 @@ namespace NuevoAdicional
                 string estatus = new ConfiguracionPersistencia().ConfiguracionObtener(1).Estado;
 
                 //Detener servicio
-                ServiceController sc = new ServiceController(estatus =! "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"]);
+                ServiceController sc = new ServiceController(estatus != "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"]);
                 try
                 {
                     if (sc != null && sc.Status == ServiceControllerStatus.Running)
@@ -184,11 +184,10 @@ namespace NuevoAdicional
                 }
                 catch
                 {
-                    return false;
                 }
 
                 //Iniciar servicio
-                ServiceController sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"]);
+                sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"]);
 
                 try
                 {

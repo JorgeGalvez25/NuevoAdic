@@ -164,7 +164,7 @@ namespace Consola.Connect
                         if (!LiberarPSerialSocket(0))
                             return "Error en comunicación con PDISPENSARIOS";
                         System.Threading.Thread.Sleep(200);
-                        if (ConfigurationManager.AppSettings["ModoDelphi"] == "Si")
+                        if (marca == 1 || marca == 2 || ConfigurationManager.AppSettings["ModoDelphi"] == "Si")
                         {
                             this.DoAction(comandos);
                         }
