@@ -53,8 +53,14 @@ namespace ServiciosCliente
                 {
                     case MarcaDispensario.Ninguno:
                         break;
+                    case MarcaDispensario.Wayne:
+                        pMensajeRespuesta = AplicarFlujoWayneSocket(std, estatus, AListaHistorial);
+                        break;
                     case MarcaDispensario.Bennett:
                         pMensajeRespuesta = AplicarFlujoBennettSocket(std, estatus, AListaHistorial);
+                        break;
+                    case MarcaDispensario.Team:
+                        pMensajeRespuesta = AplicarFlujoTeamSocket(std, estatus, AListaHistorial);
                         break;
                     case MarcaDispensario.Gilbarco:
                         pMensajeRespuesta = AplicarFlujoGilbarcoSocket(std, estatus, AListaHistorial);
@@ -427,6 +433,54 @@ namespace ServiciosCliente
             return pRespuesta;
         }
 
+        public string AplicarFlujoWayneSocket(bool std, string estatus, List<Historial> AListaHistorial)
+        {
+            string pMensajeRespuesta = string.Empty;
+            string comando = string.Empty;
+
+            try
+            {
+                pMensajeRespuesta = string.Empty;
+                for (int i = 0; i < AListaHistorial.Count; i++)
+                {
+                    comando += AListaHistorial[i].Porcentaje.ToString() + ";";
+                }
+                comando = comando.Remove(comando.Length - 1);
+
+                if (estatus == "Estandar")
+                {
+                    int folio;
+                    string rsp = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
+                    if (Int32.TryParse(rsp.Split('|')[3], out folio))
+                    {
+                        rsp = SeguimientoRspCmnd(rsp, false);
+                        if (rsp != "Ok") return "Servicio consola: " + rsp;
+                    }
+                    else
+                        return rsp.Split('|')[3];
+                }
+
+                if (std)
+                    pMensajeRespuesta = CambiaServiciosDisp(estatus, std) ? "Ok" : "Error al realizar cambio de servicio";
+                else
+                    pMensajeRespuesta = "Ok";
+
+                if (pMensajeRespuesta == "Ok" && estatus != "Estandar" && std)
+                {
+                    System.Threading.Thread.Sleep(2000);
+                    int folio;
+                    string rsp = ComandoSocket("DISPENSERSX|FLUSTD|" + comando);
+                    pMensajeRespuesta = Int32.TryParse(rsp.Split('|')[3], out folio) ? "Ok" : rsp.Split('|')[3];
+                }
+
+                return pMensajeRespuesta;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         public string AplicarFlujoTeam(bool std, List<Historial> AListaHistorial)
         {
             string pRespuesta, checksum;
@@ -460,6 +514,44 @@ namespace ServiciosCliente
             puerto = null;
 
             return pRespuesta;
+        }
+
+        public string AplicarFlujoTeamSocket(bool std, string estatus, List<Historial> AListaHistorial)
+        {
+            string pMensajeRespuesta = string.Empty;
+            string comando = string.Empty;
+
+            try
+            {
+                pMensajeRespuesta = string.Empty;
+                for (int i = 0; i < AListaHistorial.Count; i++)
+                {
+                    comando += AListaHistorial[i].Posicion.ToString() + ":" + AListaHistorial[i].Porcentaje.ToString() + ";";
+                }
+                comando = comando.Remove(comando.Length - 1);
+
+                if (estatus == "Estandar")
+                {
+                    int folio;
+                    string rsp = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
+                    if (Int32.TryParse(rsp.Split('|')[3], out folio))
+                    {
+                        rsp = SeguimientoRspCmnd(rsp, false);
+                        if (rsp != "Ok") return "Servicio consola: " + rsp;
+                    }
+                    else
+                        return rsp.Split('|')[3];
+                }
+
+                CambiaServiciosDisp(estatus, std);
+                pMensajeRespuesta = "Ok";
+
+                return pMensajeRespuesta;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public string AplicarFlujoHongYang(bool std, List<Historial> AListaHistorial)
@@ -790,7 +882,7 @@ namespace ServiciosCliente
                     sc.WaitForStatus(ServiceControllerStatus.Stopped);
                     sc.Close();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     GuardarMensaje(string.Format("ERROR_CambiaDisp({0}).txt", DateTime.Now.ToString("yyMMddHHmmss")), ex.Message + ex.TargetSite + ex.StackTrace);
                     return false;
