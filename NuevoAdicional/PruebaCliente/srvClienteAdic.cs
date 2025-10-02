@@ -164,30 +164,17 @@ namespace PruebaCliente
                         srvAdic.BitacoraInsertar(new Bitacora() { Id_usuario = usuarioSincro, Suceso = "Sincronizar Estación" });
                         status = (byte)(cfg.Estado == "Mínimo" ? 0 : 1);
                         srvAdic.ConfiguracionActualizarUltimaSincronizacion(DateTime.Now);
-                        bool resSicronizar = srvClient.Sincronizar(status, out mensaje);
 
-                        if (!string.IsNullOrEmpty(mensaje))
+                        string edoAdicional = cfg.Estado;
+                        string edoDisp = cfg.Estado.Equals("Mínimo") ? "Estandar" : "Mínimo";
+                        bool restablecido = true;
+
+                        srvAdic.BitacoraInsertar(new Bitacora() { Id_usuario = usuarioSincro, Suceso = "Diferencia de sincronización (Adicional: " + edoAdicional + " Dispensario: " + edoDisp + ")" });
+                        restablecido = subirBajar(status, cfg.Estado, cfg.Id, srvAdic, srvClient);
+
+                        if (!restablecido)
                         {
-                            if (resSicronizar)
-                                srvAdic.BitacoraInsertar(new Bitacora() { Id_usuario = usuarioSincro, Suceso = "El estado del dispensario es correcto." });
-                            else
-                            {
-                                string edoAdicional = cfg.Estado;
-                                string edoDisp = cfg.Estado.Equals("Mínimo") ? "Estandar" : "Mínimo";
-                                bool restablecido = true;
-
-                                srvAdic.BitacoraInsertar(new Bitacora() { Id_usuario = usuarioSincro, Suceso = "Diferencia de sincronización (Adicional: " + edoAdicional + " Dispensario: " + edoDisp + ")" });
-                                restablecido = subirBajar(status, cfg.Estado, cfg.Id, srvAdic, srvClient);
-
-                                if (!restablecido)
-                                {
-                                    srvAdic.BitacoraInsertar(new Bitacora() { Id_usuario = usuarioSincro, Suceso = "No ha sido posible restablecer el estado." });
-                                }
-                            }
-                        }
-                        else
-                        {
-                            srvAdic.BitacoraInsertar(new Bitacora() { Id_usuario = usuarioSincro, Suceso = "Hubo un error al sincronizar." });
+                            srvAdic.BitacoraInsertar(new Bitacora() { Id_usuario = usuarioSincro, Suceso = "No ha sido posible restablecer el estado." });
                         }
 
                         //if (status == 1)
@@ -225,7 +212,8 @@ namespace PruebaCliente
                     if (status == 1)
                     {
                         #region Subir
-                        string pRespuesta = pServiciosCliente.AplicarFlujo(true, false, estacionCons.ObtenerMarcaDispensario(), (from h in pListaHistorial select h).ToList<Adicional.Entidades.Historial>());
+                        string pRespuesta = pServiciosCliente.AplicarFlujo(true, false, ConfigurationManager.AppSettings["MarcaDispensario"] != string.Empty ? (MarcaDispensario)Convert.ToInt32(ConfigurationManager.AppSettings["MarcaDispensario"]) : estacionCons.ObtenerMarcaDispensario(), 
+                                                                            (from h in pListaHistorial select h).ToList<Adicional.Entidades.Historial>());
                         srvAdicRem.ApagarVisual();
 
                         if (pRespuesta.Length > 0)
