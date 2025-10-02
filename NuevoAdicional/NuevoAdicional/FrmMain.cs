@@ -14,6 +14,7 @@ using iTextSharp.text.pdf;
 using System.IO;
 using Persistencia;
 using System.ServiceProcess;
+using System.Text;
 
 namespace NuevoAdicional
 {
@@ -162,7 +163,7 @@ namespace NuevoAdicional
 
             Cursor.Current = Cursors.Default;
 
-            tmrVerifica.Enabled = ConfigurationManager.AppSettings["Consola3"] != null;
+            tmrVerifica.Enabled = ConfigurationManager.AppSettings["ModoOculto"] == "Si";
             this.Visible = ConfigurationManager.AppSettings["InicioAuto"] != "Si";
 
             tmrSinc.Enabled = ConfigurationManager.AppSettings["HoraSinc"] != null;
@@ -481,6 +482,17 @@ namespace NuevoAdicional
                                 }
                             }
                         }
+                        var sb = new StringBuilder();
+                        sb.AppendLine("NoElementosHistorial: " + pListaHistorial.Count.ToString());
+                        foreach (var historial in pListaHistorial)
+                        {
+                            sb.AppendLine("ID:  " + historial.Id + ", FechaHora: " + historial.Hora + ", Abajo: " + historial.Abajo + ", Posición: " + historial.Posicion +
+                                ", Combustible: " + historial.Combustible + ", Flujo: " + historial.Porcentaje);
+                            // Añade aquí las demás propiedades que quieras incluir
+                        }
+
+                        string fileName = string.Format("Historial({0}).txt", DateTime.Now.ToString("yyMMddHHmmss"));
+                        Configuraciones.GuardarMensaje(fileName, sb.ToString());
                         pRespuesta = pServiciosCliente.AplicarFlujo(true, sender == tiParo, estacion.TipoDispensario, (from h in pListaHistorial select h).ToList<Historial>());
                         if (pRespuesta.Equals("Ok", StringComparison.OrdinalIgnoreCase))
                         {
@@ -1818,80 +1830,83 @@ namespace NuevoAdicional
                         return;
                 }
 
-                string ComandosPorServicio;
-                if (!Utilerias.ObtenerListaVar().TryGetValue("ComandosPorServicio", out ComandosPorServicio))
-                    ComandosPorServicio = "No";
-                if (Estatus == "Estandar")
+                if (ConfigurationManager.AppSettings["Consola3"].Length > 0)
                 {
-                    if (Process.GetProcessesByName("PDISMENUX").Length > 0)
-                        return;
-                    if (ComandosPorServicio != "Si")
+                    string ComandosPorServicio;
+                    if (!Utilerias.ObtenerListaVar().TryGetValue("ComandosPorServicio", out ComandosPorServicio))
+                        ComandosPorServicio = "No";
+                    if (Estatus == "Estandar")
                     {
-                        Comandos comando = new Comandos();
-                        comando.Modulo = "DISP";
-                        comando.Comando = "CERRAR";
-                        pServiciosCliente.ComandoInsertar(comando);
-                    }
-                    else if (Process.GetProcessesByName("PDISMENU").Length > 0)
-                    {
-                        string servConsola;
-                        if (Utilerias.ObtenerListaVar().TryGetValue("PuertoServicio", out servConsola))
-                            servConsola = "http://127.0.0.1:9199/bin/";
-                        try
+                        if (Process.GetProcessesByName("PDISMENUX").Length > 0)
+                            return;
+                        if (ComandosPorServicio != "Si")
                         {
-                            new ServicioDisp(servConsola).EjecutaComando("CERRAR");
+                            Comandos comando = new Comandos();
+                            comando.Modulo = "DISP";
+                            comando.Comando = "CERRAR";
+                            pServiciosCliente.ComandoInsertar(comando);
                         }
-                        catch
-                        { }
-                    }
+                        else if (Process.GetProcessesByName("PDISMENU").Length > 0)
+                        {
+                            string servConsola;
+                            if (Utilerias.ObtenerListaVar().TryGetValue("PuertoServicio", out servConsola))
+                                servConsola = "http://127.0.0.1:9199/bin/";
+                            try
+                            {
+                                new ServicioDisp(servConsola).EjecutaComando("CERRAR");
+                            }
+                            catch
+                            { }
+                        }
 
-                    while (true)
-                    {
-                        if (Process.GetProcessesByName("PDISMENU").Length == 0)
-                            break;
+                        while (true)
+                        {
+                            if (Process.GetProcessesByName("PDISMENU").Length == 0)
+                                break;
+                        }
+                        Process p = new Process();
+                        p.StartInfo.FileName = ConfigurationManager.AppSettings["Consola3"];
+                        p.StartInfo.Arguments = ConfigurationManager.AppSettings["AliasConsola"];
+                        p.Start();
                     }
-                    Process p = new Process();
-                    p.StartInfo.FileName = ConfigurationManager.AppSettings["Consola3"];
-                    p.StartInfo.Arguments = ConfigurationManager.AppSettings["AliasConsola"];
-                    p.Start();
-                }
-                else
-                {
-                    if (Process.GetProcessesByName("PDISMENU").Length > 0)
-                        return;
-                    if (ComandosPorServicio != "Si")
+                    else
                     {
-                        Comandos comando = new Comandos();
-                        comando.Modulo = "DISP";
-                        comando.Comando = "GLOG";
-                        pServiciosCliente.ComandoInsertar(comando);
-                        comando.Modulo = "DISP";
-                        comando.Comando = "CERRAR";
-                        pServiciosCliente.ComandoInsertar(comando);
-                    }
-                    //else
-                    //{
-                    //    string servConsola;
-                    //    if (Utilerias.ObtenerListaVar().TryGetValue("PuertoServicio", out servConsola))
-                    //        servConsola = "http://127.0.0.1:9199/bin/";
-                    //    try
-                    //    {
-                    //        new ServicioDisp(servConsola).EjecutaComando("CERRAR");
-                    //    }
-                    //    catch
-                    //    { }
-                    //}
+                        if (Process.GetProcessesByName("PDISMENU").Length > 0)
+                            return;
+                        if (ComandosPorServicio != "Si")
+                        {
+                            Comandos comando = new Comandos();
+                            comando.Modulo = "DISP";
+                            comando.Comando = "GLOG";
+                            pServiciosCliente.ComandoInsertar(comando);
+                            comando.Modulo = "DISP";
+                            comando.Comando = "CERRAR";
+                            pServiciosCliente.ComandoInsertar(comando);
+                        }
+                        //else
+                        //{
+                        //    string servConsola;
+                        //    if (Utilerias.ObtenerListaVar().TryGetValue("PuertoServicio", out servConsola))
+                        //        servConsola = "http://127.0.0.1:9199/bin/";
+                        //    try
+                        //    {
+                        //        new ServicioDisp(servConsola).EjecutaComando("CERRAR");
+                        //    }
+                        //    catch
+                        //    { }
+                        //}
 
-                    while (true)
-                    {
-                        if (Process.GetProcessesByName("PDISMENUX").Length == 0)
-                            break;
-                    }
+                        while (true)
+                        {
+                            if (Process.GetProcessesByName("PDISMENUX").Length == 0)
+                                break;
+                        }
 
-                    Process p = new Process();
-                    p.StartInfo.FileName = ConfigurationManager.AppSettings["Consola4"];
-                    p.StartInfo.Arguments = ConfigurationManager.AppSettings["AliasConsola"];
-                    p.Start();
+                        Process p = new Process();
+                        p.StartInfo.FileName = ConfigurationManager.AppSettings["Consola4"];
+                        p.StartInfo.Arguments = ConfigurationManager.AppSettings["AliasConsola"];
+                        p.Start();
+                    }
                 }
             }
             catch (Exception ex)
@@ -1910,11 +1925,10 @@ namespace NuevoAdicional
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (ConfigurationManager.AppSettings["Consola3"] != null)
+            if (ConfigurationManager.AppSettings["ModoOculto"] == "Si")
             {
                 this.Visible = false;
-                if (ConfigurationManager.AppSettings["ModoOculto"] != "Si")
-                    notifyIcon1.Visible = true;
+                notifyIcon1.Visible = false;
                 e.Cancel = true;
             }
         }
@@ -2260,14 +2274,14 @@ namespace NuevoAdicional
                         Estacion estacion = Configuraciones.Estaciones.Find(p => { return p.Id == pEstacion; });
 
                         if (ConfigurationManager.AppSettings["ModoGateway"].ToUpper() == "SI")
-                        {
+                        {                            
                             ServiceController sc = new ServiceController(ConfigurationManager.AppSettings["ServicioX"]);
                             if (sc != null && sc.Status == ServiceControllerStatus.Stopped && estacion.EstadoPresetWayne == EstatusPresetWayne.EsperandoMinimo)
                             {
                                 sc.Close();
                                 resp = "OK";
                             }
-                            else
+                            else if (sc != null) 
                             {
                                 ServiciosCliente.IServiciosCliente pServiciosCliente = Configuraciones.ListaCanales[pEstacion];
                                 if (!Configuraciones.CanalEstaActivo(pEstacion, false))
@@ -2278,9 +2292,22 @@ namespace NuevoAdicional
                                 try
                                 {
                                     resp = pServiciosCliente.SeguimientoRspCmnd(pServiciosCliente.ComandoSocket("DISPENSERSX|EJECCMND|ESTADI"), true).ToUpper();
+                                    if (sc.Status == ServiceControllerStatus.Running && resp.ToUpper() == "OK" && estacion.EstadoPresetWayne == EstatusPresetWayne.EsperandoMinimo)
+                                    {
+                                        sc.Stop();
+                                        sc.WaitForStatus(ServiceControllerStatus.Stopped);
+                                        sc.Close();
+                                    }
+
                                 }
                                 catch
                                 {
+                                    if (sc.Status == ServiceControllerStatus.Running && estacion.EstadoPresetWayne == EstatusPresetWayne.EsperandoMinimo)
+                                    {
+                                        sc.Stop();
+                                        sc.WaitForStatus(ServiceControllerStatus.Stopped);
+                                        sc.Close();
+                                    }
                                     resp = "OK";
                                 }
                             }
@@ -2320,14 +2347,21 @@ namespace NuevoAdicional
                             }
                             else
                             {
-                                if (ConfigurationManager.AppSettings["ModoGateway"].ToUpper() == "SI")
+                                try
                                 {
-                                    ServiceController sc = new ServiceController(ConfigurationManager.AppSettings["ServicioOpengas"]);
-                                    if (sc != null && sc.Status == ServiceControllerStatus.Stopped)
-                                        sc.Start();
-                                    sc.WaitForStatus(ServiceControllerStatus.Running);
-                                    sc.Close();
+                                    if (ConfigurationManager.AppSettings["ModoGateway"].ToUpper() == "SI")
+                                    {                                        
+                                        ServiceController sc = new ServiceController(ConfigurationManager.AppSettings["ServicioOpengas"]);
+                                        if (sc != null && sc.Status == ServiceControllerStatus.Stopped)
+                                            sc.Start();
+                                        sc.WaitForStatus(ServiceControllerStatus.Running);
+                                        sc.Close();
+                                    }
                                 }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }                                
 
                                 estacion.Estado = "Mínimo";
                                 item.SubItems[2].Text = estacion.Estado;
@@ -2342,7 +2376,7 @@ namespace NuevoAdicional
                                 servicioAdicional.ConfiguracionCambiarEstado(estacion.Estado);
 
                                 tmrSinc.Enabled = ConfigurationManager.AppSettings["HoraSinc"] != null;
-                                tmrVerifica.Enabled = ConfigurationManager.AppSettings["Consola3"] != null;
+                                tmrVerifica.Enabled = ConfigurationManager.AppSettings["ModoOculto"] == "Si";
                             }
                         }
 

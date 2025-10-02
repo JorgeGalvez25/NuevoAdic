@@ -388,7 +388,7 @@
             this.tiTickets.Image = global::NuevoAdicional.Properties.Resources.scroll;
             this.tiTickets.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tiTickets.Name = "tiTickets";
-            this.tiTickets.Size = new System.Drawing.Size(72, 22);
+            this.tiTickets.Size = new System.Drawing.Size(73, 22);
             this.tiTickets.Tag = "25";
             this.tiTickets.Text = "Tickets";
             // 
@@ -411,7 +411,7 @@
             this.tiTanques.Image = global::NuevoAdicional.Properties.Resources.column;
             this.tiTanques.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tiTanques.Name = "tiTanques";
-            this.tiTanques.Size = new System.Drawing.Size(113, 20);
+            this.tiTanques.Size = new System.Drawing.Size(114, 20);
             this.tiTanques.Tag = "26";
             this.tiTanques.Text = "Entrada Tanques";
             // 
@@ -420,7 +420,7 @@
             this.tiLecturasTanques.Image = global::NuevoAdicional.Properties.Resources.Tank_Reading;
             this.tiLecturasTanques.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tiLecturasTanques.Name = "tiLecturasTanques";
-            this.tiLecturasTanques.Size = new System.Drawing.Size(117, 20);
+            this.tiLecturasTanques.Size = new System.Drawing.Size(118, 20);
             this.tiLecturasTanques.Tag = "29";
             this.tiLecturasTanques.Text = "Lecturas Tanques";
             this.tiLecturasTanques.Click += new System.EventHandler(this.tiLecturasTanques_Click);
@@ -440,7 +440,7 @@
             // txtUsuario
             // 
             this.txtUsuario.Name = "txtUsuario";
-            this.txtUsuario.Size = new System.Drawing.Size(61, 17);
+            this.txtUsuario.Size = new System.Drawing.Size(60, 17);
             this.txtUsuario.Text = "txtUsuario";
             // 
             // itProgresoActualizar
@@ -455,7 +455,7 @@
             this.itmEdoRemoto.Image = global::NuevoAdicional.Properties.Resources.bullet_ball_glass_gray;
             this.itmEdoRemoto.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
             this.itmEdoRemoto.Name = "itmEdoRemoto";
-            this.itmEdoRemoto.Size = new System.Drawing.Size(1031, 17);
+            this.itmEdoRemoto.Size = new System.Drawing.Size(1032, 17);
             this.itmEdoRemoto.Spring = true;
             this.itmEdoRemoto.Text = "Estado del aviso visual:  ";
             this.itmEdoRemoto.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -668,7 +668,7 @@
             // 
             // tmrWayne
             // 
-            this.tmrWayne.Interval = 5000;
+            this.tmrWayne.Interval = 500;
             this.tmrWayne.Tick += new System.EventHandler(this.tmrWayne_Tick);
             // 
             // frmMain
