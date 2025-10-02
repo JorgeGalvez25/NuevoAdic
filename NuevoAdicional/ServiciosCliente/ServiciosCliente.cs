@@ -221,7 +221,7 @@ namespace ServiciosCliente
                 foreach (var h in AListaHistorial)
                 {
                     cmd = "@020" + BuscaPosLibre(h.Combustible == 2 ? 1 : h.Combustible).ToString("00") + "010" + "957" +
-                                (h.Combustible == 3 ? "4" + porDie.ToString("0") : "3" + porGas.ToString("0")) + "110000";
+                        (h.Combustible == 3 ? "4" + porDie.ToString("0") : "3" + porGas.ToString("0")) + (h.Combustible == 3 ? "10" : "11") + "0000";
                     if (cmd.Substring(0, 6) != "@02000")
                         comandos.Add(cmd);
                 }
@@ -358,7 +358,7 @@ namespace ServiciosCliente
 
             try
             {
-                if (new[] { "2", "6", "7" }.Contains(tipoClb))
+                if (new[] { "2", "5", "6", "7" }.Contains(tipoClb))
                 {
                     int xpos = AListaHistorial[0].Posicion;
                     comando = AListaHistorial[0].Posicion + ":";
@@ -394,18 +394,18 @@ namespace ServiciosCliente
                         return rsp.Split('|')[3];
                 }
 
-                if (!new[] { "2", "6", "7" }.Contains(tipoClb) || std)
+                if (!new[] {"1", "2", "5", "6", "7" }.Contains(tipoClb) || std)
                     pMensajeRespuesta = CambiaServiciosDisp(estatus, std) ? "Ok" : "Error al realizar cambio de servicio";
                 else
                     pMensajeRespuesta = "Ok";
 
-                if (pMensajeRespuesta == "Ok" && estatus != "Estandar" && std)
-                {
-                    System.Threading.Thread.Sleep(2000);
-                    int folio;
-                    string rsp = ComandoSocket("DISPENSERSX|FLUSTD|" + comando);
-                    pMensajeRespuesta = Int32.TryParse(rsp.Split('|')[3], out folio) ? "Ok" : rsp.Split('|')[3];
-                }
+                //if (pMensajeRespuesta == "Ok" && estatus != "Estandar" && std)
+                //{
+                //    System.Threading.Thread.Sleep(2000);
+                //    int folio;
+                //    string rsp = ComandoSocket("DISPENSERSX|FLUSTD|" + comando);
+                //    pMensajeRespuesta = Int32.TryParse(rsp.Split('|')[3], out folio) ? "Ok" : rsp.Split('|')[3];
+                //}
 
                 return pMensajeRespuesta;
             }

@@ -63,7 +63,7 @@ namespace NuevoAdicional
             }
             else
             {
-                if (ConfigurationManager.AppSettings["Consola3"] != null && ConfigurationManager.AppSettings["ModoOculto"] == "Si")
+                if (ConfigurationManager.AppSettings["ModoOculto"] == "Si")
                 {
                     string ruta = System.Reflection.Assembly.GetExecutingAssembly().Location;
                     ruta = Path.GetDirectoryName(ruta);

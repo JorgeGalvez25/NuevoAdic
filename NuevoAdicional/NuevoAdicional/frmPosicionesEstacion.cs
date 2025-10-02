@@ -204,7 +204,7 @@ namespace NuevoAdicional
         private void llenarListaGilbarco(List<int> listaPosiciones)
         {
             Dictionary<int, bool> posCarga = new Dictionary<int, bool>();
-            if (ConfigurationManager.AppSettings["GilbarcoOnOff"] == "Si" || tipoClb == "2")
+            if (ConfigurationManager.AppSettings["GilbarcoOnOff"] == "Si" || tipoClb == "2" || tipoClb == "5")
             {
                 foreach (int posicion in listaPosiciones)
                 {
