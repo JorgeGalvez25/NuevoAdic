@@ -358,7 +358,7 @@ namespace ServiciosCliente
 
             try
             {
-                if (new[] { "2", "5", "6", "7" }.Contains(tipoClb))
+                if (new[] { "5", "6", "7" }.Contains(tipoClb))
                 {
                     int xpos = AListaHistorial[0].Posicion;
                     comando = AListaHistorial[0].Posicion + ":";
