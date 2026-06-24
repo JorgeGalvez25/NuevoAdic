@@ -928,24 +928,66 @@ namespace Servicios.Adicional
         public string SubirBajarFlujoCloud(UsuarioCloud usuario, bool std)
         {
             string mensajeResp = string.Empty;
-            this.BitacoraInsertar(new Bitacora() { Id_usuario = usuario.Usuario, Suceso = "Aplicar cambio de flujo" });
+            this.BitacoraInsertar(new Bitacora()
+            {
+                Id_usuario = usuario.Usuario,
+                Suceso = "Aplicar cambio de flujo"
+            });
+
+            int estacionId = 1; // Better: receive this as a parameter if cloud supports multiple stations.
+            Configuracion config = this.ConfiguracionObtener(1);
+
+            ListaHistorial historial = this.HistorialObtenerRecientes(estacionId);
+
+            if (!std)
+            {
+                TimeSpan hora = new TimeSpan(
+                    DateTime.Now.TimeOfDay.Hours,
+                    DateTime.Now.TimeOfDay.Minutes,
+                    DateTime.Now.TimeOfDay.Seconds);
+
+                foreach (var h in historial)
+                {
+                    h.Fecha = DateTime.Today;
+                    h.Hora = hora;
+                    h.Porcentaje = config.Cantidad_minima;
+                }
+            }
+
+            MarcaDispensario marca = this.TipoDispensarioCloud();
 
             ServiciosCliente.ServiciosCliente cliente = new ServiciosCliente.ServiciosCliente();
 
-            if ("Ok".Equals(cliente.AplicarFlujo(std, false, this.TipoDispensarioCloud(), this.HistorialObtenerRecientes(1).ToList()), StringComparison.OrdinalIgnoreCase))
+            string respuesta = cliente.AplicarFlujo(
+                std,
+                false,
+                marca,
+                historial.ToList<Historial>());
+
+            if (!"Ok".Equals(respuesta, StringComparison.OrdinalIgnoreCase))
             {
-                ConfiguracionCambiarEstado(std ? "Estandar" : "Mínimo");
-            }
-            else
-            {
-                this.BitacoraInsertar(new Bitacora() { Id_usuario = usuario.Usuario, Suceso = "Error al aplicar el cambio de flujo." });
-                mensajeResp = "No fue posible hacer el cambio de flujo, por favor realice una aplicación manual.";
-                return mensajeResp;
+                this.BitacoraInsertar(new Bitacora()
+                {
+                    Id_usuario = usuario.Usuario,
+                    Suceso = respuesta
+                });
+
+                return "No fue posible hacer el cambio de flujo, por favor realice una aplicación manual.";
             }
 
-            new ProcesosComando().AplicaComando(std, false, out mensajeResp);
+            this.ConfiguracionActualizarUltimoMovimiento(DateTime.Now);
+            this.ConfiguracionCambiarEstado(std ? "Estandar" : "Mínimo");
 
-            return mensajeResp;
+            this.BitacoraInsertar(new Bitacora()
+            {
+                Id_usuario = usuario.Usuario,
+                Suceso = std ? "Subir flujo" : "Bajar flujo"
+            });
+
+            if (std)
+                this.ApagarVisual();
+
+            return "Ok";
         }
 
         public bool EstablecerPorcentajeCloud(UsuarioCloud usuario, ListaHistorial entidad, bool esGlobal)

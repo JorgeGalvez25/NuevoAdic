@@ -28,76 +28,100 @@ namespace ServiciosCliente
         Dictionary<string, string> variables;
         public string AplicarFlujo(bool std, bool paro, MarcaDispensario marca, List<Adicional.Entidades.Historial> AListaHistorial)
         {
-            string estatus = new ConfiguracionPersistencia().ConfiguracionObtener(1).Estado;
-            string pMensajeRespuesta = string.Empty;
-            variables = Utilerias.ObtenerListaVar();
-            if (!ValidaLicencia("CVL5"))
-                throw new System.ArgumentException("Licencia CVL5 Inválida.");
-            if (ConfigurationManager.AppSettings["CambiaConsola"] == "Si")
+            try
             {
-                if (estatus == "Estandar" || !std)
-                {
-                    new ProcesosFlujo().AplicarFlujo(AListaHistorial);
-                    new ProcesosComando().AplicaComando(std, paro, out pMensajeRespuesta);
-                }
-                else if (estatus == "Mínimo" && std)
-                {
-                    new ProcesosFlujo().AplicarFlujo(AListaHistorial);
-                    //new ProcesosComando().AplicaComando(std, paro, out pMensajeRespuesta);
-                    pMensajeRespuesta = "Ok";
-                }
-            }
-            else if (ConfigurationManager.AppSettings["ModoGateway"] == "Si")
-            {
-                switch (marca)
-                {
-                    case MarcaDispensario.Ninguno:
-                        break;
-                    case MarcaDispensario.Wayne:
-                        pMensajeRespuesta = AplicarFlujoWayneSocket(std, estatus, AListaHistorial);
-                        break;
-                    case MarcaDispensario.Bennett:
-                        pMensajeRespuesta = AplicarFlujoBennettSocket(std, estatus, AListaHistorial);
-                        break;
-                    case MarcaDispensario.Team:
-                        pMensajeRespuesta = AplicarFlujoTeamSocket(std, estatus, AListaHistorial);
-                        break;
-                    case MarcaDispensario.Gilbarco:
-                        pMensajeRespuesta = AplicarFlujoGilbarcoSocket(std, estatus, AListaHistorial);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                if (ConfigurationManager.AppSettings["OpenGas"] == "Si" && (!ValidaLicencia("CVL7")))
-                    throw new System.ArgumentException("Licencia CVL7 Inválida.");
-                switch (marca)
-                {
-                    case MarcaDispensario.Ninguno:
-                        break;
-                    case MarcaDispensario.Wayne:
-                        pMensajeRespuesta = AplicarFlujoWayne(std, AListaHistorial);
-                        break;
-                    case MarcaDispensario.Bennett:
-                        pMensajeRespuesta = AplicarFlujoBennett(std, AListaHistorial);
-                        break;
-                    case MarcaDispensario.Team:
-                        pMensajeRespuesta = AplicarFlujoTeam(std, AListaHistorial);
-                        break;
-                    case MarcaDispensario.Gilbarco:
-                        pMensajeRespuesta = AplicarFlujoGilbarco(std, AListaHistorial);
-                        break;
-                    case MarcaDispensario.HongYang:
-                        pMensajeRespuesta = AplicarFlujoHongYang(std, AListaHistorial);
-                        break;
-                    default:
-                        break;
-                }
-            }
+                string estatus = new ConfiguracionPersistencia().ConfiguracionObtener(1).Estado;
+                string pMensajeRespuesta = string.Empty;
+                variables = Utilerias.ObtenerListaVar();
 
-            return pMensajeRespuesta;
+                new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
+                {
+                    Id_usuario = "DEBUG",
+                    Suceso = string.Format("AplicarFlujo | Marca={0} |CambiaConsola={1} | ModoGateway={2} | estatus='{3}' | std={4}",
+                        marca.ToString(),
+                        ConfigurationManager.AppSettings["CambiaConsola"],
+                        ConfigurationManager.AppSettings["ModoGateway"],
+                        estatus,
+                        std)
+                });
+
+                if (!ValidaLicencia("CVL5"))
+                    throw new System.ArgumentException("Licencia CVL5 Inválida.");
+
+                if (ConfigurationManager.AppSettings["CambiaConsola"] == "Si")
+                {
+                    if (estatus.Equals("Estandar", StringComparison.OrdinalIgnoreCase) || !std)
+                    {
+                        new ProcesosFlujo().AplicarFlujo(AListaHistorial);
+                        new ProcesosComando().AplicaComando(std, paro, out pMensajeRespuesta);
+                    }
+                    else if (estatus.Equals("Mínimo", StringComparison.OrdinalIgnoreCase) && std)
+                    {
+                        new ProcesosFlujo().AplicarFlujo(AListaHistorial);
+                        pMensajeRespuesta = "Ok";
+                    }
+                    else
+                    {
+                        pMensajeRespuesta = string.Format("Estatus desconocido: '{0}'", estatus);
+                    }
+                }
+                else if (ConfigurationManager.AppSettings["ModoGateway"] == "Si")
+                {
+                    switch (marca)
+                    {
+                        case MarcaDispensario.Ninguno:
+                            break;
+                        case MarcaDispensario.Wayne:
+                            pMensajeRespuesta = AplicarFlujoWayneSocket(std, estatus, AListaHistorial);
+                            break;
+                        case MarcaDispensario.Bennett:
+                            pMensajeRespuesta = AplicarFlujoBennettSocket(std, estatus, AListaHistorial);
+                            break;
+                        case MarcaDispensario.Team:
+                            pMensajeRespuesta = AplicarFlujoTeamSocket(std, estatus, AListaHistorial);
+                            break;
+                        case MarcaDispensario.Gilbarco:
+                            pMensajeRespuesta = AplicarFlujoGilbarcoSocket(std, estatus, AListaHistorial);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    if (ConfigurationManager.AppSettings["OpenGas"] == "Si" && (!ValidaLicencia("CVL7")))
+                        throw new System.ArgumentException("Licencia CVL7 Inválida.");
+
+                    switch (marca)
+                    {
+                        case MarcaDispensario.Ninguno:
+                            break;
+                        case MarcaDispensario.Wayne:
+                            pMensajeRespuesta = AplicarFlujoWayne(std, AListaHistorial);
+                            break;
+                        case MarcaDispensario.Bennett:
+                            pMensajeRespuesta = AplicarFlujoBennett(std, AListaHistorial);
+                            break;
+                        case MarcaDispensario.Team:
+                            pMensajeRespuesta = AplicarFlujoTeam(std, AListaHistorial);
+                            break;
+                        case MarcaDispensario.Gilbarco:
+                            pMensajeRespuesta = AplicarFlujoGilbarco(std, AListaHistorial);
+                            break;
+                        case MarcaDispensario.HongYang:
+                            pMensajeRespuesta = AplicarFlujoHongYang(std, AListaHistorial);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                return pMensajeRespuesta;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public List<Adicional.Entidades.Historial> ObtenerBombasEstacion()
@@ -323,6 +347,16 @@ namespace ServiciosCliente
                 {
                     int folio;
                     string rsp = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
+
+                    new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
+                    {
+                        Id_usuario = "DEBUG",
+                        Suceso = string.Format("ComandoSocket rsp='{0}' | partes={1}",
+                            rsp,
+                            rsp == null ? "NULL" : rsp.Split('|').Length.ToString())
+                    });
+
+
                     if (Int32.TryParse(rsp.Split('|')[3], out folio))
                     {
                         rsp = SeguimientoRspCmnd(rsp, false);
@@ -344,7 +378,12 @@ namespace ServiciosCliente
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Error AplicarFlujoBennettSocket: " + ex.Message + " Comando: " + comando);
+                new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
+                {
+                    Id_usuario = "DEBUG Exception",
+                    Suceso = ex.Message
+                });
+                return ex.Message;
             }
         }
 
@@ -868,19 +907,38 @@ namespace ServiciosCliente
 
         public bool CambiaServiciosDisp(string estatus, bool std)
         {
+            new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
+            {
+                Id_usuario = "DEBUG",
+                Suceso = "Entró CambiaServiciosDisp"
+            });
             if ((estatus == "Estandar" && !std) || (estatus != "Estandar" && std))
             {
-                //Detener servicio
-                ServiceController sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"]);
+
+                new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
+                {
+                    Id_usuario = "DEBUG",
+                    Suceso = "Detectó cambio servicio"
+                });
+
 
                 try
                 {
+                    //Detener servicio
+                    ServiceController sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"]);
+
                     if (sc != null && sc.Status == ServiceControllerStatus.Running)
                     {
                         sc.Stop();
                     }
                     sc.WaitForStatus(ServiceControllerStatus.Stopped);
                     sc.Close();
+
+                    new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
+                    {
+                        Id_usuario = "DEBUG",
+                        Suceso = "Detuvo servicio"
+                    });
                 }
                 catch (Exception ex)
                 {
@@ -897,16 +955,30 @@ namespace ServiciosCliente
                 }
 
                 //Iniciar servicio
-                sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
+                
 
                 try
                 {
+                    new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
+                    {
+                        Id_usuario = "DEBUG",
+                        Suceso = "Entró Iniciar servicio"
+                    });
+
+                    ServiceController sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
+
                     if (sc != null && sc.Status == ServiceControllerStatus.Stopped)
                     {
                         sc.Start();
                     }
                     sc.WaitForStatus(ServiceControllerStatus.Running);
                     sc.Close();
+
+                    new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
+                    {
+                        Id_usuario = "DEBUG",
+                        Suceso = "Inició servicio"
+                    });
                 }
                 catch (Exception ex)
                 {
