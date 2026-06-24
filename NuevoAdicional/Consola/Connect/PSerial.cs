@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -150,6 +150,14 @@ namespace Consola.Connect
             return cfg;
         }
 
+        private string FormatearErrorPSerialSocket(string mensajeBase, string respuestaSocket)
+        {
+            if (!String.IsNullOrEmpty(respuestaSocket))
+                return mensajeBase + ". Respuesta: " + respuestaSocket;
+
+            return mensajeBase;
+        }
+
         public string EnviarComandos(List<string> comandos, int marca)
         {
             try
@@ -161,8 +169,11 @@ namespace Consola.Connect
                 {
                     try
                     {
-                        if (!LiberarPSerialSocket(0))
-                            return "Error en comunicación con PDISPENSARIOS";
+                        string respuestaPSerialSocket = "";
+
+                        if (!LiberarPSerialSocket(0, out respuestaPSerialSocket))
+                            return FormatearErrorPSerialSocket("Error en comunicación con PDISPENSARIOS", respuestaPSerialSocket);
+
                         System.Threading.Thread.Sleep(200);
                         if (marca == 1 || marca == 2 || ConfigurationManager.AppSettings["ModoDelphi"] == "Si")
                         {
@@ -182,7 +193,13 @@ namespace Consola.Connect
                     }
                     finally
                     {
-                        LiberarPSerialSocket(1);
+                        string respuestaPSerialSocket = "";
+
+                        if (!LiberarPSerialSocket(1, out respuestaPSerialSocket))
+                        {
+                            Presenter.RegistraBitacora("PSerialSocket: ",
+                                FormatearErrorPSerialSocket("Error al liberar PDISPENSARIOS", respuestaPSerialSocket));
+                        }
                     }
                 }
                 else
@@ -251,7 +268,15 @@ namespace Consola.Connect
                 {
                     try
                     {
-                        LiberarPSerialSocket(0);
+                        string respuestaPSerialSocket = "";
+
+                        if (!LiberarPSerialSocket(0, out respuestaPSerialSocket))
+                        {
+                            resultado = FormatearErrorPSerialSocket("Error en comunicación con PDISPENSARIOS", respuestaPSerialSocket);
+                            valoresCal.Add(resultado);
+                            return valoresCal;
+                        }
+
                         System.Threading.Thread.Sleep(500);
                         DoAction(comandos);
                     }
@@ -262,7 +287,13 @@ namespace Consola.Connect
                     }
                     finally
                     {
-                        LiberarPSerialSocket(1);
+                        string respuestaPSerialSocket = "";
+
+                        if (!LiberarPSerialSocket(1, out respuestaPSerialSocket))
+                        {
+                            Presenter.RegistraBitacora("PSerialSocket: ",
+                                FormatearErrorPSerialSocket("Error al liberar PDISPENSARIOS", respuestaPSerialSocket));
+                        }
                     }
                 }
                 else
@@ -325,8 +356,15 @@ namespace Consola.Connect
 
         public bool LiberarPSerialSocket(int tipo)
         {
+            string respuestaSocket = "";
+            return LiberarPSerialSocket(tipo, out respuestaSocket);
+        }
+
+        public bool LiberarPSerialSocket(int tipo, out string respuestaSocket)
+        {
             int BufferSize = 1024 * 1024;
             string[] hostSocket = ConfigurationManager.AppSettings["HostPDispensarios"].Split(':');
+            respuestaSocket = "";
 
             try
             {
@@ -349,7 +387,8 @@ namespace Consola.Connect
                     }
                     while (bytesRead == BufferSize);
 
-                    return response.ToString() == "1";
+                    respuestaSocket = response.ToString();
+                    return respuestaSocket == "1";
                 }
             }
             catch (Exception e)
