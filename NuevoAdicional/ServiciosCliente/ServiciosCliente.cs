@@ -949,6 +949,9 @@ namespace ServiciosCliente
                 try
                 {
                     EditarXMLNotify(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
+                    
+                    string valorCentinel = std ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"];
+                    EditarJSONCentinel(valorCentinel);
                 }
                 catch
                 {
@@ -956,7 +959,7 @@ namespace ServiciosCliente
 
                 //Iniciar servicio
                 
-
+                
                 try
                 {
                     new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
@@ -1021,8 +1024,16 @@ namespace ServiciosCliente
         {
             try
             {
-                string filePathExe = Path.Combine(ConfigurationManager.AppSettings["RutaXMLNotify"], "OG.Notify.exe");
-                string filePathConf = Path.Combine(ConfigurationManager.AppSettings["RutaXMLNotify"], "OG.Notify.exe.config");
+                string rutaNotify = ConfigurationManager.AppSettings["RutaXMLNotify"];
+
+                // Validación de seguridad: Si no está configurado, salimos del método silenciosamente
+                if (string.IsNullOrEmpty(rutaNotify))
+                {
+                    return;
+                }
+
+                string filePathExe = Path.Combine(rutaNotify, "OG.Notify.exe");
+                string filePathConf = Path.Combine(rutaNotify, "OG.Notify.exe.config");
 
                 //Detiene proceso
                 Process[] processes = Process.GetProcessesByName("OG.Notify");
@@ -1033,9 +1044,7 @@ namespace ServiciosCliente
                 }
 
                 //Edita archivo
-
                 XmlDocument document = new XmlDocument();
-
                 document.Load(filePathConf);
 
                 XmlNodeList appSettingsNodes = document.SelectNodes("//configuration/appSettings/add");
@@ -1061,6 +1070,71 @@ namespace ServiciosCliente
             catch (Exception ex)
             {
                 throw new ArgumentException("Error al modificar archivo de configuración de OG.Notify: " + ex.Message);
+            }
+        }
+
+        public void EditarJSONCentinel(string valor)
+        {
+            try
+            {
+                string directoryPath = ConfigurationManager.AppSettings["RutaJSONCentinel"];
+
+                // Validación de seguridad: Si no está configurado, salimos del método silenciosamente
+                if (string.IsNullOrEmpty(directoryPath))
+                {
+                    return;
+                }
+
+                string filePathConf = Path.Combine(directoryPath, "appsettings.json");
+
+                if (File.Exists(filePathConf))
+                {
+                    string jsonContent = File.ReadAllText(filePathConf);
+
+                    // Usamos Regex para buscar "NombreDispensario": "CUALQUIER_VALOR" y reemplazar el valor
+                    string pattern = @"(""NombreDispensario""\s*:\s*"")[^""]*("")";
+                    string replacement = "${1}" + valor + "${2}";
+
+                    string newJsonContent = System.Text.RegularExpressions.Regex.Replace(jsonContent, pattern, replacement);
+
+                    File.WriteAllText(filePathConf, newJsonContent);
+
+                    // Reinicio de Centinel con los valores fijos solicitados
+                    try
+                    {
+                        // Intentamos reiniciarlo como Servicio de Windows
+                        ServiceController sc = new ServiceController("ogcvcentinela");
+                        if (sc.Status == ServiceControllerStatus.Running)
+                        {
+                            sc.Stop();
+                            sc.WaitForStatus(ServiceControllerStatus.Stopped);
+                        }
+                        sc.Start();
+                        sc.WaitForStatus(ServiceControllerStatus.Running);
+                        sc.Close();
+                    }
+                    catch
+                    {
+                        // Si falla, lo reiniciamos como proceso utilizando la ruta fija proporcionada
+                        Process[] processes = Process.GetProcessesByName("OpenGas.Centinela");
+                        if (processes.Length == 0)
+                            processes = Process.GetProcessesByName("ogcvcentinela");
+
+                        if (processes.Length > 0)
+                        {
+                            processes[0].Kill();
+                            processes[0].WaitForExit();
+                        }
+
+                        Process p = new Process();
+                        p.StartInfo.FileName = @"C:\OpenGas\OG_Centinel\OpenGas.Centinela.exe";
+                        p.Start();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Error al modificar archivo de configuración JSON de Centinel: " + ex.Message);
             }
         }
 
