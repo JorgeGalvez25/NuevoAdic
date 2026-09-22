@@ -13,6 +13,7 @@ namespace NuevoAdicional
 {
     public partial class frmProtecciones : Form
     {
+        private static readonly int[] litrosAceptados = new int[] { 1, 10, 20 };
         private int idEstacion;
         private Estacion estacion;
         private ListaProteccion protecciones;
@@ -31,7 +32,17 @@ namespace NuevoAdicional
             servicioAdicional = Configuraciones.ListaCanalesAdicional[idEstacion];
             try
             {
-                protecciones = servicioAdicional.ProteccionObtenerLista(this.idEstacion);
+                ListaProteccion proteccionesRegistradas = servicioAdicional.ProteccionObtenerLista(this.idEstacion);
+                protecciones = new ListaProteccion();
+
+                foreach (Proteccion proteccion in proteccionesRegistradas)
+                {
+                    if (EsProteccionAceptada(proteccion.Litros) &&
+                        protecciones.FindIndex(p => p.Litros == proteccion.Litros) < 0)
+                    {
+                        protecciones.Add(proteccion);
+                    }
+                }
 
                 gcProtecciones.DataSource = protecciones;
 
@@ -80,21 +91,28 @@ namespace NuevoAdicional
 
             try
             {
-                string comandostr = string.Empty;
-                foreach (Proteccion prot in protecciones)
+                ListaProteccion proteccionesValidas = new ListaProteccion();
+                foreach (int litros in litrosAceptados)
                 {
-                    if (prot.Activa == "Si")
-                        comandostr += prot.Litros.ToString() + ";";
+                    Proteccion proteccion = protecciones.Find(p => p.Litros == litros);
+                    if (proteccion != null)
+                        proteccionesValidas.Add(proteccion);
                 }
-                if (comandostr != string.Empty)
-                    comandostr = comandostr.Substring(0, comandostr.Length - 1).Trim();
+
+                string comandostr = string.Join(";", proteccionesValidas
+                    .Where(p => p.Activa == "Si")
+                    .Select(p => p.Litros.ToString())
+                    .ToArray());
 
                 ServiciosCliente.IServiciosCliente pServiciosCliente = Configuraciones.ListaCanales[idEstacion];
 
                 pServiciosCliente.AplicarProtecciones(comandostr);
 
-                protecciones.Insert(0, new Proteccion() { Estacion = idEstacion, Litros = 0 });
-                servicioAdicional.ProteccionInsertarActualizar(protecciones);
+                ListaProteccion proteccionesPersistencia = new ListaProteccion();
+                proteccionesPersistencia.Add(new Proteccion() { Estacion = idEstacion, Litros = 0 });
+                proteccionesPersistencia.AddRange(proteccionesValidas);
+                if (servicioAdicional.ProteccionInsertarActualizar(proteccionesPersistencia) == null)
+                    throw new Exception("No ha sido posible registrar las protecciones aceptadas.");
                 servicioAdicional.ConfiguracionActivarProtecciones(idEstacion, estacion.ProteccionesActivas);
                 servicioAdicional.ConfiguracionActualizarUltimoMovimiento(DateTime.Now);
                 adicionalCorrecto = true;
@@ -162,7 +180,8 @@ namespace NuevoAdicional
 
             if (forma.ShowDialog() == DialogResult.OK)
             {
-                if (protecciones.FindIndex(p => { return p.Litros == forma.Litros; }) < 0)
+                if (EsProteccionAceptada(forma.Litros) &&
+                    protecciones.FindIndex(p => { return p.Litros == forma.Litros; }) < 0)
                 {
                     protecciones.Add(new Proteccion() { Estacion = idEstacion, Litros = forma.Litros, Activa = "Si" });
 
@@ -174,6 +193,11 @@ namespace NuevoAdicional
             }
 
             forma.Dispose();
+        }
+
+        private static bool EsProteccionAceptada(int litros)
+        {
+            return litrosAceptados.Contains(litros);
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)

@@ -840,6 +840,7 @@ namespace ServiciosCliente
 
         public void AplicarProtecciones(string comandostr)
         {
+            comandostr = NormalizarProtecciones(comandostr);
             Dictionary<string, string> variables = Utilerias.ObtenerListaVar();
 
             string ComandosPorServicio;
@@ -847,14 +848,21 @@ namespace ServiciosCliente
                 ComandosPorServicio = "No";
 
             if (ConfigurationManager.AppSettings["ModoGateway"] == "Si")
-                SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|EJECCMND|PROT " + comandostr), false);
+            {
+                string respuesta = SeguimientoRspCmnd(
+                    ComandoSocket("DISPENSERSX|EJECCMND|PROT " + comandostr), false);
+                if (!respuesta.Equals("Ok", StringComparison.CurrentCultureIgnoreCase))
+                    throw new ArgumentException("No fue posible aplicar las protecciones: " + respuesta);
+            }
             else if (ComandosPorServicio == "Si")
             {
                 string servConsola;
                 if (!variables.TryGetValue("PuertoServicio", out servConsola))
                     servConsola = "http://127.0.0.1:9199/bin/";
 
-                new ServicioDisp(servConsola).EjecutaComando("PROT " + comandostr);
+                string respuesta = new ServicioDisp(servConsola).EjecutaComando("PROT " + comandostr);
+                if (!respuesta.StartsWith("OK", StringComparison.CurrentCultureIgnoreCase))
+                    throw new ArgumentException("No fue posible aplicar las protecciones: " + respuesta);
             }
             else
             {
@@ -868,6 +876,28 @@ namespace ServiciosCliente
                 variables.Remove("BennettProtec");
             variables.Add("BennettProtec", comandostr);
             new EstacionConsPersistencia().ActualizaVariablesDispensario(variables);
+        }
+
+        private static string NormalizarProtecciones(string comandostr)
+        {
+            int[] litrosAceptados = new int[] { 1, 10, 20 };
+            List<int> protecciones = new List<int>();
+
+            foreach (string valor in (comandostr ?? string.Empty).Split(';'))
+            {
+                int litros;
+                if (int.TryParse(valor.Trim(), out litros) &&
+                    litrosAceptados.Contains(litros) &&
+                    !protecciones.Contains(litros))
+                {
+                    protecciones.Add(litros);
+                }
+            }
+
+            return string.Join(";", litrosAceptados
+                .Where(litros => protecciones.Contains(litros))
+                .Select(litros => litros.ToString())
+                .ToArray());
         }
 
         public string ComandoSocket(string cmd)

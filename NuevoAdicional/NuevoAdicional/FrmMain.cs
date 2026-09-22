@@ -79,12 +79,12 @@ namespace NuevoAdicional
                 item.SubItems.Add(string.Empty);
                 item.SubItems.Add(estacion.TipoDispensario.ToString());
 
-                tiActProtecc.Visible = estacion.TipoDispensario.ToString() == "Gilbarco";
-                tiDesProtecc.Visible = estacion.TipoDispensario.ToString() == "Gilbarco";
-                tiComboBoxProt.Visible = estacion.TipoDispensario.ToString() == "Gilbarco";
-                if (tiComboBoxProt.Visible)
-                    tiComboBoxProt.SelectedIndex = 1;
-                tiProtecciones.Visible = estacion.TipoDispensario.ToString() != "Gilbarco";
+                //tiActProtecc.Visible = estacion.TipoDispensario.ToString() == "Gilbarco";
+                //tiDesProtecc.Visible = estacion.TipoDispensario.ToString() == "Gilbarco";
+                //tiComboBoxProt.Visible = estacion.TipoDispensario.ToString() == "Gilbarco";
+                //if (tiComboBoxProt.Visible)
+                //    tiComboBoxProt.SelectedIndex = 1;
+                //tiProtecciones.Visible = estacion.TipoDispensario.ToString() != "Gilbarco";
 
                 item.ImageIndex = 2;
                 item.Focused = false;
@@ -1830,7 +1830,7 @@ namespace NuevoAdicional
                         return;
                 }
 
-                if (ConfigurationManager.AppSettings["Consola3"].Length > 0)
+                if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["Consola3"]))
                 {
                     string ComandosPorServicio;
                     if (!Utilerias.ObtenerListaVar().TryGetValue("ComandosPorServicio", out ComandosPorServicio))
@@ -1863,6 +1863,7 @@ namespace NuevoAdicional
                         {
                             if (Process.GetProcessesByName("PDISMENU").Length == 0)
                                 break;
+                            System.Threading.Thread.Sleep(200);
                         }
                         Process p = new Process();
                         p.StartInfo.FileName = ConfigurationManager.AppSettings["Consola3"];
@@ -1900,6 +1901,7 @@ namespace NuevoAdicional
                         {
                             if (Process.GetProcessesByName("PDISMENUX").Length == 0)
                                 break;
+                            System.Threading.Thread.Sleep(200);  // FIX: evitar busy-wait que congela el UI thread
                         }
 
                         Process p = new Process();
@@ -1928,7 +1930,7 @@ namespace NuevoAdicional
             if (ConfigurationManager.AppSettings["ModoOculto"] == "Si")
             {
                 this.Visible = false;
-                notifyIcon1.Visible = false;
+                notifyIcon1.Visible = true;
                 e.Cancel = true;
             }
         }

@@ -298,14 +298,14 @@
             this.itReporte.Image = global::NuevoAdicional.Properties.Resources.document;
             this.itReporte.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.itReporte.Name = "itReporte";
-            this.itReporte.Size = new System.Drawing.Size(82, 22);
+            this.itReporte.Size = new System.Drawing.Size(82, 20);
             this.itReporte.Tag = "18";
             this.itReporte.Text = "&Reportes";
             // 
             // reporte01ToolStripMenuItem
             // 
             this.reporte01ToolStripMenuItem.Name = "reporte01ToolStripMenuItem";
-            this.reporte01ToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.reporte01ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.reporte01ToolStripMenuItem.Tag = "1";
             this.reporte01ToolStripMenuItem.Text = "Reporte 0&1";
             this.reporte01ToolStripMenuItem.Click += new System.EventHandler(this.tiReporte_Click);
@@ -313,7 +313,7 @@
             // reporte02ToolStripMenuItem
             // 
             this.reporte02ToolStripMenuItem.Name = "reporte02ToolStripMenuItem";
-            this.reporte02ToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.reporte02ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.reporte02ToolStripMenuItem.Tag = "2";
             this.reporte02ToolStripMenuItem.Text = "Reporte 0&2";
             this.reporte02ToolStripMenuItem.Click += new System.EventHandler(this.tiReporte_Click);
@@ -328,7 +328,7 @@
             this.tiRegenerarArchivos.Image = global::NuevoAdicional.Properties.Resources.history2;
             this.tiRegenerarArchivos.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tiRegenerarArchivos.Name = "tiRegenerarArchivos";
-            this.tiRegenerarArchivos.Size = new System.Drawing.Size(127, 22);
+            this.tiRegenerarArchivos.Size = new System.Drawing.Size(127, 20);
             this.tiRegenerarArchivos.Tag = "19";
             this.tiRegenerarArchivos.Text = "Re&generar archivos";
             this.tiRegenerarArchivos.Visible = false;
@@ -339,7 +339,7 @@
             this.tiProtecciones.Image = ((System.Drawing.Image)(resources.GetObject("tiProtecciones.Image")));
             this.tiProtecciones.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tiProtecciones.Name = "tiProtecciones";
-            this.tiProtecciones.Size = new System.Drawing.Size(95, 22);
+            this.tiProtecciones.Size = new System.Drawing.Size(95, 20);
             this.tiProtecciones.Tag = "20";
             this.tiProtecciones.Text = "&Protecciones";
             this.tiProtecciones.Click += new System.EventHandler(this.tiProtecciones_Click);
@@ -351,7 +351,7 @@
             this.itRefresh.Image = global::NuevoAdicional.Properties.Resources.refresh;
             this.itRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.itRefresh.Name = "itRefresh";
-            this.itRefresh.Size = new System.Drawing.Size(23, 22);
+            this.itRefresh.Size = new System.Drawing.Size(23, 20);
             this.itRefresh.Tag = "";
             this.itRefresh.Text = "Ac&tulizar";
             this.itRefresh.ToolTipText = "Actualizar";
@@ -362,7 +362,7 @@
             this.tiEscanear.Image = global::NuevoAdicional.Properties.Resources.clock_refresh;
             this.tiEscanear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tiEscanear.Name = "tiEscanear";
-            this.tiEscanear.Size = new System.Drawing.Size(85, 22);
+            this.tiEscanear.Size = new System.Drawing.Size(85, 20);
             this.tiEscanear.Tag = "21";
             this.tiEscanear.Text = "S&incronizar";
             this.tiEscanear.Click += new System.EventHandler(this.tiEscanear_Click);
@@ -372,7 +372,7 @@
             this.tiLicencias.Image = global::NuevoAdicional.Properties.Resources.keys;
             this.tiLicencias.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tiLicencias.Name = "tiLicencias";
-            this.tiLicencias.Size = new System.Drawing.Size(75, 22);
+            this.tiLicencias.Size = new System.Drawing.Size(75, 20);
             this.tiLicencias.Text = "Licencias";
             // 
             // toolStripSeparator5
@@ -388,7 +388,7 @@
             this.tiTickets.Image = global::NuevoAdicional.Properties.Resources.scroll;
             this.tiTickets.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tiTickets.Name = "tiTickets";
-            this.tiTickets.Size = new System.Drawing.Size(73, 22);
+            this.tiTickets.Size = new System.Drawing.Size(73, 20);
             this.tiTickets.Tag = "25";
             this.tiTickets.Text = "Tickets";
             // 
