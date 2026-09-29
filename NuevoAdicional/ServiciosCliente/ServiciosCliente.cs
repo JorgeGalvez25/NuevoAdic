@@ -44,6 +44,8 @@ namespace ServiciosCliente
                         estatus,
                         std)
                 });
+                LogFlujo(string.Format("AplicarFlujo | Marca={0} | CambiaConsola={1} | ModoGateway={2} | estatus='{3}' | std={4} | paro={5}",
+                    marca, ConfigurationManager.AppSettings["CambiaConsola"], ConfigurationManager.AppSettings["ModoGateway"], estatus, std, paro));
 
                 if (!ValidaLicencia("CVL5"))
                     throw new System.ArgumentException("Licencia CVL5 Inválida.");
@@ -116,10 +118,12 @@ namespace ServiciosCliente
                     }
                 }
 
+                LogFlujo("AplicarFlujo regresa '" + pMensajeRespuesta + "'");
                 return pMensajeRespuesta;
             }
             catch (Exception ex)
             {
+                LogFlujo("AplicarFlujo EXCEPCION: " + ex);
                 return ex.Message;
             }
         }
@@ -328,8 +332,20 @@ namespace ServiciosCliente
         public string AplicarFlujoBennettSocket(bool std, string estatus, List<Historial> AListaHistorial)
         {
             string comando = string.Empty;
+            Stopwatch swTotal = Stopwatch.StartNew();
             try
             {
+                LogFlujo(string.Format("===== INICIO AplicarFlujoBennettSocket | std={0} | estatus='{1}' | HostPDispensarios={2} | ServicioX={3} | ServicioOpengas={4} | elementos={5}",
+                    std, estatus,
+                    ConfigurationManager.AppSettings["HostPDispensarios"],
+                    ConfigurationManager.AppSettings["ServicioX"],
+                    ConfigurationManager.AppSettings["ServicioOpengas"],
+                    AListaHistorial == null ? "NULL" : AListaHistorial.Count.ToString()));
+                if (AListaHistorial != null)
+                    foreach (var h in AListaHistorial)
+                        LogFlujo(string.Format("  Historial: Pos={0} Manguera={1} Comb={2} Porcentaje={3} Calibracion={4} Conf={5} Estado='{6}' Abajo='{7}'",
+                            h.Posicion, h.Manguera, h.Combustible, h.Porcentaje, h.Calibracion, h.Conf, h.Estado, h.Abajo));
+
                 string pMensajeRespuesta = string.Empty;
                 int xpos = AListaHistorial[0].Posicion;
                 comando = AListaHistorial[0].Posicion + ":";
@@ -342,9 +358,11 @@ namespace ServiciosCliente
                     comando += AListaHistorial[i].Porcentaje.ToString() + (calibracionDecimal >= 0 ? "+" : "-") + Math.Abs(calibracionDecimal).ToString() + ",";
                 }
                 comando = comando.Remove(comando.Length - 1);
+                LogFlujo("Comando armado: '" + comando + "'");
 
                 if (estatus == "Estandar")
                 {
+                    LogFlujo("Camino: estatus Estandar -> se envia " + (std ? "FLUSTD" : "FLUMIN") + " al driver ANTES de cambiar servicios");
                     int folio;
                     string rsp = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
 
@@ -356,28 +374,42 @@ namespace ServiciosCliente
                             rsp == null ? "NULL" : rsp.Split('|').Length.ToString())
                     });
 
+                    string[] partes = rsp.Split('|');
+                    LogFlujo(string.Format("Respuesta {0}: partes={1} | [2]='{2}' | [3]='{3}'", std ? "FLUSTD" : "FLUMIN",
+                        partes.Length, partes.Length > 2 ? Visible(partes[2]) : "<no existe>", partes.Length > 3 ? Visible(partes[3]) : "<no existe>"));
 
                     if (Int32.TryParse(rsp.Split('|')[3], out folio))
                     {
+                        LogFlujo("Folio de comando del driver: " + folio + " -> inicia seguimiento RESPCMND");
                         rsp = SeguimientoRspCmnd(rsp, false);
-                        if (rsp != "Ok") return "Servicio consola: " + rsp;
+                        if (rsp != "Ok")
+                        {
+                            LogFlujo(string.Format("===== FIN AplicarFlujoBennettSocket ({0}ms) resultado='Servicio consola: {1}' (NO se cambian servicios)", swTotal.ElapsedMilliseconds, rsp));
+                            return "Servicio consola: " + rsp;
+                        }
                     }
                     else
+                    {
+                        LogFlujo(string.Format("===== FIN AplicarFlujoBennettSocket ({0}ms) la respuesta no trae folio numerico, se regresa respuesta cruda (NO se cambian servicios)", swTotal.ElapsedMilliseconds));
                         return rsp;
+                    }
                 }
+                else
+                    LogFlujo("Camino: estatus '" + estatus + "' -> solo se cambian servicios (el driver aplica el flujo estandar al iniciar)");
 
-                CambiaServiciosDisp(estatus, std);
-                pMensajeRespuesta = "Ok";
+                // Igual que Gilbarco: al pasar de Minimo a Estandar el driver recien iniciado no ha sido
+                // inicializado por la consola, asi que no se le envia FLUSTD ni se espera respuesta;
+                // solo se valida que el cambio de servicio se haya realizado correctamente.
+                bool cambioOk = CambiaServiciosDisp(estatus, std);
+                LogFlujo("CambiaServiciosDisp regreso " + cambioOk);
+                pMensajeRespuesta = cambioOk ? "Ok" : "Error al realizar cambio de servicio";
 
-                if (estatus != "Estandar" && std)
-                {
-                    System.Threading.Thread.Sleep(2000);
-                    pMensajeRespuesta = SeguimientoRspCmnd(ComandoSocket("DISPENSERSX|FLUSTD|" + comando), false);
-                }
+                LogFlujo(string.Format("===== FIN AplicarFlujoBennettSocket ({0}ms) resultado='{1}'", swTotal.ElapsedMilliseconds, pMensajeRespuesta));
                 return pMensajeRespuesta;
             }
             catch (Exception ex)
             {
+                LogFlujo(string.Format("===== FIN AplicarFlujoBennettSocket CON EXCEPCION ({0}ms) comando='{1}': {2}", swTotal.ElapsedMilliseconds, comando, ex));
                 new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
                 {
                     Id_usuario = "DEBUG Exception",
@@ -903,7 +935,11 @@ namespace ServiciosCliente
         public string ComandoSocket(string cmd)
         {
             int BufferSize = 1024 * 1024;
-            string[] hostSocket = ConfigurationManager.AppSettings["HostPDispensarios"].Split(':');
+            string host = ConfigurationManager.AppSettings["HostPDispensarios"];
+            LogFlujo("SOCKET -> [" + host + "] " + Visible(cmd));
+            string[] hostSocket = host.Split(':');
+            Stopwatch sw = Stopwatch.StartNew();
+            string etapa = "Connect";
 
             try
             {
@@ -911,26 +947,36 @@ namespace ServiciosCliente
                 {
                     socket.ReceiveBufferSize = BufferSize;
                     socket.Connect(new IPEndPoint(IPAddress.Parse(hostSocket[0]), Convert.ToInt32(hostSocket[1])));
+                    long msConexion = sw.ElapsedMilliseconds;
 
+                    etapa = "Send";
                     byte[] commandBytes = Encoding.ASCII.GetBytes(cmd);
-                    socket.Send(commandBytes);
+                    int bytesEnviados = socket.Send(commandBytes);
 
+                    etapa = "Receive";
                     StringBuilder response = new StringBuilder();
                     byte[] buffer = new byte[BufferSize];
                     int bytesRead;
+                    int lecturas = 0;
 
                     do
                     {
                         bytesRead = socket.Receive(buffer);
+                        lecturas++;
                         response.Append(Encoding.ASCII.GetString(buffer, 0, bytesRead));
                     }
                     while (bytesRead == BufferSize);
 
-                    return response.ToString();
+                    string respuesta = response.ToString();
+                    LogFlujo(string.Format("SOCKET <- [conexion={0}ms, total={1}ms, enviados={2} bytes, recibidos={3} bytes en {4} lectura(s)] {5}",
+                        msConexion, sw.ElapsedMilliseconds, bytesEnviados, respuesta.Length, lecturas,
+                        respuesta.Length == 0 ? "<VACIA: el servidor cerro la conexion sin responder>" : Visible(respuesta)));
+                    return respuesta;
                 }
             }
             catch (Exception e)
             {
+                LogFlujo(string.Format("SOCKET ERROR en {0} [{1}ms] {2}: {3}", etapa, sw.ElapsedMilliseconds, e.GetType().Name, e.Message));
                 throw new ArgumentException("SendCommand: " + e.Message + " Host: " + hostSocket[0] + ":" + hostSocket[1]);
             }
         }
@@ -942,8 +988,12 @@ namespace ServiciosCliente
                 Id_usuario = "DEBUG",
                 Suceso = "Entró CambiaServiciosDisp"
             });
+            string servicioDetener = estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"];
+            string servicioIniciar = estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"];
             if ((estatus == "Estandar" && !std) || (estatus != "Estandar" && std))
             {
+                LogFlujo(string.Format("CambiaServiciosDisp: estatus='{0}' std={1} -> detener '{2}' ({3}) e iniciar '{4}' ({5})",
+                    estatus, std, servicioDetener, EstadoServicio(servicioDetener), servicioIniciar, EstadoServicio(servicioIniciar)));
 
                 new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
                 {
@@ -951,18 +1001,22 @@ namespace ServiciosCliente
                     Suceso = "Detectó cambio servicio"
                 });
 
-
+                Stopwatch sw = Stopwatch.StartNew();
                 try
                 {
                     //Detener servicio
-                    ServiceController sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"]);
+                    ServiceController sc = new ServiceController(servicioDetener);
 
                     if (sc != null && sc.Status == ServiceControllerStatus.Running)
                     {
+                        LogFlujo("CambiaServiciosDisp: Stop('" + servicioDetener + "')");
                         sc.Stop();
                     }
-                    sc.WaitForStatus(ServiceControllerStatus.Stopped);
+                    else
+                        LogFlujo("CambiaServiciosDisp: '" + servicioDetener + "' no estaba Running (" + sc.Status + "), no se envia Stop");
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeoutCambioServicio);
                     sc.Close();
+                    LogFlujo(string.Format("CambiaServiciosDisp: '{0}' detenido en {1}ms", servicioDetener, sw.ElapsedMilliseconds));
 
                     new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
                     {
@@ -972,6 +1026,7 @@ namespace ServiciosCliente
                 }
                 catch (Exception ex)
                 {
+                    LogFlujo(string.Format("CambiaServiciosDisp: ERROR al detener '{0}' [{1}ms]: {2}", servicioDetener, sw.ElapsedMilliseconds, ex));
                     GuardarMensaje(string.Format("ERROR_CambiaDisp({0}).txt", DateTime.Now.ToString("yyMMddHHmmss")), ex.Message + ex.TargetSite + ex.StackTrace);
                     return false;
                 }
@@ -979,17 +1034,19 @@ namespace ServiciosCliente
                 try
                 {
                     EditarXMLNotify(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
-                    
+
                     string valorCentinel = std ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"];
                     EditarJSONCentinel(valorCentinel);
+                    LogFlujo("CambiaServiciosDisp: OG.Notify / Centinel actualizados");
                 }
-                catch
+                catch (Exception ex)
                 {
+                    LogFlujo("CambiaServiciosDisp: error (ignorado) al actualizar OG.Notify / Centinel: " + ex.Message);
                 }
 
                 //Iniciar servicio
-                
-                
+
+
                 try
                 {
                     new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
@@ -998,14 +1055,19 @@ namespace ServiciosCliente
                         Suceso = "Entró Iniciar servicio"
                     });
 
-                    ServiceController sc = new ServiceController(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
+                    sw = Stopwatch.StartNew();
+                    ServiceController sc = new ServiceController(servicioIniciar);
 
                     if (sc != null && sc.Status == ServiceControllerStatus.Stopped)
                     {
+                        LogFlujo("CambiaServiciosDisp: Start('" + servicioIniciar + "')");
                         sc.Start();
                     }
-                    sc.WaitForStatus(ServiceControllerStatus.Running);
+                    else
+                        LogFlujo("CambiaServiciosDisp: '" + servicioIniciar + "' no estaba Stopped (" + sc.Status + "), no se envia Start");
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeoutCambioServicio);
                     sc.Close();
+                    LogFlujo(string.Format("CambiaServiciosDisp: '{0}' en Running en {1}ms", servicioIniciar, sw.ElapsedMilliseconds));
 
                     new BitacoraPersistencia().BitacoraInsertar(new Bitacora()
                     {
@@ -1015,6 +1077,7 @@ namespace ServiciosCliente
                 }
                 catch (Exception ex)
                 {
+                    LogFlujo(string.Format("CambiaServiciosDisp: ERROR al iniciar '{0}' [{1}ms]: {2}", servicioIniciar, sw.ElapsedMilliseconds, ex));
                     GuardarMensaje(string.Format("ERROR_CambiaDisp({0}).txt", DateTime.Now.ToString("yyMMddHHmmss")), ex.Message + ex.TargetSite + ex.StackTrace);
                     return false;
                 }
@@ -1022,14 +1085,98 @@ namespace ServiciosCliente
                 return true;
             }
             else
+            {
+                LogFlujo(string.Format("CambiaServiciosDisp: estatus='{0}' std={1} -> no requiere cambio de servicio | '{2}'={3} | '{4}'={5}",
+                    estatus, std, ConfigurationManager.AppSettings["ServicioX"], EstadoServicio(ConfigurationManager.AppSettings["ServicioX"]),
+                    ConfigurationManager.AppSettings["ServicioOpengas"], EstadoServicio(ConfigurationManager.AppSettings["ServicioOpengas"])));
                 return true;
+            }
+        }
+
+        // Tiempo maximo para que un servicio de dispensarios llegue a Stopped / Running al cambiar de flujo.
+        private static readonly TimeSpan TimeoutCambioServicio = TimeSpan.FromSeconds(60);
+
+        private static readonly object lockLogFlujo = new object();
+
+        /// <summary>
+        /// Bitacora detallada del flujo por socket (lo enviado, lo recibido y los cambios de servicio).
+        /// Solo se escribe si appSettings LogFlujoSocket="Si". Se guarda en RutaLogFlujo (appSettings)
+        /// o en la carpeta Logs junto al ejecutable, un archivo por dia.
+        /// </summary>
+        private static void LogFlujo(string mensaje)
+        {
+            try
+            {
+                if (!string.Equals(ConfigurationManager.AppSettings["LogFlujoSocket"], "Si", StringComparison.OrdinalIgnoreCase))
+                    return;
+
+                string ruta = ConfigurationManager.AppSettings["RutaLogFlujo"];
+                if (string.IsNullOrEmpty(ruta))
+                    ruta = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+                if (!Directory.Exists(ruta))
+                    Directory.CreateDirectory(ruta);
+
+                string archivo = Path.Combine(ruta, "FlujoSocket_" + DateTime.Now.ToString("yyyyMMdd") + ".txt");
+                string linea = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " [T" + System.Threading.Thread.CurrentThread.ManagedThreadId.ToString() + "] " + mensaje;
+
+                lock (lockLogFlujo)
+                {
+                    File.AppendAllText(archivo, linea + Environment.NewLine);
+                }
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Hace visibles los caracteres de control del protocolo del Bridge (SOH, STX, ETX, ETB...).
+        /// </summary>
+        private static string Visible(string texto)
+        {
+            if (texto == null)
+                return "<null>";
+
+            StringBuilder sb = new StringBuilder(texto.Length);
+            foreach (char c in texto)
+            {
+                switch (c)
+                {
+                    case '\x01': sb.Append("<SOH>"); break;
+                    case '\x02': sb.Append("<STX>"); break;
+                    case '\x03': sb.Append("<ETX>"); break;
+                    case '\x06': sb.Append("<ACK>"); break;
+                    case '\x15': sb.Append("<NAK>"); break;
+                    case '\x17': sb.Append("<ETB>"); break;
+                    default:
+                        if (c < ' ')
+                            sb.Append("<" + ((int)c).ToString("X2") + ">");
+                        else
+                            sb.Append(c);
+                        break;
+                }
+            }
+            return sb.ToString();
+        }
+
+        private static string EstadoServicio(string nombre)
+        {
+            try
+            {
+                using (ServiceController sc = new ServiceController(nombre))
+                    return sc.Status.ToString();
+            }
+            catch (Exception ex)
+            {
+                return "ERROR(" + ex.Message + ")";
+            }
         }
 
         public string SeguimientoRspCmnd(string rsp, bool single)
         {
+            Stopwatch sw = Stopwatch.StartNew();
             try
             {
                 string folio = rsp.Split('|')[3];
+                LogFlujo("RESPCMND inicia seguimiento del folio '" + Visible(folio) + "' (20 intentos)");
                 string resp, resp2;
                 for (int i = 1; i <= 20; i++)
                 {
@@ -1037,15 +1184,25 @@ namespace ServiciosCliente
                     resp = ComandoSocket("DISPENSERSX|RESPCMND|" + folio);
                     resp2 = resp.Split('|')[3];
                     resp = resp.Split('|')[2].ToUpper();
+                    LogFlujo(string.Format("RESPCMND intento {0}/20 folio={1}: estado='{2}' detalle='{3}' [{4}ms acumulados]",
+                        i, Visible(folio), Visible(resp), Visible(resp2), sw.ElapsedMilliseconds));
                     if (resp == "TRUE")
+                    {
+                        LogFlujo("RESPCMND folio " + Visible(folio) + " -> Ok en el intento " + i);
                         return "Ok";
+                    }
                     else if (resp2.Length > 1)
+                    {
+                        LogFlujo("RESPCMND folio " + Visible(folio) + " -> error del driver: '" + Visible(resp2) + "' (se regresa '" + resp + "')");
                         return resp;
+                    }
                 }
+                LogFlujo(string.Format("RESPCMND folio {0} -> Sin respuesta tras 20 intentos ({1}ms): el comando sigue pendiente en el driver", Visible(folio), sw.ElapsedMilliseconds));
                 return "Sin respuesta";
             }
             catch (Exception ex)
             {
+                LogFlujo(string.Format("RESPCMND EXCEPCION [{0}ms] rsp='{1}': {2}", sw.ElapsedMilliseconds, Visible(rsp), ex.Message));
                 throw new ArgumentException("Error SeguimientoRspCmnd: " + ex.Message + " rsp: " + rsp);
             }
         }
