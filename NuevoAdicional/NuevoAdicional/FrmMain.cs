@@ -311,16 +311,28 @@ namespace NuevoAdicional
                         ServiciosCliente.IServiciosCliente pServiciosCliente = Configuraciones.ListaCanales[pIdEstacion];
 
                         string comando;
-                        int xpos = pListaHistorial[0].Posicion;
-                        comando = pListaHistorial[0].Posicion + ":";
-                        for (int i = 0; i < pListaHistorial.Count; i++)
+                        Estacion estacionFlujo = Configuraciones.Estaciones.Find(p => { return p.Id == pIdEstacion; });
+                        if (estacionFlujo.TipoDispensario == MarcaDispensario.Wayne)
                         {
-                            if (xpos != pListaHistorial[i].Posicion)
-                                comando = comando.Remove(comando.Length - 1) + ";" + pListaHistorial[i].Posicion + ":";
-                            xpos = pListaHistorial[i].Posicion;
-                            comando += pListaHistorial[i].Porcentaje.ToString() + ",";
+                            // Wayne: gasolina;diesel (combustibles 1 y 2 son gasolina, 3 diesel); el driver lo asigna a cada manguera
+                            Historial gasolina = pListaHistorial.Find(h => h.Combustible == 1) ?? pListaHistorial.Find(h => h.Combustible == 2);
+                            Historial diesel = pListaHistorial.Find(h => h.Combustible == 3);
+                            comando = (gasolina != null ? gasolina.Porcentaje.ToString("0") : "") +
+                                      (diesel != null ? ";" + diesel.Porcentaje.ToString("0") : "");
                         }
-                        comando = comando.Remove(comando.Length - 1);
+                        else
+                        {
+                            int xpos = pListaHistorial[0].Posicion;
+                            comando = pListaHistorial[0].Posicion + ":";
+                            for (int i = 0; i < pListaHistorial.Count; i++)
+                            {
+                                if (xpos != pListaHistorial[i].Posicion)
+                                    comando = comando.Remove(comando.Length - 1) + ";" + pListaHistorial[i].Posicion + ":";
+                                xpos = pListaHistorial[i].Posicion;
+                                comando += pListaHistorial[i].Porcentaje.ToString("0") + ",";
+                            }
+                            comando = comando.Remove(comando.Length - 1);
+                        }
 
                         pServiciosCliente.AplicarFlujoGilbarcoPorcentajes(comando);
                     }
