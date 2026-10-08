@@ -515,7 +515,7 @@ namespace NuevoAdicional
                             if (!Utilerias.ObtenerListaVar().TryGetValue("TipoClb", out tipoClb))
                                 tipoClb = "0";
 
-                            if (ConfigurationManager.AppSettings["ModoPresetWayne"] == "Si" || tipoClb == "6" || tipoClb == "7")
+                            if (Utilerias.EsperaAplicacionFlujo(estacion.TipoDispensario, tipoClb))
                             {
                                 lvEstaciones.SelectedItems[0].ImageIndex = 5;
                                 tmrWayne.Enabled = true;
@@ -678,7 +678,7 @@ namespace NuevoAdicional
                                 servicioAdicional.BitacoraInsertar(new Bitacora() { Id_usuario = Configuraciones.NombreUsuario, Suceso = "Bajar flujo" });
                                 return;
                             }
-                            else if ((ConfigurationManager.AppSettings["ModoPresetWayne"] == "Si" || tipoClb == "6" || tipoClb == "7") && pEstacionEntidad.Estado == "Estandar")
+                            else if (Utilerias.EsperaAplicacionFlujo(estacion.TipoDispensario, tipoClb) && pEstacionEntidad.Estado == "Estandar")
                             {
                                 pEstacionEntidad.EstadoPresetWayne = EstatusPresetWayne.EsperandoMinimo;
                                 lvEstaciones.SelectedItems[0].ImageIndex = 6;
