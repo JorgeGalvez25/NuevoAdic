@@ -429,7 +429,7 @@ namespace ServiciosCliente
 
             try
             {
-                if (new[] { "5", "6", "7" }.Contains(tipoClb))
+                if (new[] { "5", "6", "7", "8" }.Contains(tipoClb))
                 {
                     int xpos = AListaHistorial[0].Posicion;
                     comando = AListaHistorial[0].Posicion + ":";
@@ -438,7 +438,8 @@ namespace ServiciosCliente
                         if (xpos != AListaHistorial[i].Posicion)
                             comando = comando.Remove(comando.Length - 1) + ";" + AListaHistorial[i].Posicion + ":";
                         xpos = AListaHistorial[i].Posicion;
-                        comando += AListaHistorial[i].Porcentaje.ToString() + ",";
+                        // TipoClb 8 aplica estos porcentajes, el driver los espera de un digito
+                        comando += (tipoClb == "8" ? AListaHistorial[i].Porcentaje.ToString("0") : AListaHistorial[i].Porcentaje.ToString()) + ",";
                     }
                     comando = comando.Remove(comando.Length - 1);
                 }
@@ -465,7 +466,7 @@ namespace ServiciosCliente
                         return rsp.Split('|')[3];
                 }
 
-                if (!new[] {"1", "2", "5", "6", "7" }.Contains(tipoClb) || std)
+                if (!new[] {"1", "2", "5", "6", "7", "8" }.Contains(tipoClb) || std)
                     pMensajeRespuesta = CambiaServiciosDisp(estatus, std) ? "Ok" : "Error al realizar cambio de servicio";
                 else
                     pMensajeRespuesta = "Ok";
