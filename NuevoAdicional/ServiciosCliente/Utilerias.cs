@@ -63,6 +63,23 @@ namespace ServiciosCliente
             }
         }
 
+        /// <summary>
+        /// Indica si la marca Gilbarco corresponde al driver Gilbarco 2W y no a PAM.
+        /// </summary>
+        public static bool EsGilbarco2W()
+        {
+            return string.Equals(ConfigurationManager.AppSettings["ServicioX"], "SQLGReader", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Gilbarco con captura de porcentajes por posición y manguera.
+        /// </summary>
+        public static bool GilbarcoPorManguera(string tipoClb)
+        {
+            return ConfigurationManager.AppSettings["GilbarcoOnOff"] == "Si" || tipoClb == "5" || tipoClb == "8" ||
+                   (tipoClb == "2" && EsGilbarco2W());
+        }
+
         public static string ObtenValorCal(string cadena, int indice, char sep)
         {
             try

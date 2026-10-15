@@ -204,7 +204,7 @@ namespace NuevoAdicional
         private void llenarListaGilbarco(List<int> listaPosiciones)
         {
             Dictionary<int, bool> posCarga = new Dictionary<int, bool>();
-            if (ConfigurationManager.AppSettings["GilbarcoOnOff"] == "Si" || tipoClb == "5" || tipoClb == "8")
+            if (Utilerias.GilbarcoPorManguera(tipoClb))
             {
                 foreach (int posicion in listaPosiciones)
                 {
@@ -503,7 +503,7 @@ namespace NuevoAdicional
                             cambiarPorcentajeTeam(nodo, formaPorcentajes.Porcentaje);
                             break;
                         case MarcaDispensario.Gilbarco:
-                            if (ConfigurationManager.AppSettings["GilbarcoOnOff"] == "Si" || tipoClb == "5" || tipoClb == "8")
+                            if (Utilerias.GilbarcoPorManguera(tipoClb))
                                 cambiarPorcentajeBennet(nodo, formaPorcentajes.Porcentaje);
                             else if (tipoClb == "7")
                                 cambiarPorcentajeTeam(nodo, formaPorcentajes.Porcentaje);
@@ -546,7 +546,7 @@ namespace NuevoAdicional
                         cambiarPorcentajeTeam(null, formaPorcentajes.Porcentaje);
                         break;
                     case MarcaDispensario.Gilbarco:
-                        if (ConfigurationManager.AppSettings["GilbarcoOnOff"] == "Si" || tipoClb == "5" || tipoClb == "8")
+                        if (Utilerias.GilbarcoPorManguera(tipoClb))
                             cambiarPorcentajeBennet(null, formaPorcentajes.Porcentaje);
                         else if (tipoClb == "7")
                             cambiarPorcentajeTeam(null, formaPorcentajes.Porcentaje);

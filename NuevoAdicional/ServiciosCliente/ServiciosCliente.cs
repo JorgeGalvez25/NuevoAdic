@@ -429,7 +429,10 @@ namespace ServiciosCliente
 
             try
             {
-                if (new[] { "5", "6", "7", "8" }.Contains(tipoClb))
+                // TipoClb 8 y Gilbarco 2W con TipoClb 2 esperan un porcentaje entero de un digito por posicion
+                bool enteroPorPosicion = tipoClb == "8" || (tipoClb == "2" && Utilerias.EsGilbarco2W());
+
+                if (new[] { "5", "6", "7", "8" }.Contains(tipoClb) || enteroPorPosicion)
                 {
                     int xpos = AListaHistorial[0].Posicion;
                     comando = AListaHistorial[0].Posicion + ":";
@@ -438,8 +441,7 @@ namespace ServiciosCliente
                         if (xpos != AListaHistorial[i].Posicion)
                             comando = comando.Remove(comando.Length - 1) + ";" + AListaHistorial[i].Posicion + ":";
                         xpos = AListaHistorial[i].Posicion;
-                        // TipoClb 8 aplica estos porcentajes, el driver los espera de un digito
-                        comando += (tipoClb == "8" ? AListaHistorial[i].Porcentaje.ToString("0") : AListaHistorial[i].Porcentaje.ToString()) + ",";
+                        comando += (enteroPorPosicion ? AListaHistorial[i].Porcentaje.ToString("0") : AListaHistorial[i].Porcentaje.ToString()) + ",";
                     }
                     comando = comando.Remove(comando.Length - 1);
                 }
