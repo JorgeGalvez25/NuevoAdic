@@ -17,9 +17,16 @@ namespace ServiciosCliente
                 var = new EstacionConsPersistencia().ObtenerVariablesDispensario();
                 string[] listaVar = var.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-                Dictionary<string, string> variables = new Dictionary<string, string>();
+                // Nombre sin distinguir mayúsculas/minúsculas y sin espacios alrededor del "="
+                Dictionary<string, string> variables = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-                variables = (new List<string>(listaVar)).ToDictionary(key => key.Split('=')[0], value => (value.Split('=').Length > 1 ? value.Split('=')[1] : ""));
+                foreach (string linea in listaVar)
+                {
+                    string[] partes = linea.Split(new char[] { '=' }, 2);
+                    string nombre = partes[0].Trim();
+                    if (nombre != "")
+                        variables.Add(nombre, partes.Length > 1 ? partes[1].Trim() : "");
+                }
 
                 return variables;
             }
