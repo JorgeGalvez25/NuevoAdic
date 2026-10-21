@@ -139,6 +139,31 @@ namespace NuevoAdicional
             this.Text = "Posiciones";
         }
 
+        private bool ModoGatewayActivo()
+        {
+            return string.Equals(ConfigurationManager.AppSettings["ModoGateway"], "Si", StringComparison.OrdinalIgnoreCase);
+        }
+
+        // Claves requeridas por el modo gateway que faltan o están vacías en el config
+        private List<string> ConfiguracionGatewayFaltante()
+        {
+            List<string> faltantes = new List<string>();
+            if (ModoGatewayActivo())
+            {
+                foreach (string clave in new string[] { "ServicioX", "ServicioOpengas" })
+                {
+                    if (string.IsNullOrEmpty(ConfigurationManager.AppSettings[clave]))
+                        faltantes.Add(clave);
+                }
+            }
+            return faltantes;
+        }
+
+        private bool GatewayConfigurado()
+        {
+            return ModoGatewayActivo() && ConfiguracionGatewayFaltante().Count == 0;
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -168,7 +193,18 @@ namespace NuevoAdicional
 
             tmrSinc.Enabled = ConfigurationManager.AppSettings["HoraSinc"] != null;
 
-            if (ConfigurationManager.AppSettings["ModoGateway"] == "Si" && ConfigurationManager.AppSettings["ServicioX"] != string.Empty)
+            List<string> faltantes = ConfiguracionGatewayFaltante();
+            if (faltantes.Count > 0)
+            {
+                // Se muestra al terminar la carga para no bloquear la apertura de la aplicación
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    MessageBox.Show(string.Format("ModoGateway está activo pero faltan las siguientes configuraciones en NuevoAdicional.exe.config:\n\n{0}\n\nNo se controlarán los servicios del gateway hasta que se agreguen.",
+                        string.Join("\n", faltantes.ToArray())), "Configuración incompleta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                });
+            }
+
+            if (GatewayConfigurado())
             {
                 string estatus = new ConfiguracionPersistencia().ConfiguracionObtener(1).Estado;
 
@@ -2287,8 +2323,8 @@ namespace NuevoAdicional
                         string resp = string.Empty;
                         Estacion estacion = Configuraciones.Estaciones.Find(p => { return p.Id == pEstacion; });
 
-                        if (ConfigurationManager.AppSettings["ModoGateway"].ToUpper() == "SI")
-                        {                            
+                        if (GatewayConfigurado())
+                        {
                             ServiceController sc = new ServiceController(ConfigurationManager.AppSettings["ServicioX"]);
                             if (sc != null && sc.Status == ServiceControllerStatus.Stopped && estacion.EstadoPresetWayne == EstatusPresetWayne.EsperandoMinimo)
                             {
@@ -2363,8 +2399,8 @@ namespace NuevoAdicional
                             {
                                 try
                                 {
-                                    if (ConfigurationManager.AppSettings["ModoGateway"].ToUpper() == "SI")
-                                    {                                        
+                                    if (GatewayConfigurado())
+                                    {
                                         ServiceController sc = new ServiceController(ConfigurationManager.AppSettings["ServicioOpengas"]);
                                         if (sc != null && sc.Status == ServiceControllerStatus.Stopped)
                                             sc.Start();
