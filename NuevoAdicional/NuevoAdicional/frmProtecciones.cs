@@ -105,6 +105,10 @@ namespace NuevoAdicional
                     .ToArray());
 
                 ServiciosCliente.IServiciosCliente pServiciosCliente = Configuraciones.ListaCanales[idEstacion];
+                if (!Configuraciones.CanalEstaActivo(idEstacion, false))
+                {
+                    pServiciosCliente = Configuraciones.AbrirCanalCliente(idEstacion);
+                }
 
                 pServiciosCliente.AplicarProtecciones(comandostr);
 

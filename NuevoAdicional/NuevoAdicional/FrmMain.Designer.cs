@@ -305,7 +305,7 @@
             // reporte01ToolStripMenuItem
             // 
             this.reporte01ToolStripMenuItem.Name = "reporte01ToolStripMenuItem";
-            this.reporte01ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.reporte01ToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.reporte01ToolStripMenuItem.Tag = "1";
             this.reporte01ToolStripMenuItem.Text = "Reporte 0&1";
             this.reporte01ToolStripMenuItem.Click += new System.EventHandler(this.tiReporte_Click);
@@ -313,7 +313,7 @@
             // reporte02ToolStripMenuItem
             // 
             this.reporte02ToolStripMenuItem.Name = "reporte02ToolStripMenuItem";
-            this.reporte02ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.reporte02ToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.reporte02ToolStripMenuItem.Tag = "2";
             this.reporte02ToolStripMenuItem.Text = "Reporte 0&2";
             this.reporte02ToolStripMenuItem.Click += new System.EventHandler(this.tiReporte_Click);
