@@ -115,6 +115,13 @@ namespace NuevoAdicional
             Dictionary<short, bool> combustibles = new Dictionary<short, bool>();
             Dictionary<int, bool> posCarga = new Dictionary<int, bool>();
 
+            // TipoClb 5: porcentaje por manguera
+            if (tipoClb == "5")
+            {
+                llenarListaBennet(listaPosiciones);
+                return;
+            }
+
             listaPosiciones.ForEach(p =>
                 {
                     ListaHistorial mangueras = servicioAdicional.HistorialObtenerPorPosicion(this.idEstacion, p);
@@ -494,7 +501,10 @@ namespace NuevoAdicional
                         case MarcaDispensario.Ninguno:
                             break;
                         case MarcaDispensario.Wayne:
-                            cambiarPorcentajeWayne(nodo, formaPorcentajes.Porcentaje);
+                            if (tipoClb == "5")
+                                cambiarPorcentajeBennet(nodo, formaPorcentajes.Porcentaje);
+                            else
+                                cambiarPorcentajeWayne(nodo, formaPorcentajes.Porcentaje);
                             break;
                         case MarcaDispensario.Bennett:
                             cambiarPorcentajeBennet(nodo, formaPorcentajes.Porcentaje);
@@ -537,7 +547,10 @@ namespace NuevoAdicional
                     case MarcaDispensario.Ninguno:
                         break;
                     case MarcaDispensario.Wayne:
-                        cambiarPorcentajeWayne(null, formaPorcentajes.Porcentaje);
+                        if (tipoClb == "5")
+                            cambiarPorcentajeBennet(null, formaPorcentajes.Porcentaje);
+                        else
+                            cambiarPorcentajeWayne(null, formaPorcentajes.Porcentaje);
                         break;
                     case MarcaDispensario.Bennett:
                         cambiarPorcentajeBennet(null, formaPorcentajes.Porcentaje);

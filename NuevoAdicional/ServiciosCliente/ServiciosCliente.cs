@@ -509,15 +509,34 @@ namespace ServiciosCliente
 
         public string AplicarFlujoWayneSocket(bool std, string estatus, List<Historial> AListaHistorial)
         {
+            string tipoClb;
             string pMensajeRespuesta = string.Empty;
+            if (!Utilerias.ObtenerListaVar().TryGetValue("TipoClb", out tipoClb))
+                tipoClb = "0";
             string comando = string.Empty;
 
             try
             {
                 pMensajeRespuesta = string.Empty;
-                for (int i = 0; i < AListaHistorial.Count; i++)
+                if (tipoClb == "5")
                 {
-                    comando += AListaHistorial[i].Porcentaje.ToString() + ";";
+                    // Por posición y manguera con porcentajes enteros: 1:5,5;2:5,5
+                    int xpos = AListaHistorial[0].Posicion;
+                    comando = AListaHistorial[0].Posicion + ":";
+                    for (int i = 0; i < AListaHistorial.Count; i++)
+                    {
+                        if (xpos != AListaHistorial[i].Posicion)
+                            comando = comando.Remove(comando.Length - 1) + ";" + AListaHistorial[i].Posicion + ":";
+                        xpos = AListaHistorial[i].Posicion;
+                        comando += AListaHistorial[i].Porcentaje.ToString("0") + ",";
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < AListaHistorial.Count; i++)
+                    {
+                        comando += AListaHistorial[i].Porcentaje.ToString() + ";";
+                    }
                 }
                 comando = comando.Remove(comando.Length - 1);
 
@@ -546,6 +565,10 @@ namespace ServiciosCliente
                     string rsp = ComandoSocket("DISPENSERSX|FLUSTD|" + comando);
                     pMensajeRespuesta = Int32.TryParse(rsp.Split('|')[3], out folio) ? "Ok" : rsp.Split('|')[3];
                 }
+
+                // En TipoClb 5 FLUSTD solo activa el flujo; los porcentajes por manguera se aplican con FLUACT
+                if (pMensajeRespuesta == "Ok" && std && tipoClb == "5")
+                    pMensajeRespuesta = AplicarFlujoGilbarcoPorcentajes(comando);
 
                 return pMensajeRespuesta;
             }
