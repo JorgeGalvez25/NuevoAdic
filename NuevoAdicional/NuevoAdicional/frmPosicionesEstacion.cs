@@ -521,7 +521,7 @@ namespace NuevoAdicional
                                 cambiarPorcentajeGilbarco(nodo, formaPorcentajes.Porcentaje);
                             break;
                         case MarcaDispensario.HongYang:
-                            cambiarPorcentajeHongYang(nodo, formaPorcentajes.Porcentaje);
+                            cambiarPorcentajeBennet(nodo, formaPorcentajes.Porcentaje);
                             break;
                         default:
                             break;
@@ -567,7 +567,7 @@ namespace NuevoAdicional
                             cambiarPorcentajeGilbarco(null, formaPorcentajes.Porcentaje);
                         break;
                     case MarcaDispensario.HongYang:
-                        cambiarPorcentajeHongYang(null, formaPorcentajes.Porcentaje);
+                        cambiarPorcentajeBennet(null, formaPorcentajes.Porcentaje);
                         break;
                     default:
                         break;

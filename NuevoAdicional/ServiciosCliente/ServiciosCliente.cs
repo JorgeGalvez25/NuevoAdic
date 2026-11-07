@@ -85,6 +85,9 @@ namespace ServiciosCliente
                         case MarcaDispensario.Gilbarco:
                             pMensajeRespuesta = AplicarFlujoGilbarcoSocket(std, estatus, AListaHistorial);
                             break;
+                        case MarcaDispensario.HongYang:
+                            pMensajeRespuesta = AplicarFlujoHongYangSocket(std, estatus, AListaHistorial);
+                            break;
                         default:
                             break;
                     }
@@ -468,7 +471,7 @@ namespace ServiciosCliente
                         return rsp.Split('|')[3];
                 }
 
-                if (!new[] {"1", "2", "5", "6", "7", "8" }.Contains(tipoClb) || std)
+                if (!new[] {"1", "2", "5", "6", "7" }.Contains(tipoClb) || std)
                     pMensajeRespuesta = CambiaServiciosDisp(estatus, std) ? "Ok" : "Error al realizar cambio de servicio";
                 else
                     pMensajeRespuesta = "Ok";
@@ -644,6 +647,45 @@ namespace ServiciosCliente
                 pMensajeRespuesta = "Ok";
 
                 return pMensajeRespuesta;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string AplicarFlujoHongYangSocket(bool std, string estatus, List<Historial> AListaHistorial)
+        {
+            string comando = string.Empty;
+
+            try
+            {
+                // Porcentaje por posicion y manguera: 1:5,5;2:5,5
+                int xpos = AListaHistorial[0].Posicion;
+                comando = AListaHistorial[0].Posicion + ":";
+                for (int i = 0; i < AListaHistorial.Count; i++)
+                {
+                    if (xpos != AListaHistorial[i].Posicion)
+                        comando = comando.Remove(comando.Length - 1) + ";" + AListaHistorial[i].Posicion + ":";
+                    xpos = AListaHistorial[i].Posicion;
+                    comando += AListaHistorial[i].Porcentaje.ToString() + ",";
+                }
+                comando = comando.Remove(comando.Length - 1);
+
+                if (estatus == "Estandar")
+                {
+                    int folio;
+                    string rsp = ComandoSocket("DISPENSERSX|" + (std ? "FLUSTD|" + comando : "FLUMIN"));
+                    if (Int32.TryParse(rsp.Split('|')[3], out folio))
+                    {
+                        rsp = SeguimientoRspCmnd(rsp, false);
+                        if (rsp != "Ok") return "Servicio consola: " + rsp;
+                    }
+                    else
+                        return rsp.Split('|')[3];
+                }
+
+                return CambiaServiciosDisp(estatus, std) ? "Ok" : "Error al realizar cambio de servicio";
             }
             catch (Exception ex)
             {
