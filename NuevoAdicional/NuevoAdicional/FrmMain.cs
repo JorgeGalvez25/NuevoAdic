@@ -2297,6 +2297,30 @@ namespace NuevoAdicional
                 MessageBox.Show("Usuario no puede realizar esta acción.", "No cuenta con derecho de registar lecturas de tanques", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        // Apunta OG.Notify y Centinel al servicio de dispensarios indicado (lo hace el servicio de la estación)
+        private void ActualizarConfigOpenGas(int pEstacion, string servicio)
+        {
+            ServiciosCliente.IServiciosCliente pServiciosCliente = Configuraciones.ListaCanales[pEstacion];
+            if (!Configuraciones.CanalEstaActivo(pEstacion, false))
+                pServiciosCliente = Configuraciones.AbrirCanalCliente(pEstacion);
+
+            try
+            {
+                pServiciosCliente.EditarXMLNotify(servicio);
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                pServiciosCliente.EditarJSONCentinel(servicio);
+            }
+            catch
+            {
+            }
+        }
+
         private void tmrWayne_Tick(object sender, EventArgs e)
         {
             int pEstacion;
@@ -2388,6 +2412,8 @@ namespace NuevoAdicional
                                 {
                                     if (GatewayConfigurado())
                                     {
+                                        ActualizarConfigOpenGas(pEstacion, ConfigurationManager.AppSettings["ServicioOpengas"]);
+
                                         ServiceController sc = new ServiceController(ConfigurationManager.AppSettings["ServicioOpengas"]);
                                         if (sc != null && sc.Status == ServiceControllerStatus.Stopped)
                                             sc.Start();

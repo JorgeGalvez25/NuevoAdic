@@ -69,6 +69,10 @@ namespace ServiciosCliente
         string ComandoSocket(string cmd);
         [OperationContract]
         string SeguimientoRspCmnd(string rsp, bool single);
+        [OperationContract]
+        void EditarXMLNotify(string valor);
+        [OperationContract]
+        void EditarJSONCentinel(string valor);
         #endregion
 
         #region Tanques

@@ -1102,14 +1102,22 @@ namespace ServiciosCliente
                 try
                 {
                     EditarXMLNotify(estatus == "Estandar" ? ConfigurationManager.AppSettings["ServicioOpengas"] : ConfigurationManager.AppSettings["ServicioX"]);
-
-                    string valorCentinel = std ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"];
-                    EditarJSONCentinel(valorCentinel);
-                    LogFlujo("CambiaServiciosDisp: OG.Notify / Centinel actualizados");
+                    LogFlujo("CambiaServiciosDisp: OG.Notify actualizado");
                 }
                 catch (Exception ex)
                 {
-                    LogFlujo("CambiaServiciosDisp: error (ignorado) al actualizar OG.Notify / Centinel: " + ex.Message);
+                    LogFlujo("CambiaServiciosDisp: error (ignorado) al actualizar OG.Notify: " + ex.Message);
+                }
+
+                try
+                {
+                    string valorCentinel = std ? ConfigurationManager.AppSettings["ServicioX"] : ConfigurationManager.AppSettings["ServicioOpengas"];
+                    EditarJSONCentinel(valorCentinel);
+                    LogFlujo("CambiaServiciosDisp: Centinel actualizado");
+                }
+                catch (Exception ex)
+                {
+                    LogFlujo("CambiaServiciosDisp: error (ignorado) al actualizar Centinel: " + ex.Message);
                 }
 
                 //Iniciar servicio
