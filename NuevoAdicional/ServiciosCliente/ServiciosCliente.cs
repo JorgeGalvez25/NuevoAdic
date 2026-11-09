@@ -471,7 +471,7 @@ namespace ServiciosCliente
                         return rsp.Split('|')[3];
                 }
 
-                if (!new[] {"1", "2", "5", "6", "7" }.Contains(tipoClb) || std)
+                if (!new[] {"1", "2", "5", "6", "7", "8" }.Contains(tipoClb) || std)
                     pMensajeRespuesta = CambiaServiciosDisp(estatus, std) ? "Ok" : "Error al realizar cambio de servicio";
                 else
                     pMensajeRespuesta = "Ok";

@@ -63,8 +63,8 @@ namespace ServiciosCliente
                 case MarcaDispensario.Wayne:
                     return ConfigurationManager.AppSettings["ModoPresetWayne"] == "Si";
                 case MarcaDispensario.Gilbarco:
-                    // TipoClb 6 y 7 son de PAM
-                    return tipoClb == "6" || tipoClb == "7";
+                    // TipoClb 6 y 7 son de PAM; TipoClb 8 es de Gilbarco 2W
+                    return tipoClb == "6" || tipoClb == "7" || tipoClb == "8";
                 default:
                     return false;
             }
