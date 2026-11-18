@@ -432,8 +432,8 @@ namespace ServiciosCliente
 
             try
             {
-                // TipoClb 8 y Gilbarco 2W con TipoClb 2 esperan un porcentaje entero de un digito por posicion
-                bool enteroPorPosicion = tipoClb == "8" || (tipoClb == "2" && Utilerias.EsGilbarco2W());
+                // TipoClb 8 y Gilbarco 2W con TipoClb 2 o 5 esperan un porcentaje entero de un digito por posicion
+                bool enteroPorPosicion = tipoClb == "8" || ((tipoClb == "2" || tipoClb == "5") && Utilerias.EsGilbarco2W());
 
                 if (new[] { "5", "6", "7", "8" }.Contains(tipoClb) || enteroPorPosicion)
                 {

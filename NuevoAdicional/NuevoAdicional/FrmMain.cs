@@ -2333,6 +2333,8 @@ namespace NuevoAdicional
                     {
                         string resp = string.Empty;
                         Estacion estacion = Configuraciones.Estaciones.Find(p => { return p.Id == pEstacion; });
+                        if (estacion == null || estacion.EstadoPresetWayne == EstatusPresetWayne.Inactivo)
+                            continue;
 
                         if (GatewayConfigurado())
                         {
@@ -2357,19 +2359,15 @@ namespace NuevoAdicional
                                     {
                                         sc.Stop();
                                         sc.WaitForStatus(ServiceControllerStatus.Stopped);
-                                        sc.Close();
                                     }
-
                                 }
                                 catch
                                 {
-                                    if (sc.Status == ServiceControllerStatus.Running && estacion.EstadoPresetWayne == EstatusPresetWayne.EsperandoMinimo)
-                                    {
-                                        sc.Stop();
-                                        sc.WaitForStatus(ServiceControllerStatus.Stopped);
-                                        sc.Close();
-                                    }
-                                    resp = "OK";
+                                    resp = string.Empty;
+                                }
+                                finally
+                                {
+                                    sc.Close();
                                 }
                             }
                         }
