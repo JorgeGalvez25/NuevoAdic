@@ -643,8 +643,7 @@ namespace ServiciosCliente
                         return rsp.Split('|')[3];
                 }
 
-                CambiaServiciosDisp(estatus, std);
-                pMensajeRespuesta = "Ok";
+                pMensajeRespuesta = CambiaServiciosDisp(estatus, std) ? "Ok" : "Error al realizar cambio de servicio";
 
                 return pMensajeRespuesta;
             }
