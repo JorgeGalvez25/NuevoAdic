@@ -626,7 +626,7 @@ namespace ServiciosCliente
                 pMensajeRespuesta = string.Empty;
                 for (int i = 0; i < AListaHistorial.Count; i++)
                 {
-                    comando += AListaHistorial[i].Posicion.ToString() + ":" + AListaHistorial[i].Porcentaje.ToString() + ";";
+                    comando += AListaHistorial[i].Posicion.ToString() + ":" + AListaHistorial[i].Porcentaje.ToString("0") + ";";
                 }
                 comando = comando.Remove(comando.Length - 1);
 
